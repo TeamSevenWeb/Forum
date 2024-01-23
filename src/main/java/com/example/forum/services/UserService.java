@@ -1,24 +1,25 @@
 package com.example.forum.services;
 
+import com.example.forum.models.Comment;
+import com.example.forum.models.Post;
 import com.example.forum.models.User;
 
+import java.util.List;
+
 public interface UserService {
+
+    User get(FilterOptions filterOptions);
+
     User create(User user);
+
+    Comment create(Comment comment, User user);
+
 
     User update(User user);
 
-    void delete (User user);
+    Comment update(Comment comment, User user);
 
-    User getByUsername(String username);
+    void delete (int id, User user);
 
-    User getByEmail(String email);
-
-    User getByFirstName(String firstName);
-
-    void setAdmin();
-
-    void setBlocked();
-
-    void setUnblocked();
-
+    void delete (int postId, int commentId, User user);
 }

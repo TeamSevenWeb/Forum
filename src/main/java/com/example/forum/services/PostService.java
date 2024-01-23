@@ -1,23 +1,19 @@
 package com.example.forum.services;
 
 import com.example.forum.models.Post;
+import com.example.forum.models.User;
 
 import java.util.List;
 
 public interface PostService {
 
-    Post create(Post post);
+    Post create(Post post, User user);
 
-    Post update(Post post);
+    Post update(Post post, User user);
 
-    void delete (Post post);
+    void delete (Post post,User user);
 
     List<Post> getAll();
 
-    Post getById(int id);
-
-    Post getByTitle(String title);
-
-    Post getByKeyword(String keyword);
-
+    Post get(int id, User user);
 }
