@@ -68,3 +68,13 @@ create table posts_tags
     constraint posts_tags_tags_tag_id_fk
     foreign key (tag_id) references tags(tag_id)
 );
+
+create table liked_post
+(
+    user_id int not null ,
+    post_id int not null,
+    constraint liked_post_posts_post_id_fk
+    foreign key (post_id) references posts(post_id),
+    constraint liked_post_users_user_id_fk
+    foreign key (user_id) references users(user_id)
+);
