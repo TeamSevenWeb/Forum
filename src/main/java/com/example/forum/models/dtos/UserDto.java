@@ -18,7 +18,7 @@ public class UserDto {
     @Size(min = 4, max = 32, message = "Last name should be between 4 and 32 symbols")
     private String lastName;
     @NotNull(message = "Email can't be empty")
-    @Size(min = 4, max = 32, message = "Email should be between 4 and 32 symbols")
+    @Size(min = 4, max = 50, message = "Email should be between 4 and 32 symbols")
     private String email;
 
     public UserDto(){

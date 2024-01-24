@@ -24,7 +24,7 @@ public class User {
     private String email;
     @Column(name = "date_of_registration")
     private Date dateOfRegistration;
-    @Column(name = "is_admin")
+    @Column(name = "is_blocked")
     private boolean isAdmin;
 
     public int getId() {

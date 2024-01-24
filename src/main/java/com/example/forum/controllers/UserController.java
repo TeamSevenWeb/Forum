@@ -37,20 +37,15 @@ public class UserController {
             @RequestParam(required = false) String userName,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String firstName) {
-//        FilterOptions filterOptions = new FilterOptions(name, minAbv, maxAbv, styleId, sortBy, sortOrder);
+//        FilterOptions filterOptions = new FilterOptions(userId, userName, email, firstName, sortBy, sortOrder);
 //        return service.get(filterOptions);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-
+    @GetMapping
+    public List<Comment> getUserComments(@RequestHeader HttpHeaders headers,@PathVariable int id)
     @PostMapping
     public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping("/{postId}/comment")
-    public Comment create(@RequestHeader HttpHeaders headers,@PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
-        //commentService.create(Post, Comment, User)
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
@@ -59,8 +54,13 @@ public class UserController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{postId}/comment/{id}")
-    public Comment update(@RequestHeader HttpHeaders headers,@PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
+    @PutMapping("/block/{id}")
+    public User block(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/unblock/{id}")
+    public User unblock(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
@@ -69,8 +69,5 @@ public class UserController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping ("/{postId}/comment/{commentId}")
-    public void delete(@RequestHeader HttpHeaders headers,@PathVariable int postId, @PathVariable int commentId) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
+
 }

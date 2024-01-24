@@ -3,19 +3,16 @@ package com.example.forum.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "posts_comments", schema = "forum", catalog = "")
+@Table(name = "posts_comments")
 public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "comment_id")
     private int commentId;
-    @Basic
     @Column(name = "post_id")
     private int postId;
-    @Basic
     @Column(name = "user_id")
     private int userId;
-    @Basic
     @Column(name = "comment")
     private String comment;
 

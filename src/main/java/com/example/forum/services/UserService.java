@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User get(FilterOptions filterOptions);
+    User get(String username);
 
     User create(User user);
 

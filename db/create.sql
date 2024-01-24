@@ -77,8 +77,9 @@ create table posts_tags
     foreign key (tag_id) references tags(tag_id)
 );
 
-create table liked_post
+create table likes
 (
+    like_id int auto_increment primary key,
     user_id int not null ,
     post_id int not null,
     constraint liked_post_posts_post_id_fk
