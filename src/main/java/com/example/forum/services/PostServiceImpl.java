@@ -15,6 +15,8 @@ import java.util.List;
 public class PostServiceImpl implements PostService{
 
     private static final String MODIFY_POST_ERROR_MESSAGE = "Only admin or post creator can modify a post.";
+    private static final String CREATE_POST_ERROR_MESSAGE = "Only admin or not blocked users can create a post.";
+
 
     private final PostRepository repository;
     @Autowired
@@ -34,6 +36,9 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void create(Post post, User user) {
+        if(user.isBlocked()){
+            throw new AuthorizationException(CREATE_POST_ERROR_MESSAGE);
+        };
         boolean duplicateExists = true;
         try {
             repository.get(post.getTitle());
@@ -51,7 +56,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void update(Post post, User user) {
-        checkModifyPermissions(post.getTitle(), user);
+        checkModifyPermissions(post.getPostId(), user);
 
         boolean duplicateExists = true;
         try {
@@ -64,7 +69,7 @@ public class PostServiceImpl implements PostService{
         }
 
         if (duplicateExists) {
-            throw new EntityDuplicateException("Post", "title", post.getTitle());
+            throw new EntityDuplicateException("Post", "id", post.getTitle());
         }
 
         repository.update(post);
@@ -75,8 +80,8 @@ public class PostServiceImpl implements PostService{
 
     }
 
-    private void checkModifyPermissions(String title, User user) {
-        Post post = repository.get(title);
+    private void checkModifyPermissions(int id, User user) {
+        Post post = repository.get(id);
         if (!(user.isAdmin() || post.getCreatedBy().equals(user))) {
             throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);
         }

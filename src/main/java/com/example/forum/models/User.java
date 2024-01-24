@@ -28,6 +28,9 @@ public class User {
     @Column(name = "date_of_registration")
     private Date dateOfRegistration;
     @Column(name = "is_blocked")
+    private boolean isBlocked;
+
+    @Column(name = "is_admin")
     private boolean isAdmin;
 
     public int getId() {
@@ -86,12 +89,20 @@ public class User {
         this.dateOfRegistration = dateOfRegistration;
     }
 
+    public boolean isBlocked() {
+        return this.isBlocked;
+    }
     public boolean isAdmin() {
         return this.isAdmin;
     }
 
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public boolean setIsAdmin(boolean isAdmin) {
+        return this.isAdmin = isAdmin;
+    }
+
+
+    public void setIsBlocked(boolean isBlocked) {
+        this.isBlocked = isBlocked;
     }
 
     @Override
