@@ -1,9 +1,5 @@
 package com.example.forum.helpers;
 
-import com.company.web.springdemo.exceptions.AuthorizationException;
-import com.company.web.springdemo.exceptions.EntityNotFoundException;
-import com.company.web.springdemo.models.User;
-import com.company.web.springdemo.services.UserService;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.models.User;

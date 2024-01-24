@@ -1,5 +1,6 @@
 package com.example.forum.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -14,6 +15,8 @@ public class User {
     private int id;
     @Column(name = "username")
     private String username;
+
+    @JsonIgnore
     @Column(name = "password")
     private String password;
     @Column(name = "first_name")
@@ -83,8 +86,8 @@ public class User {
         this.dateOfRegistration = dateOfRegistration;
     }
 
-    public boolean getIsAdmin() {
-        return isAdmin;
+    public boolean isAdmin() {
+        return this.isAdmin;
     }
 
     public void setIsAdmin(boolean isAdmin) {

@@ -15,7 +15,7 @@ public interface UserService {
     Comment create(Comment comment, User user);
 
 
-    User update(User user);
+    void update(User user, User admin);
 
     Comment update(Comment comment, User user);
 

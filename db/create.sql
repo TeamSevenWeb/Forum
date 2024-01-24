@@ -9,7 +9,7 @@ create table users
     last_name  varchar(32) not null,
     email      varchar(50) not null,
     date_of_registration date not null,
-    is_admin boolean     not null
+    is_blocked boolean     not null
 );
 
 create table user_profile_photo
