@@ -3,8 +3,11 @@ package com.example.forum.controllers;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.helpers.AuthenticationHelper;
+import com.example.forum.helpers.PostMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
+import com.example.forum.models.User;
 import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
 import com.example.forum.services.PostService;
@@ -54,7 +57,10 @@ public class PostController {
     @PostMapping
     public Post create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDto postDto) {
         try {
-
+            User user = authenticationHelper.tryGetUser(headers);
+            Post post = postMapper.fromDto(postDto);
+            service.create(post, user);
+            return post;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
@@ -62,7 +68,6 @@ public class PostController {
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-
     }
 
     @PostMapping("/{id}/comment")
@@ -84,7 +89,10 @@ public class PostController {
     @PutMapping("/{id}")
     public Post update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDto postDto) {
         try {
-
+            User user = authenticationHelper.tryGetUser(headers);
+            Post post = postMapper.fromDto(id,postDto);
+            service.update(post, user);
+            return post;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {

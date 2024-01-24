@@ -11,9 +11,9 @@ public interface PostService {
 
     Post get(int id);
 
-    Post create(Post post, User user);
+    void create(Post post, User user);
 
-    Post update(Post post, User user);
+    void update(Post post, User user);
 
     void delete (Post post,User user);
 }
