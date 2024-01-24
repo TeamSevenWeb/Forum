@@ -2,14 +2,16 @@ use forum;
 
 create table users
 (
-    user_id    int auto_increment primary key,
-    username   varchar(50) not null,
-    password  varchar(50) not null,
-    first_name varchar(32) not null,
-    last_name  varchar(32) not null,
-    email      varchar(50) not null,
-    date_of_registration date not null,
-    is_blocked boolean     not null
+    user_id              int auto_increment
+        primary key,
+    username             varchar(50) not null,
+    password             varchar(50) not null,
+    first_name           varchar(32) not null,
+    last_name            varchar(32) not null,
+    email                varchar(50) not null,
+    date_of_registration date        not null,
+    is_blocked           tinyint(1)  not null,
+    is_admin             tinyint(1)  not null
 );
 
 create table user_profile_photo
