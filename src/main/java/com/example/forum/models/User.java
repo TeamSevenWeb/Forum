@@ -6,31 +6,24 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users", schema = "forum", catalog = "")
+@Table(name = "users")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "user_id")
     private int id;
-    @Basic
     @Column(name = "username")
     private String username;
-    @Basic
     @Column(name = "password")
     private String password;
-    @Basic
     @Column(name = "first_name")
     private String firstName;
-    @Basic
     @Column(name = "last_name")
     private String lastName;
-    @Basic
     @Column(name = "email")
     private String email;
-    @Basic
     @Column(name = "date_of_registration")
     private Date dateOfRegistration;
-    @Basic
     @Column(name = "is_admin")
     private boolean isAdmin;
 
@@ -103,8 +96,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User that = (User) o;
-        if (id != that.id) return false;
-        return true;
+        return id == that.id;
     }
 
     @Override
