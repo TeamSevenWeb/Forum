@@ -59,7 +59,7 @@ public class UserController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{postId}/comment")
+    @PutMapping("/{postId}/comment/{id}")
     public Comment update(@RequestHeader HttpHeaders headers,@PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -69,7 +69,7 @@ public class UserController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{postId}/comment/{commentId}")
+    @DeleteMapping ("/{postId}/comment/{commentId}")
     public void delete(@RequestHeader HttpHeaders headers,@PathVariable int postId, @PathVariable int commentId) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }

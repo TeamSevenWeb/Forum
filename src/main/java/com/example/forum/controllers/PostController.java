@@ -32,7 +32,7 @@ public class PostController {
             @RequestParam(required = false) String keyWord,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortOrder) {
-//        FilterOptions filterOptions = new FilterOptions(name, minAbv, maxAbv, styleId, sortBy, sortOrder);
+//        FilterOptions filterOptions = new FilterOptions(title, keyWord, sortBy, sortOrder);
 //        return service.get(filterOptions);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
