@@ -11,6 +11,7 @@ import com.example.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,13 +32,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Comment> getUserComments(int id) {
-       return repository.getUserComments(id);
+    public User get(int id) {
+        return repository.get(id);
     }
 
     @Override
     public List<Post> getUserPosts(int id) {
-        return repository.getUserPosts(id);
+        User user = repository.get(id);
+        return repository.getUserPosts(user);
+    }
+
+    @Override
+    public List<Comment> getUserComments(int id) {
+        User user = repository.get(id);
+       return repository.getUserComments(user);
     }
 
     @Override

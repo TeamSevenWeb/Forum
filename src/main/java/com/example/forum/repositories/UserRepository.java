@@ -7,15 +7,19 @@ import com.example.forum.models.User;
 import java.util.List;
 
 public interface UserRepository {
+
+
+    User get(int id);
+
     User getByUsername(String username);
 
     User getByEmail(String email);
 
     User getByFirstName(String firstName);
 
-    List<Comment> getUserComments(int id);
+    List<Comment> getUserComments(User user);
 
-    List<Post> getUserPosts(int id);
+    List<Post> getUserPosts(User user);
 
     User create(User user);
 

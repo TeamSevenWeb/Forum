@@ -10,6 +10,8 @@ public interface UserService {
 
     User get(String username);
 
+    User get(int id);
+
     List<Comment> getUserComments(int id);
 
     List<Post> getUserPosts(int id);
