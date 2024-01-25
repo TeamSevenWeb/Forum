@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -23,6 +24,14 @@ public class Post {
     private Integer likes;
     @Column(name = "date_and_time_of_creation")
     private LocalDateTime dateAndTimeOfCreation;
+
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "comments",
+//            joinColumns = @JoinColumn(name = "post_id"),
+//            inverseJoinColumns = @JoinColumn(name = "comment_id")
+//    )
+//    private Set<Comment> postComments;
 
     public int getPostId() {
         return postId;
@@ -71,6 +80,14 @@ public class Post {
     public void setDateAndTimeOfCreation(LocalDateTime dateAndTimeOfCreation) {
         this.dateAndTimeOfCreation = dateAndTimeOfCreation;
     }
+
+//    public Set<Comment> getPostComments() {
+//        return postComments;
+//    }
+//
+//    public void setPostComments(Set<Comment> postComments) {
+//        this.postComments = postComments;
+//    }
 
     @Override
     public boolean equals(Object o) {

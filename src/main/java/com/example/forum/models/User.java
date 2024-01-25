@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -15,7 +16,6 @@ public class User {
     private int id;
     @Column(name = "username")
     private String username;
-
     @JsonIgnore
     @Column(name = "password")
     private String password;
@@ -27,9 +27,23 @@ public class User {
     private String email;
     @Column(name = "date_of_registration")
     private Date dateOfRegistration;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "posts",
+            joinColumns = @JoinColumn(name = "created_by"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    private Set<Post> userPosts;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "comments",
+            joinColumns = @JoinColumn(name = "created_by"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
+    private Set<Comment> userComments;
     @Column(name = "is_blocked")
     private boolean isBlocked;
-
     @Column(name = "is_admin")
     private boolean isAdmin;
 
@@ -87,6 +101,22 @@ public class User {
 
     public void setDateOfRegistration(Date dateOfRegistration) {
         this.dateOfRegistration = dateOfRegistration;
+    }
+
+    public Set<Post> getUserPosts() {
+        return userPosts;
+    }
+
+    public void setUserPosts(Set<Post> userPosts) {
+        this.userPosts = userPosts;
+    }
+
+    public Set<Comment> getUserComments() {
+        return userComments;
+    }
+
+    public void setUserComments(Set<Comment> userComments) {
+        this.userComments = userComments;
     }
 
     public boolean isBlocked() {

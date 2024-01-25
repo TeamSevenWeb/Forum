@@ -11,18 +11,19 @@ import com.example.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService{
 
     private static final String MODIFY_USER_ERROR_MESSAGE = "Only admin or account holder can modify a user.";
 
     private final UserRepository repository;
-//    private final PostRepository postRepository;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, PostRepository postRepository) {
+    public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
-//        this.postRepository = postRepository;
     }
     @Override
     public User get(String username) {
@@ -30,12 +31,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User create(User user) {
-        return null;
+    public List<Comment> getUserComments(int id) {
+       return repository.getUserComments(id);
     }
 
     @Override
-    public Comment create(Comment comment, User user) {
+    public List<Post> getUserPosts(int id) {
+        return repository.getUserPosts(id);
+    }
+
+    @Override
+    public User create(User user) {
         return null;
     }
 
@@ -58,11 +64,6 @@ public class UserServiceImpl implements UserService{
         }
 
         repository.update(user);
-    }
-
-    @Override
-    public Comment update(Comment comment, User user) {
-        return null;
     }
 
     @Override

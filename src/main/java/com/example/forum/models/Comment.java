@@ -9,7 +9,6 @@ public class Comment {
     @Id
     @Column(name = "comment_id")
     private int commentId;
-
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
