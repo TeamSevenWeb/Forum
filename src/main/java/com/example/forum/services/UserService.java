@@ -10,14 +10,13 @@ public interface UserService {
 
     User get(String username);
 
+    List<Comment> getUserComments(int id);
+
+    List<Post> getUserPosts(int id);
+
     User create(User user);
 
-    Comment create(Comment comment, User user);
-
-
     void update(User user, User admin);
-
-    Comment update(Comment comment, User user);
 
     void delete (int id, User user);
 

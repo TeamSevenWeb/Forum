@@ -9,11 +9,10 @@ public class Comment {
     @Id
     @Column(name = "comment_id")
     private int commentId;
-
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "created_by")
     private User createdBy;
     @Column(name = "comment")

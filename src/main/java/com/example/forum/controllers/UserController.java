@@ -3,8 +3,10 @@ package com.example.forum.controllers;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.exceptions.UserDontHaveAnyException;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.models.Comment;
+import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.services.UserService;
 import jakarta.validation.Valid;
@@ -38,10 +40,21 @@ public class UserController {
 //        return service.get(filterOptions);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-
-    @GetMapping("/comments")
+    @GetMapping("/{id}/posts")
+    public List<Post> getUserPosts(@RequestHeader HttpHeaders headers,@PathVariable int id){
+       try {
+        return service.getUserPosts(id);
+       } catch (UserDontHaveAnyException e){
+           throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
+       }
+    };
+    @GetMapping("/{id}/comments")
     public List<Comment> getUserComments(@RequestHeader HttpHeaders headers,@PathVariable int id){
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        try {
+            return service.getUserComments(id);
+        } catch (UserDontHaveAnyException e){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
+        }
     };
     @PostMapping
     public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody User user) {
