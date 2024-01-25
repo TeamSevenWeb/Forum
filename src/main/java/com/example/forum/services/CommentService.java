@@ -7,7 +7,7 @@ import com.example.forum.models.User;
 public interface CommentService {
     Comment create(Post post , Comment comment , User user);
 
-    Comment update(Comment comment , User user);
+    void update(Comment comment);
 
     void delete (int id);
 

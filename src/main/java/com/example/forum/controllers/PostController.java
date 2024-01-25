@@ -123,7 +123,7 @@ public class PostController {
     public Comment updateComment(@PathVariable int id, @RequestHeader HttpHeaders headers, @Valid @RequestBody CommentDto commentDto) {
        try{ User user = authenticationHelper.tryGetUser(headers);
         Comment comment = commentMapper.fromDto(id, commentDto);
-        commentService.update(comment, user);
+        commentService.update(comment);
         return comment;}
        catch (EntityNotFoundException e) {
            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

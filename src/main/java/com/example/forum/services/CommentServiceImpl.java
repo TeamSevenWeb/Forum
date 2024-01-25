@@ -25,10 +25,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment update(Comment comment, User user) {
+    public void update(Comment comment) {
         repository.update(comment);
-        comment.setCreatedBy(user);
-        return comment;
+
+
     }
 
     @Override

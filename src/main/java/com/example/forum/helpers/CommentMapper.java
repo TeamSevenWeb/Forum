@@ -18,6 +18,7 @@ public class CommentMapper {
     public Comment fromDto(int id, CommentDto dto) {
         Comment comment = fromDto(dto);
         comment.setCommentId(id);
+        comment.setPost(commentService.getById(id).getPost());
         comment.setCreatedBy(commentService.getById(id).getCreatedBy());
         return comment;
     }
