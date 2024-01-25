@@ -20,6 +20,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment create(Post post, Comment comment, User user) {
         comment.setCreatedBy(user);
+        comment.setPost(post);
         repository.create(comment);
         return comment;
     }
