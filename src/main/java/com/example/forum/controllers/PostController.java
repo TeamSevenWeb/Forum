@@ -78,29 +78,37 @@ public class PostController {
     }
 
     @PostMapping("/{id}/comment")
-    public Comment createComment(@RequestHeader HttpHeaders headers, @PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
+    public Comment createComment(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody CommentDto commentDto) {
         try{
-//            User user = authenticationHelper.tryGetUser(headers);
-//            Comment comment = commentMapper.fromDto();
-//            commentService.create();
-//            return comment;
+            User user = authenticationHelper.tryGetUser(headers);
+            Post post = service.get(id);
+            Comment comment = commentMapper.fromDto(commentDto);
+            commentService.create(post,comment,user);
+            return comment;
         }
         catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-        return null;
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
     }
 
-    @PostMapping("/{id}/like")
-    public int likePost(@RequestHeader HttpHeaders headers, @PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
-        //commentService.create(Post, Comment, User)
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @PutMapping("/{id}/like")
+    public int likePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        User user = authenticationHelper.tryGetUser(headers);
+        Post post = service.get(id);
+        service.like(post,user);
+        return 1;
     }
 
-    @PostMapping("/{id}/dislike")
-    public int dislikePost(@RequestHeader HttpHeaders headers, @PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
-        //commentService.create(Post, Comment, User)
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @PutMapping("/{id}/dislike")
+    public int dislikePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        User user = authenticationHelper.tryGetUser(headers);
+        Post post = service.get(id);
+        service.dislike(post,user);
+        return 0;
     }
 
     @PutMapping("/{id}")
@@ -121,7 +129,8 @@ public class PostController {
 
     @PutMapping("/comment/{id}")
     public Comment updateComment(@PathVariable int id, @RequestHeader HttpHeaders headers, @Valid @RequestBody CommentDto commentDto) {
-       try{ User user = authenticationHelper.tryGetUser(headers);
+       try{
+           User user = authenticationHelper.tryGetUser(headers);
         Comment comment = commentMapper.fromDto(id, commentDto);
         commentService.update(comment);
         return comment;}

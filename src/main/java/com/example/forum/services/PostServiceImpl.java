@@ -80,6 +80,18 @@ public class PostServiceImpl implements PostService{
 
     }
 
+    @Override
+    public void like(Post post, User user) {
+        post.setLikes(post.getLikes() + 1);
+        repository.update(post);
+    }
+
+    @Override
+    public void dislike(Post post, User user) {
+        post.setLikes(post.getLikes() - 1);
+        repository.update(post);
+    }
+
     private void checkModifyPermissions(int id, User user) {
         Post post = repository.get(id);
         if (!(user.isAdmin() || post.getCreatedBy().equals(user))) {
