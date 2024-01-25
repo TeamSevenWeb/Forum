@@ -23,6 +23,21 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User get(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where id = :id", User.class);
+            query.setParameter("id", id);
+
+            List<User> result = query.list();
+            if (result.isEmpty()) {
+                throw new EntityNotFoundException("User", id);
+            }
+
+            return result.get(0);
+        }
+    }
+
+    @Override
     public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where username = :username", User.class);
@@ -58,14 +73,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Comment> getUserComments(int id) {
+    public List<Post> getUserPosts(User user) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Comment> query = session.createQuery("from Comment where createdBy = :created_by", Comment.class);
-            query.setParameter("created_by", id);
+            Query<Post> query = session.createQuery("from Post where createdBy = :created_by", Post.class);
+            query.setParameter("created_by", user);
 
-            List<Comment> result = query.list();
+            List<Post> result = query.list();
             if (result.isEmpty()) {
-                throw new UserDontHaveAnyException("comments");
+                throw new UserDontHaveAnyException("posts");
             }
 
             return result;
@@ -73,14 +88,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Post> getUserPosts(int id) {
+    public List<Comment> getUserComments(User user) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery("from Post where createdBy = :created_by", Post.class);
-            query.setParameter("created_by", id);
+            Query<Comment> query = session.createQuery("from Comment where createdBy = :created_by", Comment.class);
+            query.setParameter("created_by", user);
 
-            List<Post> result = query.list();
+            List<Comment> result = query.list();
             if (result.isEmpty()) {
-                throw new UserDontHaveAnyException("posts");
+                throw new UserDontHaveAnyException("comments");
             }
 
             return result;

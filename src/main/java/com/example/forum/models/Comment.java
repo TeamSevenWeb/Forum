@@ -2,6 +2,8 @@ package com.example.forum.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -55,20 +57,13 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Comment that = (Comment) o;
+        Comment comment = (Comment) o;
 
-        if (commentId != that.commentId) return false;
-        if (post != that.post) return false;
-        if (createdBy != that.createdBy) return false;
-        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
-
-        return true;
+        return commentId == comment.commentId;
     }
 
     @Override
     public int hashCode() {
-        int result = commentId;
-        result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        return result;
+       return Objects.hash(commentId);
     }
 }

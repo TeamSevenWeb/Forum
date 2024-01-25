@@ -89,3 +89,4 @@ create table likes
     constraint liked_post_users_user_id_fk
         foreign key (user_id) references users(user_id)
 );
+
