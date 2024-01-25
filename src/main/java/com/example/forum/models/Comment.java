@@ -3,16 +3,19 @@ package com.example.forum.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "posts_comments")
+@Table(name = "comments")
 public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "comment_id")
     private int commentId;
-    @Column(name = "post_id")
-    private int postId;
-    @Column(name = "user_id")
-    private int userId;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+    @OneToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
     @Column(name = "comment")
     private String comment;
 
@@ -24,20 +27,20 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public int getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
     }
 
-    public void setPostId(int postId) {
-        this.postId = postId;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public String getComment() {
@@ -56,8 +59,8 @@ public class Comment {
         Comment that = (Comment) o;
 
         if (commentId != that.commentId) return false;
-        if (postId != that.postId) return false;
-        if (userId != that.userId) return false;
+        if (post != that.post) return false;
+        if (createdBy != that.createdBy) return false;
         if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
 
         return true;
@@ -66,8 +69,6 @@ public class Comment {
     @Override
     public int hashCode() {
         int result = commentId;
-        result = 31 * result + postId;
-        result = 31 * result + userId;
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
         return result;
     }
