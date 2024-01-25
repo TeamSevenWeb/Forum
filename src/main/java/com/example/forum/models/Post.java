@@ -25,13 +25,8 @@ public class Post {
     @Column(name = "date_and_time_of_creation")
     private LocalDateTime dateAndTimeOfCreation;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "comments",
-//            joinColumns = @JoinColumn(name = "post_id"),
-//            inverseJoinColumns = @JoinColumn(name = "comment_id")
-//    )
-//    private Set<Comment> postComments;
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Comment> postComments;
 
     public int getPostId() {
         return postId;

@@ -28,19 +28,9 @@ public class User {
     @Column(name = "date_of_registration")
     private Date dateOfRegistration;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "posts",
-            joinColumns = @JoinColumn(name = "created_by"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
+    @OneToMany(mappedBy = "createdBy", fetch = FetchType.EAGER)
     private Set<Post> userPosts;
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "comments",
-            joinColumns = @JoinColumn(name = "created_by"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id")
-    )
+    @OneToMany(mappedBy = "createdBy", fetch = FetchType.EAGER)
     private Set<Comment> userComments;
     @Column(name = "is_blocked")
     private boolean isBlocked;
