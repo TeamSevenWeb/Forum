@@ -39,14 +39,14 @@ INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (3, 4);
 INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (2, 5);
 INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (5, 1);
 
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (1, 1, 2, 'Hello Alex');
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (2, 1, 3, 'Hi Alex');
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (3, 2, 1, 'Bien amigo');
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (4, 2, 3, 'Mucho gusto');
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (5, 4, 1, 'Blagodarq !');
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (6, 5, 2, 'Smqtam znaesh !');
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (7, 3, 1, 'Privet bratan');
-INSERT INTO forum.posts_comments (comment_id, post_id, user_id, comment) VALUES (8, 3, 2, 'Ochen horosho');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (1, 1, 2, 'Hello Alex');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (2, 1, 3, 'Hi Alex');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (3, 2, 1, 'Bien amigo');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (4, 2, 3, 'Mucho gusto');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (5, 4, 1, 'Blagodarq !');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (6, 5, 2, 'Smqtam znaesh !');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (7, 3, 1, 'Privet bratan');
+INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (8, 3, 2, 'Ochen horosho');
 
 INSERT INTO forum.likes (user_id, post_id) VALUES (1, 1);
 INSERT INTO forum.likes (user_id, post_id) VALUES (2, 1);

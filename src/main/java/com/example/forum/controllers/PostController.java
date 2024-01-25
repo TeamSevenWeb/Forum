@@ -4,12 +4,14 @@ import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.helpers.AuthenticationHelper;
+import com.example.forum.helpers.CommentMapper;
 import com.example.forum.helpers.PostMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
+import com.example.forum.services.CommentService;
 import com.example.forum.services.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,17 @@ import java.util.List;
 public class PostController {
 
     private final PostService service;
+    private final CommentService commentService;
     private final PostMapper postMapper;
+    private final CommentMapper commentMapper;
     private final AuthenticationHelper authenticationHelper;
+
     @Autowired
-    public PostController(PostService service, PostMapper postMapper, AuthenticationHelper authenticationHelper) {
+    public PostController(PostService service, CommentService commentService, PostMapper postMapper, CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
         this.service = service;
+        this.commentService = commentService;
         this.postMapper = postMapper;
+        this.commentMapper = commentMapper;
         this.authenticationHelper = authenticationHelper;
     }
 
@@ -72,8 +79,16 @@ public class PostController {
 
     @PostMapping("/{id}/comment")
     public Comment createComment(@RequestHeader HttpHeaders headers, @PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
-        //commentService.create(Post, Comment, User)
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        try{
+//            User user = authenticationHelper.tryGetUser(headers);
+//            Comment comment = commentMapper.fromDto();
+//            commentService.create();
+//            return comment;
+        }
+        catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+        return null;
     }
 
     @PostMapping("/{id}/like")
@@ -81,16 +96,18 @@ public class PostController {
         //commentService.create(Post, Comment, User)
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
     @PostMapping("/{id}/dislike")
     public int dislikePost(@RequestHeader HttpHeaders headers, @PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
         //commentService.create(Post, Comment, User)
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
     @PutMapping("/{id}")
     public Post update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDto postDto) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Post post = postMapper.fromDto(id,postDto);
+            Post post = postMapper.fromDto(id, postDto);
             service.update(post, user);
             return post;
         } catch (EntityNotFoundException e) {
@@ -103,8 +120,16 @@ public class PostController {
     }
 
     @PutMapping("/comment/{id}")
-    public Comment updateComment(@RequestHeader HttpHeaders headers,@PathVariable int postId, @Valid @RequestBody CommentDto commentDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public Comment updateComment(@PathVariable int id, @RequestHeader HttpHeaders headers, @Valid @RequestBody CommentDto commentDto) {
+       try{ User user = authenticationHelper.tryGetUser(headers);
+        Comment comment = commentMapper.fromDto(id, commentDto);
+        commentService.update(comment);
+        return comment;}
+       catch (EntityNotFoundException e) {
+           throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+       } catch (AuthorizationException e) {
+           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+       }
     }
 
     @DeleteMapping("/{id}")
@@ -118,9 +143,16 @@ public class PostController {
         }
     }
 
-    @DeleteMapping ("/comment/{id}")
+    @DeleteMapping("/comment/{id}")
     public void deleteComment(@RequestHeader HttpHeaders headers, @PathVariable int id) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            commentService.delete(id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
 }
