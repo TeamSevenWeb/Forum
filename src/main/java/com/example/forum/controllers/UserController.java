@@ -22,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
+    public static final String INVALID_AUTHORIZATION_ERROR = "Invalid authorization";
     private final UserService service;
     private final AuthenticationHelper authenticationHelper;
     @Autowired
@@ -89,10 +90,13 @@ public class UserController {
         }
     }
 
-    @PutMapping("/block/{id}")
-    public User block(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody User user) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
+//    @PutMapping("/block/{id}")
+//    public User block(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+//        try {
+//            User user = authenticationHelper.tryGetUser(headers);
+//
+//        }
+//    }
 
     @PutMapping("/unblock/{id}")
     public User unblock(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody User user) {

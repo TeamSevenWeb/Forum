@@ -3,6 +3,7 @@ package com.example.forum.controllers;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.CommentMapper;
 import com.example.forum.helpers.PostMapper;
@@ -42,14 +43,21 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> get(
+    public List<Post> get(@RequestHeader HttpHeaders headers,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String keyWord,
+            @RequestParam(required = false) String createdBy,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortOrder) {
-//        FilterOptions filterOptions = new FilterOptions(title, keyWord, sortBy, sortOrder);
-//        return service.get(filterOptions);
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            PostsFilterOptions postsFilterOptions = new PostsFilterOptions(title, keyWord,createdBy, sortBy, sortOrder);
+            return service.getAll(postsFilterOptions);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
