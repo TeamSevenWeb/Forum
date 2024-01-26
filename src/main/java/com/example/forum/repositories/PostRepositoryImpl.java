@@ -1,22 +1,78 @@
 package com.example.forum.repositories;
 
+import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Post;
+import com.example.forum.models.User;
+import com.example.forum.services.UserService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
     private final SessionFactory sessionFactory;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public PostRepositoryImpl(SessionFactory sessionFactory) {
+    public PostRepositoryImpl(SessionFactory sessionFactory, UserRepository userRepository) {
         this.sessionFactory = sessionFactory;
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<Post> getAll(PostsFilterOptions postsFilterOptions) {
+        try (Session session = sessionFactory.openSession()) {
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            postsFilterOptions.getTitle().ifPresent(value -> {
+                filters.add("title like :title");
+                params.put("title", String.format("%%%s%%", value));
+            });
+
+            postsFilterOptions.getKeyword().ifPresent(value -> {
+                filters.add("content like :content");
+                params.put("content", String.format("%%%s%%",value));
+            });
+
+            postsFilterOptions.getCreatedBy().ifPresent(value -> {
+                try {
+                    User user = userRepository.getByUsername(value);
+                    int userId = user.getId();
+                    filters.add("created_by = :createdBy");
+                    params.put("createdBy", userId);
+                } catch (AuthorizationException e){
+                    throw new EntityNotFoundException("Posts","creator",value);
+                }
+            });
+
+            StringBuilder queryString = new StringBuilder("from Post");
+            if (!filters.isEmpty()) {
+                queryString
+                        .append(" where ")
+                        .append(String.join(" and ", filters));
+            }
+            queryString.append(generateOrderBy(postsFilterOptions));
+
+            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+            query.setProperties(params);
+
+            List<Post> result = query.list();
+            if (result.isEmpty()){
+                throw new EntityNotFoundException("Posts","these","filters");
+            }
+            return result;
+        }
     }
 
     @Override
@@ -27,6 +83,21 @@ public class PostRepositoryImpl implements PostRepository {
                 throw new EntityNotFoundException("Post", id);
             }
             return post;
+        }
+    }
+
+    @Override
+    public Post get(String title) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Post> query = session.createQuery("from Post where title = :title", Post.class);
+            query.setParameter("title", title);
+
+            List<Post> result = query.list();
+            if (result.isEmpty()) {
+                throw new EntityNotFoundException("Post", "title", title);
+            }
+
+            return result.get(0);
         }
     }
 
@@ -53,23 +124,27 @@ public class PostRepositoryImpl implements PostRepository {
 
     }
 
-    @Override
-    public List<Post> getAll() {
-        return null;
-    }
-
-    @Override
-    public Post get(String title) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery("from Post where title = :title", Post.class);
-            query.setParameter("title", title);
-
-            List<Post> result = query.list();
-            if (result.isEmpty()) {
-                throw new EntityNotFoundException("Post", "title", title);
-            }
-
-            return result.get(0);
+    private String generateOrderBy(PostsFilterOptions postFilterOptions) {
+        if (postFilterOptions.getSortBy().isEmpty()) {
+            return "";
         }
+
+        String orderBy = "";
+        switch (postFilterOptions.getSortBy().get()) {
+            case "title":
+                orderBy = "title";
+                break;
+            case "createdBy":
+                orderBy = "created_by";
+                break;
+        }
+
+        orderBy = String.format(" order by %s", orderBy);
+
+        if (postFilterOptions.getSortOrder().isPresent() && postFilterOptions.getSortOrder().get().equalsIgnoreCase("desc")) {
+            orderBy = String.format("%s desc", orderBy);
+        }
+
+        return orderBy;
     }
 }
