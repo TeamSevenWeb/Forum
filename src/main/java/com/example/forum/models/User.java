@@ -42,8 +42,12 @@ public class User {
 //            inverseJoinColumns = @JoinColumn(name = "comment_id")
 //    )
 //    private Set<Comment> userComments;
+
+    @JsonIgnore
     @Column(name = "is_blocked")
     private boolean isBlocked;
+
+    @JsonIgnore
     @Column(name = "is_admin")
     private boolean isAdmin;
 

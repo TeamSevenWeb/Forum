@@ -1,5 +1,6 @@
 package com.example.forum.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -11,9 +12,13 @@ public class Comment {
     @Id
     @Column(name = "comment_id")
     private int commentId;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User createdBy;

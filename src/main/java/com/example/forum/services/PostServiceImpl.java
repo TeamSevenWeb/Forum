@@ -4,9 +4,11 @@ import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.repositories.PostRepository;
+import org.hibernate.annotations.Comments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,8 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements PostService{
 
-    private static final String MODIFY_POST_ERROR_MESSAGE = "Only admin or post creator can modify a post.";
-    private static final String CREATE_POST_ERROR_MESSAGE = "Only admin or not blocked users can create a post.";
+    private static final String MODIFY_POST_ERROR_MESSAGE = "Only the creator of this post can modify it.";
+    private static final String CREATE_POST_ERROR_MESSAGE = "Only active users can create a post.";
 
 
     private final PostRepository repository;
@@ -33,6 +35,11 @@ public class PostServiceImpl implements PostService{
     @Override
     public Post get(int id) {
         return repository.get(id);
+    }
+
+    @Override
+    public List<Comment> getComments(int postId){
+        return repository.getComments(postId);
     }
 
     @Override
@@ -70,7 +77,7 @@ public class PostServiceImpl implements PostService{
         }
 
         if (duplicateExists) {
-            throw new EntityDuplicateException("Post", "id", post.getTitle());
+            throw new EntityDuplicateException("Post", "title", post.getTitle());
         }
 
         repository.update(post);
@@ -95,7 +102,7 @@ public class PostServiceImpl implements PostService{
 
     private void checkModifyPermissions(int id, User user) {
         Post post = repository.get(id);
-        if (!(user.isAdmin() || post.getCreatedBy().equals(user))) {
+        if (!post.getCreatedBy().equals(user)) {
             throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);
         }
     }

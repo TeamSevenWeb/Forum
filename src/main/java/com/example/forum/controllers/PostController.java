@@ -140,9 +140,9 @@ public class PostController {
        try{
            User user = authenticationHelper.tryGetUser(headers);
         Comment comment = commentMapper.fromDto(id, commentDto);
-        commentService.update(comment,user);
-        return comment;}
-       catch (EntityNotFoundException e) {
+        commentService.update(comment, user);
+        return comment;
+       } catch (EntityNotFoundException e) {
            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
        } catch (AuthorizationException e) {
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

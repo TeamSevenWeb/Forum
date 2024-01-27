@@ -2,7 +2,9 @@ package com.example.forum.repositories;
 
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.exceptions.UserDontHaveAnyException;
 import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.services.UserService;
@@ -83,6 +85,21 @@ public class PostRepositoryImpl implements PostRepository {
                 throw new EntityNotFoundException("Post", id);
             }
             return post;
+        }
+    }
+
+    @Override
+    public List<Comment> getComments(int postId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Comment> query = session.createQuery("from Comment where post = :post_id", Comment.class);
+            query.setParameter("post_id", postId);
+
+            List<Comment> result = query.list();
+            if (result.isEmpty()) {
+                throw new UserDontHaveAnyException("comments");
+            }
+
+            return result;
         }
     }
 
