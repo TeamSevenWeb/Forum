@@ -2,6 +2,7 @@ package com.example.forum.repositories;
 
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.models.Comment;
+import com.example.forum.models.Post;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -69,6 +70,4 @@ public class CommentRepositoryImpl implements CommentRepository {
 
         }
     }
-
-
 }

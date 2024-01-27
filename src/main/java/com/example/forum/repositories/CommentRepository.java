@@ -15,5 +15,4 @@ public interface CommentRepository {
      List<Comment> getAll();
 
      Comment getById(int id);
-
 }
