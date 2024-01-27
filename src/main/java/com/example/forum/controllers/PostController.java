@@ -140,7 +140,7 @@ public class PostController {
        try{
            User user = authenticationHelper.tryGetUser(headers);
         Comment comment = commentMapper.fromDto(id, commentDto);
-        commentService.update(comment);
+        commentService.update(comment,user);
         return comment;}
        catch (EntityNotFoundException e) {
            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -164,7 +164,7 @@ public class PostController {
     public void deleteComment(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            commentService.delete(id);
+            commentService.delete(id,user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
