@@ -21,8 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-
-    public static final String INVALID_AUTHORIZATION_ERROR = "Invalid authorization";
     private final UserService service;
     private final AuthenticationHelper authenticationHelper;
     @Autowired
@@ -90,17 +88,28 @@ public class UserController {
         }
     }
 
-//    @PutMapping("/block/{id}")
-//    public User block(@RequestHeader HttpHeaders headers, @PathVariable int id) {
-//        try {
-//            User user = authenticationHelper.tryGetUser(headers);
-//
-//        }
-//    }
+    @PutMapping("/block/{id}")
+    public User block(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            return service.block(user,id);
+        }  catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
 
     @PutMapping("/unblock/{id}")
-    public User unblock(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody User user) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public User unblock(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            return service.unblock(user,id);
+        }  catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

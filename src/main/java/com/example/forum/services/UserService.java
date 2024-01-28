@@ -23,4 +23,8 @@ public interface UserService {
     void delete (int id, User user);
 
     void delete (int postId, int commentId, User user);
+
+    User block(User user, int id);
+
+    User unblock(User user,int id);
 }

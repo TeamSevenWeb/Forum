@@ -25,13 +25,13 @@ public class Post {
     @Column(name = "date_and_time_of_creation")
     private LocalDateTime dateAndTimeOfCreation;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "posts_comments",
-//            joinColumns = @JoinColumn(name = "post_id"),
-//            inverseJoinColumns = @JoinColumn(name = "comment_id")
-//    )
-//    private Set<Comment> postComments;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "posts_comments",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
+    private Set<Comment> postComments;
 
     public int getPostId() {
         return postId;
@@ -81,13 +81,13 @@ public class Post {
         this.dateAndTimeOfCreation = dateAndTimeOfCreation;
     }
 
-//    public Set<Comment> getPostComments() {
-//        return postComments;
-//    }
-//
-//    public void setPostComments(Set<Comment> postComments) {
-//        this.postComments = postComments;
-//    }
+    public Set<Comment> getPostComments() {
+        return postComments;
+    }
+
+    public void setPostComments(Set<Comment> postComments) {
+        this.postComments = postComments;
+    }
 
     @Override
     public boolean equals(Object o) {

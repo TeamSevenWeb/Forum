@@ -28,20 +28,20 @@ public class User {
     @Column(name = "date_of_registration")
     private Date dateOfRegistration;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "users_posts",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "post_id")
-//    )
-//    private Set<Post> userPosts;
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "users_comments",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "comment_id")
-//    )
-//    private Set<Comment> userComments;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_posts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    private Set<Post> userPosts;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_comments",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id")
+    )
+    private Set<Comment> userComments;
 
     @JsonIgnore
     @Column(name = "is_blocked")
@@ -107,21 +107,21 @@ public class User {
         this.dateOfRegistration = dateOfRegistration;
     }
 
-//    public Set<Post> getUserPosts() {
-//        return userPosts;
-//    }
-//
-//    public void setUserPosts(Set<Post> userPosts) {
-//        this.userPosts = userPosts;
-//    }
-//
-//    public Set<Comment> getUserComments() {
-//        return userComments;
-//    }
-//
-//    public void setUserComments(Set<Comment> userComments) {
-//        this.userComments = userComments;
-//    }
+    public Set<Post> getUserPosts() {
+        return userPosts;
+    }
+
+    public void setUserPosts(Set<Post> userPosts) {
+        this.userPosts = userPosts;
+    }
+
+    public Set<Comment> getUserComments() {
+        return userComments;
+    }
+
+    public void setUserComments(Set<Comment> userComments) {
+        this.userComments = userComments;
+    }
 
     public boolean isBlocked() {
         return this.isBlocked;
