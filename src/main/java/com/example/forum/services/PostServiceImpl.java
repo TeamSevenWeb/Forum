@@ -56,6 +56,7 @@ public class PostServiceImpl implements PostService{
         if(user.isBlocked()){
             throw new AuthorizationException(CREATE_POST_ERROR_MESSAGE);
         };
+
         boolean duplicateExists = true;
         try {
             repository.get(post.getTitle());
@@ -63,11 +64,12 @@ public class PostServiceImpl implements PostService{
             duplicateExists = false;
         }
 
-        if (duplicateExists) {
+        if (duplicateExists || user.getUserPosts().stream().anyMatch(p -> p.getPostId() == post.getPostId())) {
             throw new EntityDuplicateException("Post", "title", post.getTitle());
         }
 
         post.setCreatedBy(user);
+        user.getUserPosts().add(post);
         repository.create(post);
     }
 
@@ -95,6 +97,11 @@ public class PostServiceImpl implements PostService{
     @Override
     public void delete(int id, User user) {
         checkModifyPermissions(id, user);
+        if (user.getUserPosts().stream().noneMatch(p -> p.getPostId() == id)) {
+            throw new EntityNotFoundException("Post", id);
+        }
+        Post post = repository.get(id);
+        user.getUserPosts().remove(post);
         repository.delete(id);
     }
 
