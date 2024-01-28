@@ -20,9 +20,7 @@ public interface UserService {
 
     void update(User user, User admin);
 
-    void delete (int id, User user);
-
-    void delete (int postId, int commentId, User user);
+   void delete (int id, User user);
 
     User block(User user, int id);
 

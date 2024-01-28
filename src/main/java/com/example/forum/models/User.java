@@ -51,6 +51,10 @@ public class User {
     private boolean isBlocked;
 
     @JsonIgnore
+    @Column(name = "is_active")
+    private boolean isActive;
+
+    @JsonIgnore
     @Column(name = "is_admin")
     private boolean isAdmin;
 
@@ -131,6 +135,14 @@ public class User {
     }
     public boolean isAdmin() {
         return this.isAdmin;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public boolean setIsAdmin(boolean isAdmin) {

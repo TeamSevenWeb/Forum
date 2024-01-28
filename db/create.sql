@@ -16,6 +16,7 @@ create table users
     email                varchar(50) not null,
     date_of_registration date        not null,
     is_blocked           tinyint(1)  not null,
+    is_active             tinyint(1)  not null,
     is_admin             tinyint(1)  not null
 );
 
@@ -97,6 +98,17 @@ create table reactions
         foreign key (created_by) references users (user_id)
 );
 
+create table posts_reactions
+(
+    post_id    int                  not null,
+    reaction_id int                  not null,
+    isPresent    tinyint(1) default 0 not null,
+    constraint joined_posts_reactions_posts_post_id_fk
+        foreign key (post_id) references posts (post_id),
+    constraint posts_reactions_reactions_reaction_id_fk
+        foreign key (reaction_id) references reactions (reaction_id)
+);
+
 create table user_profile_photo
 (
     user_id       int  not null
@@ -127,4 +139,6 @@ create table users_posts
     constraint users_posts_users_user_id_fk
         foreign key (user_id) references users (user_id)
 );
+
+
 
