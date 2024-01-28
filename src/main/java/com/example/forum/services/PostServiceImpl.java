@@ -10,6 +10,7 @@ import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
 import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.ReactionRepository;
+import com.example.forum.repositories.UserRepository;
 import org.hibernate.annotations.Comments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,17 @@ public class PostServiceImpl implements PostService{
 
     private final PostRepository repository;
 
+    private final UserRepository userRepository;
+
+
     private final ReactionService reactionService;
 
     private final ReactionRepository reactionRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository repository, ReactionService reactionService, ReactionRepository reactionRepository) {
+    public PostServiceImpl(PostRepository repository, UserRepository userRepository, ReactionService reactionService, ReactionRepository reactionRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
         this.reactionService = reactionService;
         this.reactionRepository = reactionRepository;
     }
@@ -56,7 +61,9 @@ public class PostServiceImpl implements PostService{
         if(user.isBlocked()){
             throw new AuthorizationException(CREATE_POST_ERROR_MESSAGE);
         };
-
+        if (user.getUserPosts().stream().anyMatch(p -> p.getPostId() == post.getPostId())) {
+            return;
+        }
         boolean duplicateExists = true;
         try {
             repository.get(post.getTitle());
@@ -69,8 +76,9 @@ public class PostServiceImpl implements PostService{
         }
 
         post.setCreatedBy(user);
-        user.getUserPosts().add(post);
         repository.create(post);
+        user.getUserPosts().add(post);
+        userRepository.update(user);
     }
 
     @Override
@@ -102,6 +110,7 @@ public class PostServiceImpl implements PostService{
         }
         Post post = repository.get(id);
         user.getUserPosts().remove(post);
+        userRepository.update(user);
         repository.delete(id);
     }
 
