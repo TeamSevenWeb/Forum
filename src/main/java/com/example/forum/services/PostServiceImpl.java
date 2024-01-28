@@ -6,8 +6,10 @@ import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
+import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
 import com.example.forum.repositories.PostRepository;
+import com.example.forum.repositories.ReactionRepository;
 import org.hibernate.annotations.Comments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,16 @@ public class PostServiceImpl implements PostService{
 
 
     private final PostRepository repository;
+
+    private final ReactionService reactionService;
+
+    private final ReactionRepository reactionRepository;
+
     @Autowired
-    public PostServiceImpl(PostRepository repository) {
+    public PostServiceImpl(PostRepository repository, ReactionService reactionService, ReactionRepository reactionRepository) {
         this.repository = repository;
+        this.reactionService = reactionService;
+        this.reactionRepository = reactionRepository;
     }
 
     @Override
@@ -90,14 +99,57 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void like(Post post, User user) {
-        post.setLikes(post.getLikes() + 1);
-        repository.update(post);
+
+        if (!reactionService.hasReacted(post,user)){
+            Reaction reaction = new Reaction();
+            post.setLikes(post.getLikes() + 1);
+            repository.update(post);
+            reaction.setPost(post);
+            reaction.setCreatedBy(user);
+            reaction.setIsLiked(true);
+            reactionRepository.create(reaction);
+
+        }
+        else if (reactionService.hasLiked(post,user)){
+            Reaction reaction = reactionRepository.get(post,user);
+            reactionRepository.delete(reaction.getReactionId());
+            post.setLikes(post.getLikes() - 1);
+            repository.update(post);
+        }
+        else if (reactionService.hasDisiked(post,user)){
+            Reaction reaction = reactionRepository.get(post,user);
+            post.setLikes(post.getLikes() + 2);
+            reaction.setIsLiked(true);
+            reactionRepository.update(reaction);
+            repository.update(post);
+        }
     }
 
     @Override
     public void dislike(Post post, User user) {
-        post.setLikes(post.getLikes() - 1);
-        repository.update(post);
+        if (!reactionService.hasReacted(post,user)){
+            Reaction reaction = new Reaction();
+            post.setLikes(post.getLikes() - 1);
+            repository.update(post);
+            reaction.setPost(post);
+            reaction.setCreatedBy(user);
+            reaction.setIsLiked(false);
+            reactionRepository.create(reaction);
+
+        }
+        else if (reactionService.hasLiked(post,user)){
+            Reaction reaction = reactionRepository.get(post,user);
+            reaction.setIsLiked(false);
+            reactionRepository.update(reaction);
+            post.setLikes(post.getLikes() - 2);
+            repository.update(post);
+        }
+        else if (reactionService.hasDisiked(post,user)){
+            Reaction reaction = reactionRepository.get(post,user);
+            post.setLikes(post.getLikes() + 1);
+            reactionRepository.delete(reaction.getReactionId());
+            repository.update(post);
+        }
     }
 
     private void checkModifyPermissions(int id, User user) {
