@@ -153,7 +153,7 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
-        try {
+        try{
             User user = authenticationHelper.tryGetUser(headers);
             service.delete(id,user);
         } catch (EntityNotFoundException e) {

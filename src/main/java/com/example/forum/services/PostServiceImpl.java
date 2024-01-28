@@ -155,7 +155,7 @@ public class PostServiceImpl implements PostService{
 
     private void checkModifyPermissions(int id, User user) {
         Post post = repository.get(id);
-        if (!post.getCreatedBy().equals(user)) {
+        if (!post.getCreatedBy().equals(user)&&!user.isAdmin()) {
             throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);
         }
     }
