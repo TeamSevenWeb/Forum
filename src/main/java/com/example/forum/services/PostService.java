@@ -3,6 +3,7 @@ package com.example.forum.services;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
+import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
 
 import java.util.List;

@@ -9,6 +9,7 @@ import com.example.forum.helpers.CommentMapper;
 import com.example.forum.helpers.PostMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
+import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
@@ -107,6 +108,7 @@ public class PostController {
     public int likePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         User user = authenticationHelper.tryGetUser(headers);
         Post post = service.get(id);
+
         service.like(post,user);
         return 1;
     }
