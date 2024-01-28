@@ -12,6 +12,8 @@ public interface PostService {
 
     List<Post> getAll(PostsFilterOptions postsFilterOptions);
 
+    List<Post> getMostCommentedPosts();
+
     Post get(int id);
 
     List<Comment> getComments(int postId);
@@ -25,4 +27,5 @@ public interface PostService {
     void like (Post post, User user);
 
     void dislike(Post post, User user);
+
 }

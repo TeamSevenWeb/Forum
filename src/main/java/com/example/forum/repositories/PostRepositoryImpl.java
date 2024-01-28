@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -118,6 +119,7 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
+
     @Override
     public void create(Post post) {
         try (Session session = sessionFactory.openSession()) {
@@ -143,6 +145,21 @@ public class PostRepositoryImpl implements PostRepository {
                 session.beginTransaction();
                 session.remove(postToDelete);
                 session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public List<Post> getTopTenCommented() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Post> query = session.createQuery(
+                    "SELECT c.post FROM Comment c group by c.post Order by count(c.post) DESC LIMIT 10"
+                    , Post.class);
+            List<Post> result = query.list();
+            if (result.isEmpty()) {
+                throw new EntityNotFoundException("posts");
+            }
+
+            return result;
         }
     }
 
