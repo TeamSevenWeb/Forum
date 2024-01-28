@@ -30,3 +30,14 @@ create table posts_comments
     constraint joined_posts_comments_posts_post_id_fk
         foreign key (post_id) references posts (post_id)
 );
+
+create table posts_reactions
+(
+    post_id    int                  not null,
+    reaction_id int                  not null,
+    isPresent    tinyint(1) default 0 not null,
+    constraint joined_posts_reactions_posts_post_id_fk
+        foreign key (post_id) references posts (post_id),
+    constraint posts_reactions_reactions_reaction_id_fk
+        foreign key (reaction_id) references reactions (reaction_id)
+);

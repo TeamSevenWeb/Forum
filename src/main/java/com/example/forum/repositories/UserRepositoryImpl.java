@@ -123,12 +123,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setBlocked() {
-
+    public User setBlocked(int id) {
+        return null;
     }
 
     @Override
-    public void setUnblocked() {
-
+    public User setUnblocked(int id) {
+        return null;
     }
 }

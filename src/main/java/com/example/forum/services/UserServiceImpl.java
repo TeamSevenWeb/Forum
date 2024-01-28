@@ -6,18 +6,17 @@ import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
-import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
 
     private static final String MODIFY_USER_ERROR_MESSAGE = "Only admin or account holder can modify a user.";
+    private static final String IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE = "Only admin can block or unblock a user.";
 
     private final UserRepository repository;
 
@@ -83,6 +82,32 @@ public class UserServiceImpl implements UserService{
     public void delete(int postId, int commentId, User user) {
 
     }
+
+    @Override
+    public User block(User user, int id) {
+        User admin = repository.getByUsername(user.getUsername());
+        User userToBeBlocked = repository.get(id);
+        if (!admin.isAdmin()){
+            throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
+        }
+        repository.setBlocked(id);
+        userToBeBlocked.setIsBlocked(true);
+        return userToBeBlocked;
+    }
+
+    @Override
+    public User unblock(User user, int id) {
+        User admin = repository.getByUsername(user.getUsername());
+        User userToBeUnblocked = repository.get(id);
+        if (!admin.isAdmin()){
+            throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
+        }
+        repository.setUnblocked(id);
+        userToBeUnblocked.setIsBlocked(false);
+        return userToBeUnblocked;
+    }
+
+
     private void checkModifyPermissions(String username, User user) {
         User user1 = repository.getByUsername(username);
         if (!(user.isAdmin() || user1.getId() == user.getId())) {
