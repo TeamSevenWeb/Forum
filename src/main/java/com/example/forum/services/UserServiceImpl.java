@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService{
 
     private void checkModifyPermissions(String username, User user) {
         User user1 = repository.getByUsername(username);
-        if (!(user.isAdmin() || user1.getId() == user.getId())) {
+        if (!(user.isAdmin() && user1.getId() == user.getId())) {
             throw new AuthorizationException(MODIFY_USER_ERROR_MESSAGE);
         }
     }

@@ -47,12 +47,3 @@ INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (5,
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (6, 5, 2, 'Smqtam znaesh !');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (7, 3, 1, 'Privet bratan');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment) VALUES (8, 3, 2, 'Ochen horosho');
-
-INSERT INTO forum.likes (user_id, post_id) VALUES (1, 1);
-INSERT INTO forum.likes (user_id, post_id) VALUES (2, 1);
-INSERT INTO forum.likes (user_id, post_id) VALUES (3, 1);
-INSERT INTO forum.likes (user_id, post_id) VALUES (3, 3);
-INSERT INTO forum.likes (user_id, post_id) VALUES (4, 3);
-INSERT INTO forum.likes (user_id, post_id) VALUES (6, 3);
-INSERT INTO forum.likes (user_id, post_id) VALUES (7, 5);
-INSERT INTO forum.likes (user_id, post_id) VALUES (5, 1);
