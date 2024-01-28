@@ -20,12 +20,12 @@ public class OpenAPIConfiguration {
 
         Contact myContact = new Contact();
         myContact.setName("Jane Doe");
-        myContact.setEmail("your.email@gmail.com");
+        myContact.setEmail("test.email@gmail.com");
 
         Info information = new Info()
-                .title("Employee Management System API")
+                .title("Forum")
                 .version("1.0")
-                .description("This API exposes endpoints to manage employees.")
+                .description("This API exposes endpoints to manage our forum.")
                 .contact(myContact);
         return new OpenAPI().info(information).servers(List.of(server));
     }
