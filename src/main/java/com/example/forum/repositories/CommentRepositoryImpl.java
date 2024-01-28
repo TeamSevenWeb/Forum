@@ -26,6 +26,9 @@ public class CommentRepositoryImpl implements CommentRepository {
                 Session session = sessionFactory.openSession()
         ){
             Query<Comment> query = session.createQuery("from Comment",Comment.class);
+            if (query.list().isEmpty()){
+                throw new EntityNotFoundException("comments");
+            }
             return query.list();
         }
     }
