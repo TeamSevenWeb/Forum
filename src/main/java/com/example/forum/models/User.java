@@ -28,6 +28,7 @@ public class User {
     @Column(name = "date_of_registration")
     private Date dateOfRegistration;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_posts",
@@ -35,6 +36,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "post_id")
     )
     private Set<Post> userPosts;
+
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_comments",

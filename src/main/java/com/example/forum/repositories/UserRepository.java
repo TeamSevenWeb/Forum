@@ -21,9 +21,9 @@ public interface UserRepository {
 
     List<Post> getUserPosts(User user);
 
-    User create(User user);
+    void create(User user);
 
-    User update(User user);
+    void update(User user);
 
     void delete (User user);
 
