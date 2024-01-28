@@ -75,12 +75,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void delete(int id, User user) {
-
-    }
-
-    @Override
-    public void delete(int postId, int commentId, User user) {
-
+        User admin = repository.getByUsername(user.getUsername());
+        User userToBeDeleted = repository.get(id);
+        checkModifyPermissions(userToBeDeleted.getUsername(),admin);
+        userToBeDeleted.setActive(false);
+        repository.delete(userToBeDeleted);
     }
 
     @Override
@@ -90,9 +89,9 @@ public class UserServiceImpl implements UserService{
         if (!admin.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
-        repository.setBlocked(id);
         userToBeBlocked.setIsBlocked(true);
-        return userToBeBlocked;
+       return repository.setBlocked(userToBeBlocked);
+
     }
 
     @Override
@@ -102,7 +101,7 @@ public class UserServiceImpl implements UserService{
         if (!admin.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
-        repository.setUnblocked(id);
+        repository.setUnblocked(userToBeUnblocked);
         userToBeUnblocked.setIsBlocked(false);
         return userToBeUnblocked;
     }

@@ -114,7 +114,12 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void delete(@RequestHeader HttpHeaders headers, @PathVariable int id) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            service.delete(id,user);
+        }  catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 

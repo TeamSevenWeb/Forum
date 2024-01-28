@@ -29,8 +29,8 @@ public interface UserRepository {
 
     void setAdmin();
 
-    User setBlocked(int id);
+    User setBlocked(User user);
 
-    User setUnblocked(int id);
+    User setUnblocked(User user);
 
 }

@@ -122,7 +122,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void delete(User user) {
-
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
     }
 
     @Override
@@ -131,12 +135,22 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User setBlocked(int id) {
-        return null;
+    public User setBlocked(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
+        return user;
     }
 
     @Override
-    public User setUnblocked(int id) {
-        return null;
+    public User setUnblocked(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
+        return user;
     }
 }
