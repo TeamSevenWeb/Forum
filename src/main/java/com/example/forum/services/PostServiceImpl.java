@@ -93,8 +93,9 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void delete(Post post, User user) {
-
+    public void delete(int id, User user) {
+        checkModifyPermissions(id, user);
+        repository.delete(id);
     }
 
     @Override

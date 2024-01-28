@@ -137,8 +137,13 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void delete(Post post) {
-
+    public void delete(int id) {
+            Post postToDelete = get(id);
+            try (Session session = sessionFactory.openSession()) {
+                session.beginTransaction();
+                session.remove(postToDelete);
+                session.getTransaction().commit();
+        }
     }
 
     private String generateOrderBy(PostsFilterOptions postFilterOptions) {
