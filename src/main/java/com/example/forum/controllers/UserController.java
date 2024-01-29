@@ -31,7 +31,6 @@ public class UserController {
 
     @GetMapping
     public User get(
-            @RequestParam(required = false) int userId,
             @RequestParam(required = false) String userName,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String firstName) {

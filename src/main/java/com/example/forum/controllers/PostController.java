@@ -15,7 +15,9 @@ import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
 import com.example.forum.services.CommentService;
 import com.example.forum.services.PostService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -129,6 +131,7 @@ public class PostController {
         return 0;
     }
 
+    @Operation(summary = "Update a post")
     @PutMapping("/{id}")
     public Post update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDto postDto) {
         try {
