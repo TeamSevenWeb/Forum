@@ -1,5 +1,6 @@
 package com.example.forum.services;
 
+import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.exceptions.UserDontHaveAnyException;
 import com.example.forum.models.Post;
 import com.example.forum.models.Reaction;
@@ -20,7 +21,7 @@ public class ReactionServiceImpl implements ReactionService{
     public boolean hasReacted(Post post, User user) {
         try {
             Reaction reaction = reactionRepository.get(post,user);
-        } catch (UserDontHaveAnyException e) {
+        } catch (EntityNotFoundException e) {
             return false;
         }
         return true;
@@ -33,19 +34,49 @@ public class ReactionServiceImpl implements ReactionService{
             if (reaction.getIsLiked()){
                 return true;
             }
-            else return false;
-        } catch (UserDontHaveAnyException e) {
+        }catch (EntityNotFoundException e) {
             return false;
         }
+            return false;
 
     }
 
     @Override
-    public boolean hasDisiked(Post post, User user) {
+    public void deleteReaction(Post post, User user) {
         Reaction reaction = reactionRepository.get(post,user);
-        if (!reaction.getIsLiked()){
-            return true;
-        }
-        else return false;
+        reactionRepository.delete(reaction.getReactionId());
     }
+
+    @Override
+    public void createLike(Post post, User user) {
+        Reaction reaction = new Reaction();
+        reaction.setPost(post);
+        reaction.setCreatedBy(user);
+        reaction.setIsLiked(true);
+        reactionRepository.create(reaction);
+    }
+
+    @Override
+    public void createDislike(Post post, User user) {
+        Reaction reaction = new Reaction();
+        reaction.setPost(post);
+        reaction.setCreatedBy(user);
+        reaction.setIsLiked(false);
+        reactionRepository.create(reaction);
+    }
+
+    @Override
+    public void setLiked(Post post, User user) {
+        Reaction reaction = reactionRepository.get(post,user);
+        reaction.setIsLiked(true);
+        reactionRepository.update(reaction);
+    }
+
+    @Override
+    public void setDisliked(Post post, User user) {
+        Reaction reaction = reactionRepository.get(post,user);
+        reaction.setIsLiked(false);
+        reactionRepository.update(reaction);
+    }
+
 }

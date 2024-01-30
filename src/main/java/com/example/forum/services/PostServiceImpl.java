@@ -11,7 +11,6 @@ import com.example.forum.models.User;
 import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.ReactionRepository;
 import com.example.forum.repositories.UserRepository;
-import org.hibernate.annotations.Comments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -120,58 +119,48 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void like(Post post, User user) {
+    public void react(String reactionType,Post post, User user) {
 
-        if (!reactionService.hasReacted(post,user)){
-            Reaction reaction = new Reaction();
-            post.setLikes(post.getLikes() + 1);
-            repository.update(post);
-            reaction.setPost(post);
-            reaction.setCreatedBy(user);
-            reaction.setIsLiked(true);
-            reactionRepository.create(reaction);
+            if (reactionType.equals("like")){
+                if (!reactionService.hasReacted(post,user)){
+                    reactionService.createLike(post,user);
+                    incrementLikes(post);
+                }
+                else if (reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
+                    reactionService.deleteReaction(post,user);
+                    decrementLikes(post);
+                }
+                else if (!reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
+                    reactionService.setLiked(post,user);
+                    incrementLikes(post);
+                    incrementLikes(post);
+                }}
+        if (reactionType.equals("dislike")){
+                if (!reactionService.hasReacted(post,user)){
+                    reactionService.createDislike(post,user);
+                    decrementLikes(post);
+                }
+                else if (reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
+                    reactionService.setDisliked(post,user);
+                    decrementLikes(post);
+                    decrementLikes(post);
+                }
+                else if (!reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
+                    reactionService.deleteReaction(post,user);
+                    incrementLikes(post);
+                }}
 
-        }
-        else if (reactionService.hasLiked(post,user)){
-            Reaction reaction = reactionRepository.get(post,user);
-            reactionRepository.delete(reaction.getReactionId());
-            post.setLikes(post.getLikes() - 1);
-            repository.update(post);
-        }
-        else if (reactionService.hasDisiked(post,user)){
-            Reaction reaction = reactionRepository.get(post,user);
-            post.setLikes(post.getLikes() + 2);
-            reaction.setIsLiked(true);
-            reactionRepository.update(reaction);
-            repository.update(post);
-        }
     }
 
     @Override
-    public void dislike(Post post, User user) {
-        if (!reactionService.hasReacted(post,user)){
-            Reaction reaction = new Reaction();
-            post.setLikes(post.getLikes() - 1);
-            repository.update(post);
-            reaction.setPost(post);
-            reaction.setCreatedBy(user);
-            reaction.setIsLiked(false);
-            reactionRepository.create(reaction);
-
-        }
-        else if (reactionService.hasLiked(post,user)){
-            Reaction reaction = reactionRepository.get(post,user);
-            reaction.setIsLiked(false);
-            reactionRepository.update(reaction);
-            post.setLikes(post.getLikes() - 2);
-            repository.update(post);
-        }
-        else if (reactionService.hasDisiked(post,user)){
-            Reaction reaction = reactionRepository.get(post,user);
-            post.setLikes(post.getLikes() + 1);
-            reactionRepository.delete(reaction.getReactionId());
-            repository.update(post);
-        }
+    public void incrementLikes(Post post){
+        post.setLikes(post.getLikes() + 1);
+        repository.update(post);
+    }
+    @Override
+    public void decrementLikes(Post post){
+        post.setLikes(post.getLikes() - 1);
+        repository.update(post);
     }
 
     private void checkModifyPermissions(int id, User user) {

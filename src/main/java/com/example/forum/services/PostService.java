@@ -24,8 +24,9 @@ public interface PostService {
 
     void delete (int id,User user);
 
-    void like (Post post, User user);
+    public void react(String reactionType,Post post, User user);
 
-    void dislike(Post post, User user);
+    void incrementLikes(Post post);
 
+    void decrementLikes(Post post);
 }

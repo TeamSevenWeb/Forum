@@ -56,6 +56,7 @@ public class UserController {
     };
     @PostMapping
     public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody User user) {
+        //user is not logged in / no checks needed
         try {
             User user1 = authenticationHelper.tryGetUser(headers);
             User user2 = service.get(user.getUsername());
