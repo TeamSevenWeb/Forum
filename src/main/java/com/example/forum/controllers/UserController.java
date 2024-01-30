@@ -3,7 +3,6 @@ package com.example.forum.controllers;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
-import com.example.forum.exceptions.UserDontHaveAnyException;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -42,7 +41,7 @@ public class UserController {
     public List<Post> getUserPosts(@RequestHeader HttpHeaders headers,@PathVariable int id){
        try {
         return service.getUserPosts(id);
-       } catch (UserDontHaveAnyException e){
+       } catch (EntityNotFoundException e){
            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
        }
     };
@@ -50,7 +49,7 @@ public class UserController {
     public List<Comment> getUserComments(@RequestHeader HttpHeaders headers,@PathVariable int id){
         try {
             return service.getUserComments(id);
-        } catch (UserDontHaveAnyException e){
+        } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
         }
     };

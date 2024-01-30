@@ -2,12 +2,10 @@ package com.example.forum.repositories;
 
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityNotFoundException;
-import com.example.forum.exceptions.UserDontHaveAnyException;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
-import com.example.forum.services.UserService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -97,7 +94,7 @@ public class PostRepositoryImpl implements PostRepository {
 
             List<Comment> result = query.list();
             if (result.isEmpty()) {
-                throw new UserDontHaveAnyException("comments");
+                throw new EntityNotFoundException("comments");
             }
 
             return result;
