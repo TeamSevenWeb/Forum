@@ -3,6 +3,7 @@ package com.example.forum.services;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -135,7 +136,7 @@ public class PostServiceImpl implements PostService{
                     incrementLikes(post);
                     incrementLikes(post);
                 }}
-        if (reactionType.equals("dislike")){
+        else if (reactionType.equals("dislike")){
                 if (!reactionService.hasReacted(post,user)){
                     reactionService.createDislike(post,user);
                     decrementLikes(post);
@@ -149,6 +150,7 @@ public class PostServiceImpl implements PostService{
                     reactionService.deleteReaction(post,user);
                     incrementLikes(post);
                 }}
+        else throw new InvalidReactionException(reactionType);
 
     }
 

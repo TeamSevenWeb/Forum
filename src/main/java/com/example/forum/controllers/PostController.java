@@ -3,6 +3,7 @@ package com.example.forum.controllers;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.CommentMapper;
@@ -125,6 +126,9 @@ public class PostController {
         }
         catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (InvalidReactionException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
     }
