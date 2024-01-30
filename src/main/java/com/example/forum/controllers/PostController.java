@@ -114,21 +114,19 @@ public class PostController {
 
     }
 
-    @PutMapping("/{id}/like")
-    public int likePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
-        User user = authenticationHelper.tryGetUser(headers);
-        Post post = service.get(id);
+    @PutMapping("/react/{postId}/{reactionType}")
+    public void react(@RequestHeader HttpHeaders headers, @PathVariable int postId, @PathVariable String reactionType) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            Post post = service.get(postId);
+            service.react(reactionType, post,user);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
 
-        service.like(post,user);
-        return 1;
-    }
-
-    @PutMapping("/{id}/dislike")
-    public int dislikePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
-        User user = authenticationHelper.tryGetUser(headers);
-        Post post = service.get(id);
-        service.dislike(post,user);
-        return 0;
     }
 
     @Operation(summary = "Update a post")
