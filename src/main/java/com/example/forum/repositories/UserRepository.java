@@ -1,5 +1,6 @@
 package com.example.forum.repositories;
 
+import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
@@ -10,6 +11,8 @@ public interface UserRepository {
 
 
     User get(int id);
+
+    List<User> get(UserFilterOptions filterOptions);
 
     User getByUsername(String username);
 

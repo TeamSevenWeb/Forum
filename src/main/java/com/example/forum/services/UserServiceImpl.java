@@ -3,6 +3,7 @@ package com.example.forum.services;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
@@ -28,6 +29,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public User get(String username) {
         return repository.getByUsername(username);
+    }
+
+    @Override
+    public List<User> get(UserFilterOptions filterOptions, User user) {
+        if(!user.isAdmin()){
+            throw new AuthorizationException("Only admins can view all users.");
+        }
+        return repository.get(filterOptions);
     }
 
     @Override
