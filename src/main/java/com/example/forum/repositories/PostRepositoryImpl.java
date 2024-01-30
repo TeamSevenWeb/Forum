@@ -48,9 +48,8 @@ public class PostRepositoryImpl implements PostRepository {
             postsFilterOptions.getCreatedBy().ifPresent(value -> {
                 try {
                     User user = userRepository.getByUsername(value);
-                    int userId = user.getId();
-                    filters.add("created_by = :createdBy");
-                    params.put("createdBy", userId);
+                    filters.add("createdBy = :created_by");
+                    params.put("created_by", user);
                 } catch (AuthorizationException e){
                     throw new EntityNotFoundException("Posts","creator",value);
                 }

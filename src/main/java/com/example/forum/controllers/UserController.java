@@ -3,6 +3,8 @@ package com.example.forum.controllers;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -29,13 +31,22 @@ public class UserController {
     }
 
     @GetMapping
-    public User get(
-            @RequestParam(required = false) String userName,
+    public List<User> get(@RequestHeader HttpHeaders headers,
+            @RequestParam(required = false) String username,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String firstName) {
-//        FilterOptions filterOptions = new FilterOptions(userId, userName, email, firstName, sortBy, sortOrder);
-//        return service.get(filterOptions);
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortOrder
+    ) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            UserFilterOptions postsFilterOptions = new UserFilterOptions(username, email,firstName, sortBy, sortOrder);
+            return service.get(postsFilterOptions,user);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
     @GetMapping("/{id}/posts")
     public List<Post> getUserPosts(@RequestHeader HttpHeaders headers,@PathVariable int id){
@@ -121,5 +132,6 @@ public class UserController {
         }
     }
 
+    
 
 }

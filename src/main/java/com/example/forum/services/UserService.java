@@ -1,5 +1,6 @@
 package com.example.forum.services;
 
+import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
@@ -9,6 +10,7 @@ import java.util.List;
 public interface UserService {
 
     User get(String username);
+    List<User> get(UserFilterOptions filterOptions, User user);
 
     User get(int id);
 
