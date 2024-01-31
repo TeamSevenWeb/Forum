@@ -22,5 +22,4 @@ public interface PostRepository {
 
     void delete (int id);
 
-    List<Post> getTopTenCommented();
 }

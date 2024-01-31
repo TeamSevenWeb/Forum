@@ -4,6 +4,7 @@ import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.exceptions.InvalidReactionException;
+import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.CommentMapper;
@@ -57,6 +58,24 @@ public class PostController {
             User user = authenticationHelper.tryGetUser(headers);
             PostsFilterOptions postsFilterOptions = new PostsFilterOptions(title, keyWord,createdBy, sortBy, sortOrder);
             return service.getAll(postsFilterOptions);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/comments/")
+    public List<Comment> getComments(@RequestHeader HttpHeaders headers,
+                          @RequestParam(required = false) Integer post,
+                          @RequestParam(required = false) String keyWord,
+                          @RequestParam(required = false) String createdBy,
+                          @RequestParam(required = false) String sortBy,
+                          @RequestParam(required = false) String sortOrder) {
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            CommentFilterOptions commentFilterOptions = new CommentFilterOptions(post, keyWord,createdBy, sortBy, sortOrder);
+            return commentService.getAll(commentFilterOptions);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){

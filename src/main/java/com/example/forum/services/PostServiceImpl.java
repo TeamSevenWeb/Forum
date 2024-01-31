@@ -9,6 +9,7 @@ import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
+import com.example.forum.repositories.CommentRepository;
 import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.ReactionRepository;
 import com.example.forum.repositories.UserRepository;
@@ -32,13 +33,14 @@ public class PostServiceImpl implements PostService{
     private final ReactionService reactionService;
 
     private final ReactionRepository reactionRepository;
-
+    private final CommentRepository commentRepository;
     @Autowired
-    public PostServiceImpl(PostRepository repository, UserRepository userRepository, ReactionService reactionService, ReactionRepository reactionRepository) {
+    public PostServiceImpl(PostRepository repository, UserRepository userRepository, ReactionService reactionService, ReactionRepository reactionRepository, CommentRepository commentRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.reactionService = reactionService;
         this.reactionRepository = reactionRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public List<Post> getMostCommentedPosts() {
-        return repository.getTopTenCommented();
+        return commentRepository.getTopTenCommented();
     }
 
     @Override
