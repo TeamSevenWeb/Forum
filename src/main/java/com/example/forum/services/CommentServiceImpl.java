@@ -3,12 +3,15 @@ package com.example.forum.services;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -59,6 +62,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment getById(int id) {
         return repository.getById(id);
+    }
+
+    @Override
+    public List<Comment> getAll(CommentFilterOptions commentFilterOptions) {
+        return repository.getAll(commentFilterOptions);
     }
 
     private void checkModifyPermissions(int id, User user) {
