@@ -59,11 +59,6 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<Comment> getComments(int postId){
-        return repository.getComments(postId);
-    }
-
-    @Override
     public void create(Post post, User user) {
         if(user.isBlocked()){
             throw new AuthorizationException(CREATE_POST_ERROR_MESSAGE);

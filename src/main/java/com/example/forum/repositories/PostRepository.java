@@ -14,8 +14,6 @@ public interface PostRepository {
 
     Post get(int id);
 
-    List<Comment>getComments(int postId);
-
     void create(Post post);
 
     void update(Post post);
