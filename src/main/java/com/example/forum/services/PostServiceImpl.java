@@ -62,7 +62,7 @@ public class PostServiceImpl implements PostService{
     public void create(Post post, User user) {
         if(user.isBlocked()){
             throw new AuthorizationException(CREATE_POST_ERROR_MESSAGE);
-        };
+        }
         if (user.getUserPosts().stream().anyMatch(p -> p.getPostId() == post.getPostId())) {
             return;
         }
@@ -107,8 +107,10 @@ public class PostServiceImpl implements PostService{
     @Override
     public void delete(int id, User user) {
         checkModifyPermissions(id, user);
-        if (user.getUserPosts().stream().noneMatch(p -> p.getPostId() == id)) {
-            throw new EntityNotFoundException("Post", id);
+        if (!user.isAdmin()) {
+            user.getUserPosts().stream()
+                    .filter(p -> p.getPostId() == id)
+                    .findAny().orElseThrow( () -> new EntityNotFoundException("Post", id));
         }
         Post post = repository.get(id);
         user.getUserPosts().remove(post);

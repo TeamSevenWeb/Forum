@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class User {
     @Column(name = "email")
     private String email;
     @Column(name = "date_of_registration")
-    private Date dateOfRegistration;
+    private LocalDateTime dateOfRegistration;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
@@ -106,11 +107,11 @@ public class User {
         this.email = email;
     }
 
-    public Date getDateOfRegistration() {
+    public LocalDateTime getDateOfRegistration() {
         return dateOfRegistration;
     }
 
-    public void setDateOfRegistration(Date dateOfRegistration) {
+    public void setDateOfRegistration(LocalDateTime dateOfRegistration) {
         this.dateOfRegistration = dateOfRegistration;
     }
 
