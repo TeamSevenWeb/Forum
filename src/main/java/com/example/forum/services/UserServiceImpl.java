@@ -17,7 +17,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private static final String MODIFY_USER_ERROR_MESSAGE = "Only admin or account holder can modify a user.";
-    private static final String IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE = "Only admin can block or unblock a user.";
+    private static final String IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE = "Only admins can block or unblock a user.";
+    public static final String ADMINS_CAN_VIEW_ALL_USERS_ERROR = "Only admins can view all users.";
 
     private final UserRepository repository;
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> get(UserFilterOptions filterOptions, User user) {
         if(!user.isAdmin()){
-            throw new AuthorizationException("Only admins can view all users.");
+            throw new AuthorizationException(ADMINS_CAN_VIEW_ALL_USERS_ERROR);
         }
         return repository.get(filterOptions);
     }
@@ -63,25 +64,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(User user) {
+        try {
+            User existingUsername = repository.getByUsername(user.getUsername());
+            throw new EntityDuplicateException("User","username",existingUsername.getUsername());
+        } catch (EntityNotFoundException ignored){
+        }
+        try {
+            User existingEmail = repository.getByEmail(user.getEmail());
+            throw new EntityDuplicateException("User","email",existingEmail.getEmail());
+        } catch (EntityNotFoundException ignored){
+        }
       repository.create(user);
     }
 
     @Override
-    public void update(User user, User admin) {
-        checkModifyPermissions(user.getUsername(), admin);
+    public void update(User userToBeChanged, User user) {
 
-        boolean duplicateExists = true;
+        checkModifyPermissions(userToBeChanged.getUsername(), user);
+
         try {
-            User existingUser = repository.getByUsername(user.getUsername());
-            if (existingUser.getId() == user.getId()) {
-                duplicateExists = false;
-            }
-        } catch (EntityNotFoundException e) {
-            duplicateExists = false;
-        }
-
-        if (duplicateExists) {
-            throw new EntityDuplicateException("User", "username", user.getUsername());
+            User existingEmail = repository.getByEmail(user.getEmail());
+            throw new EntityDuplicateException("User","email",existingEmail.getEmail());
+        } catch (EntityNotFoundException ignored){
         }
 
         repository.update(user);
@@ -89,9 +93,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(int id, User user) {
-        User admin = repository.getByUsername(user.getUsername());
         User userToBeDeleted = repository.get(id);
-        checkModifyPermissions(userToBeDeleted.getUsername(), admin);
+        checkModifyPermissions(userToBeDeleted.getUsername(), user);
         userToBeDeleted.setActive(false);
         repository.update(userToBeDeleted);
     }
@@ -99,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void block(User user, int id) {
         User userToBeBlocked = repository.get(id);
-        if (user.isAdmin()){
+        if (!user.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
         userToBeBlocked.setIsBlocked(true);
@@ -115,6 +118,16 @@ public class UserServiceImpl implements UserService {
         }
         userToBeUnblocked.setIsBlocked(false);
         repository.update(user);
+    }
+
+    @Override
+    public void makeAdmin(User user, int id) {
+        User makeAdmin = repository.get(id);
+        if (!user.isAdmin()){
+            throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
+        }
+        makeAdmin.setIsAdmin(true);
+        repository.update(makeAdmin);
     }
 
 

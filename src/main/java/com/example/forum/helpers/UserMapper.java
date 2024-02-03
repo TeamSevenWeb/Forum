@@ -20,7 +20,7 @@ public class UserMapper {
         this.userService = userService;
     }
 
-    private User fromDto(int id, UserDto userDto){
+    public User fromDto(int id, UserDto userDto){
         User user = fromDto(userDto);
         user.setId(id);
         User repositoryUser = userService.get(id);

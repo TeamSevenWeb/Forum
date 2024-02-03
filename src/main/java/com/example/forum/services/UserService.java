@@ -30,4 +30,6 @@ public interface UserService {
     void block(User user, int id);
 
     void unblock(User user,int id);
+
+    void makeAdmin(User user, int id);
 }
