@@ -4,8 +4,10 @@ import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
+import com.example.forum.repositories.CommentRepository;
 import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -16,6 +18,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.example.forum.Helpers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,7 +28,8 @@ public class PostServiceImplTests {
 
     @Mock
     PostRepository mockRepository;
-
+    @Mock
+    CommentRepository mockCommentRepository;
     @Mock
     UserRepository mockUserRepository;
     @InjectMocks
@@ -45,6 +51,33 @@ public class PostServiceImplTests {
     }
 
     @Test
+    void getMostCommentedPosts_Should_CallRepository() {
+        // Arrange
+        Mockito.when(mockRepository.getTopTenCommented())
+                .thenReturn(null);
+        // Act
+        service.getMostCommentedPosts();
+
+        // Assert
+        Mockito.verify(mockRepository, Mockito.times(1))
+                .getTopTenCommented();
+    }
+
+    @Test
+    void getMostCommentedPosts_Should_ReturnPosts() {
+        // Arrange
+        List<Post> commentedPosts = createCommentedPosts();
+        Mockito.when(mockRepository.getTopTenCommented())
+                .thenReturn(commentedPosts);
+
+        // Act
+        List<Post> result = service.getMostCommentedPosts();
+
+        // Assert
+        Assertions.assertEquals(commentedPosts, result);
+    }
+
+    @Test
     public void get_Should_ReturnPost_When_MatchByIdExist() {
         // Arrange
         Post mockPost = createMockPost();
@@ -59,7 +92,7 @@ public class PostServiceImplTests {
         Assertions.assertEquals(mockPost, result);
     }
     @Test
-    public void create_Should_CallRepository_When_PostWithSameNameDoesNotExist() {
+    public void create_Should_CallRepository_When_PostWithSameTitleDoesNotExist() {
         // Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
@@ -67,7 +100,6 @@ public class PostServiceImplTests {
         Mockito.when(mockRepository.get(mockPost.getTitle()))
                 .thenThrow(EntityNotFoundException.class);
 
-        mockUserRepository.create(mockUser);
         // Act
         service.create(mockPost, mockUser);
 
@@ -98,7 +130,7 @@ public class PostServiceImplTests {
         User mockUser = mockPost.getCreatedBy();
         mockUser.setIsBlocked(true);
 
-
+        // Act, Assert
         Assertions.assertThrows(
                 AuthorizationException.class,
                 () -> service.create(mockPost, mockUser));

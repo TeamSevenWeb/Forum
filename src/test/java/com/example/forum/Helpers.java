@@ -8,7 +8,9 @@ import com.example.forum.models.dtos.PostDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Helpers {
@@ -73,6 +75,14 @@ public class Helpers {
         dto.setTitle("TestTitleForTestPostTest");
         dto.setContent("TestContentForPostTestTestTest");
         return dto;
+    }
+
+    public static List<Post> createCommentedPosts(){
+        List<Post> postsList = new ArrayList<>();
+        for(int i = 0 ; i< 10 ; i++){
+            postsList.add(createMockComment().getPost());
+        }
+        return postsList;
     }
 
     /**

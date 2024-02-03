@@ -33,14 +33,12 @@ public class PostServiceImpl implements PostService{
     private final ReactionService reactionService;
 
     private final ReactionRepository reactionRepository;
-    private final CommentRepository commentRepository;
     @Autowired
     public PostServiceImpl(PostRepository repository, UserRepository userRepository, ReactionService reactionService, ReactionRepository reactionRepository, CommentRepository commentRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.reactionService = reactionService;
         this.reactionRepository = reactionRepository;
-        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public List<Post> getMostCommentedPosts() {
-        return commentRepository.getTopTenCommented();
+        return repository.getTopTenCommented();
     }
 
     @Override
