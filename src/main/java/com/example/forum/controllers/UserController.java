@@ -51,24 +51,44 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
-    @GetMapping("/{id}/posts")
-    public List<Post> getUserPosts(@RequestHeader HttpHeaders headers,@PathVariable int id){
-       try {
-        return service.getUserPosts(id);
-       } catch (EntityNotFoundException e){
-           throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
-       }
-    };
-    @GetMapping("/{id}/comments")
-    public List<Comment> getUserComments(@RequestHeader HttpHeaders headers,@PathVariable int id){
+
+    @GetMapping("/{id}")
+    public  User getUser(@RequestHeader HttpHeaders headers,@PathVariable int id){
         try {
-            return service.getUserComments(id);
+            User user = authenticationHelper.tryGetUser(headers);
+            return service.get(id);
+        }  catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
         }
-    };
+    }
+    @GetMapping("/{id}/posts")
+    public List<Post> getUserPosts(@RequestHeader HttpHeaders headers,@PathVariable int id){
+       try {
+           User user = authenticationHelper.tryGetUser(headers);
+           return service.getUserPosts(id);
+       }  catch (AuthorizationException e){
+           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+       } catch (EntityNotFoundException e){
+           throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
+       }
+    }
+
+    @GetMapping("/{id}/comments")
+    public List<Comment> getUserComments(@RequestHeader HttpHeaders headers,@PathVariable int id){
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            return service.getUserComments(id);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
+        }
+    }
+
     @PostMapping
-    public void create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
+    public void create(@Valid @RequestBody UserDto userDto) {
         try {
             User user = userMapper.fromDto(userDto);
             service.create(user);
@@ -78,22 +98,21 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody User user) {
+    public void update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody UserDto userDto) {
         try {
-            User user1 = authenticationHelper.tryGetUser(headers);
-            User user2 = service.getByUsername(user.getUsername());
-            service.update(user2, user1);
-            return user2;
+            User user = authenticationHelper.tryGetUser(headers);
+            User userToBeUpdated = userMapper.fromDto(id,userDto);
+            service.update(userToBeUpdated, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
-    @PutMapping("/block/{id}")
+    @PutMapping("/{id}/block")
     public void block(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
@@ -105,11 +124,23 @@ public class UserController {
         }
     }
 
-    @PutMapping("/unblock/{id}")
+    @PutMapping("/{id}/unblock")
     public void unblock(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             service.unblock(user,id);
+        }  catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/make-admin")
+    public void makeAdmin(@RequestHeader HttpHeaders headers,@PathVariable int id){
+        try {
+            User user = authenticationHelper.tryGetUser(headers);
+            service.makeAdmin(user,id);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
