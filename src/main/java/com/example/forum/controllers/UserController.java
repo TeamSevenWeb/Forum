@@ -3,12 +3,13 @@ package com.example.forum.controllers;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
-import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.helpers.AuthenticationHelper;
+import com.example.forum.helpers.UserMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
+import com.example.forum.models.dtos.UserDto;
 import com.example.forum.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,12 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService service;
+    private final UserMapper userMapper;
     private final AuthenticationHelper authenticationHelper;
     @Autowired
-    public UserController(UserService service, AuthenticationHelper authenticationHelper) {
+    public UserController(UserService service,UserMapper userMapper, AuthenticationHelper authenticationHelper) {
         this.service = service;
+        this.userMapper = userMapper;
         this.authenticationHelper = authenticationHelper;
     }
 
@@ -65,20 +68,12 @@ public class UserController {
         }
     };
     @PostMapping
-    public User create(@RequestHeader HttpHeaders headers, @Valid @RequestBody User user) {
-        //user is not logged in / no checks needed
+    public void create(@RequestHeader HttpHeaders headers, @Valid @RequestBody UserDto userDto) {
         try {
-            User user1 = authenticationHelper.tryGetUser(headers);
-            User user2 = service.get(user.getUsername());
-            service.update(user2, user1);
-            service.create(user2);
-            return user2;
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            User user = userMapper.fromDto(userDto);
+            service.create(user);
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -86,7 +81,7 @@ public class UserController {
     public User update(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody User user) {
         try {
             User user1 = authenticationHelper.tryGetUser(headers);
-            User user2 = service.get(user.getUsername());
+            User user2 = service.getByUsername(user.getUsername());
             service.update(user2, user1);
             return user2;
         } catch (EntityNotFoundException e) {
@@ -99,10 +94,10 @@ public class UserController {
     }
 
     @PutMapping("/block/{id}")
-    public User block(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void block(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            return service.block(user,id);
+            service.block(user,id);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
@@ -111,10 +106,10 @@ public class UserController {
     }
 
     @PutMapping("/unblock/{id}")
-    public User unblock(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void unblock(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            return service.unblock(user,id);
+            service.unblock(user,id);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {

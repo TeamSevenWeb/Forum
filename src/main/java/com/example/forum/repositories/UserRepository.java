@@ -12,13 +12,11 @@ public interface UserRepository {
 
     User get(int id);
 
-    List<User> get(UserFilterOptions filterOptions);
-
     User getByUsername(String username);
 
     User getByEmail(String email);
 
-    User getByFirstName(String firstName);
+    List<User> get(UserFilterOptions filterOptions);
 
     List<Comment> getUserComments(User user);
 
@@ -27,13 +25,4 @@ public interface UserRepository {
     void create(User user);
 
     void update(User user);
-
-    void delete (User user);
-
-    void setAdmin();
-
-    User setBlocked(User user);
-
-    User setUnblocked(User user);
-
 }

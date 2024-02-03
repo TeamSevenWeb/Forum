@@ -5,7 +5,7 @@ create table tags
     name   varchar(20) not null
 );
 
-create table users
+create table forum.users
 (
     user_id              int auto_increment
         primary key,
@@ -15,10 +15,16 @@ create table users
     last_name            varchar(32) not null,
     email                varchar(50) not null,
     date_of_registration date        not null,
-    is_blocked           tinyint(1)  not null,
-    is_active             tinyint(1)  not null,
-    is_admin             tinyint(1)  not null
+    is_blocked           tinyint(0)  not null,
+    is_admin             tinyint(0)  not null,
+    is_active            tinyint(1)   not null,
+    constraint users_pk
+        unique (username),
+    constraint users_pk2
+        unique (email)
 );
+
+
 
 create table admins
 (
@@ -31,8 +37,8 @@ create table admins
 
 create table admins_phone_numbers
 (
-    admin_id     int         not null
-        primary key,
+    phone_number_id int auto_increment primary key,
+    admin_id     int         not null,
     phone_number varchar(20) not null,
     constraint admins_phone_numbers_admins_admin_id_fk
         foreign key (admin_id) references admins (admin_id)
@@ -111,8 +117,8 @@ create table posts_reactions
 
 create table user_profile_photo
 (
-    user_id       int  not null
-        primary key,
+    profile_photo_id int auto_increment primary key,
+    user_id       int  not null,
     profile_photo blob not null,
     constraint user_profile_photo_users_user_id_fk
         foreign key (user_id) references users (user_id)
@@ -137,6 +143,20 @@ create table users_posts
     constraint users_posts_posts_post_id_fk
         foreign key (post_id) references posts (post_id),
     constraint users_posts_users_user_id_fk
+        foreign key (user_id) references users (user_id)
+);
+
+create table blocked_users
+(
+    user_id int not null primary key,
+    constraint  blocked_users_users_user_id
+    foreign key (user_id) references users (user_id)
+);
+
+create table deactivated_users
+(
+    user_id int not null primary key,
+    constraint  deactivated_users_users_user_id
         foreign key (user_id) references users (user_id)
 );
 
