@@ -10,6 +10,8 @@ public interface PostRepository {
 
     List<Post> getAll(PostsFilterOptions postsFilterOptions);
 
+    List<Post> getTopTenCommented();
+
     Post get(String title);
 
     Post get(int id);

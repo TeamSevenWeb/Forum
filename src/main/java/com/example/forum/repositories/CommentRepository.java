@@ -17,6 +17,4 @@ public interface CommentRepository {
      List<Comment> getAll(CommentFilterOptions commentFilterOptions);
 
      Comment getById(int id);
-
-    public List<Post> getTopTenCommented();
 }

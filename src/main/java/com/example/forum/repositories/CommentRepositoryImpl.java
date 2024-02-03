@@ -118,19 +118,4 @@ public class CommentRepositoryImpl implements CommentRepository {
         }
     }
 
-    @Override
-    public List<Post> getTopTenCommented() {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery(
-                    "SELECT c.post FROM Comment c group by c.post Order by count(c.post) DESC LIMIT 10"
-                    , Post.class);
-            List<Post> result = query.list();
-            if (result.isEmpty()) {
-                throw new EntityNotFoundException("posts");
-            }
-
-            return result;
-        }
-    }
-
 }
