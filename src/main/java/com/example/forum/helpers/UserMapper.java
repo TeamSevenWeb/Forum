@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Component
 public class UserMapper {
 
@@ -40,7 +42,7 @@ public class UserMapper {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
-        user.setDateOfRegistration(Date.valueOf(LocalDate.now()));
+        user.setDateOfRegistration(LocalDateTime.now());
         return user;
     }
 }
