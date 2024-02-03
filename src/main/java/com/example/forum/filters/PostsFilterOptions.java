@@ -10,6 +10,11 @@ public class PostsFilterOptions {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
+    public PostsFilterOptions() {
+        this(null, null, null, null, null);
+    }
+
+
     public PostsFilterOptions(
             String title,
             String keyword,
