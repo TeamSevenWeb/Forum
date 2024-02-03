@@ -9,22 +9,25 @@ import java.util.List;
 
 public interface UserService {
 
-    User get(String username);
-    List<User> get(UserFilterOptions filterOptions, User user);
-
     User get(int id);
+
+    User getByUsername(String username);
+
+    User getByEmail(String email);
+
+    List<User> get(UserFilterOptions filterOptions, User user);
 
     List<Comment> getUserComments(int id);
 
     List<Post> getUserPosts(int id);
 
-    User create(User user);
+    void create(User user);
 
     void update(User user, User admin);
 
    void delete (int id, User user);
 
-    User block(User user, int id);
+    void block(User user, int id);
 
-    User unblock(User user,int id);
+    void unblock(User user,int id);
 }

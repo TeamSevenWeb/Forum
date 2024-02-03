@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private static final String MODIFY_USER_ERROR_MESSAGE = "Only admin or account holder can modify a user.";
     private static final String IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE = "Only admin can block or unblock a user.";
@@ -27,8 +27,18 @@ public class UserServiceImpl implements UserService{
         this.repository = repository;
     }
     @Override
-    public User get(String username) {
+    public User get(int id) {
+        return repository.get(id);
+    }
+
+    @Override
+    public User getByUsername(String username) {
         return repository.getByUsername(username);
+    }
+
+    @Override
+    public User getByEmail(String email){
+        return repository.getByEmail(email);
     }
 
     @Override
@@ -40,11 +50,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User get(int id) {
-        return repository.get(id);
-    }
-
-    @Override
     public List<Post> getUserPosts(int id) {
         User user = repository.get(id);
         return repository.getUserPosts(user);
@@ -53,12 +58,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<Comment> getUserComments(int id) {
         User user = repository.get(id);
-       return repository.getUserComments(user);
+        return repository.getUserComments(user);
     }
 
     @Override
-    public User create(User user) {
-        return null;
+    public void create(User user) {
+      repository.create(user);
     }
 
     @Override
@@ -86,33 +91,30 @@ public class UserServiceImpl implements UserService{
     public void delete(int id, User user) {
         User admin = repository.getByUsername(user.getUsername());
         User userToBeDeleted = repository.get(id);
-        checkModifyPermissions(userToBeDeleted.getUsername(),admin);
+        checkModifyPermissions(userToBeDeleted.getUsername(), admin);
         userToBeDeleted.setActive(false);
-        repository.delete(userToBeDeleted);
+        repository.update(userToBeDeleted);
     }
 
     @Override
-    public User block(User user, int id) {
-        User admin = repository.getByUsername(user.getUsername());
+    public void block(User user, int id) {
         User userToBeBlocked = repository.get(id);
-        if (!admin.isAdmin()){
+        if (user.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
         userToBeBlocked.setIsBlocked(true);
-       return repository.setBlocked(userToBeBlocked);
+        repository.update(userToBeBlocked);
 
     }
 
     @Override
-    public User unblock(User user, int id) {
-        User admin = repository.getByUsername(user.getUsername());
+    public void unblock(User user, int id) {
         User userToBeUnblocked = repository.get(id);
-        if (!admin.isAdmin()){
+        if (!user.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
-        repository.setUnblocked(userToBeUnblocked);
         userToBeUnblocked.setIsBlocked(false);
-        return userToBeUnblocked;
+        repository.update(user);
     }
 
 
