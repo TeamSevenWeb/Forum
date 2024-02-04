@@ -3,6 +3,7 @@ package com.example.forum.services;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -32,6 +33,10 @@ public class PostServiceImplTests {
     CommentRepository mockCommentRepository;
     @Mock
     UserRepository mockUserRepository;
+
+    @Mock
+    ReactionService reactionService;
+
     @InjectMocks
     PostServiceImpl service;
 
@@ -278,6 +283,35 @@ public class PostServiceImplTests {
         Assertions.assertThrows(
                 AuthorizationException.class,
                 () -> service.delete(1, mockUser));
+    }
+
+    @Test
+    void react_Should_Call_reactionService_if_Valid_reactionType(){
+        // Arrange
+        String reactionType = "like";
+        Post mockPost = createMockPost();
+        User mockUser = createMockUser();
+
+        // Act
+        service.react(reactionType,mockPost,mockUser);
+
+        // Assert
+        Mockito.verify(reactionService, Mockito.times(1)).hasReacted(mockPost,mockUser);
+
+    }
+
+    @Test
+    void react_Should_Throw_If_Invalid_reactionType(){
+        // Arrange
+        String reactionType = "IncorrectReactionType";
+        Post mockPost = createMockPost();
+        User mockUser = createMockUser();
+
+        // Act, Assert
+        Assertions.assertThrows(
+                InvalidReactionException.class,
+                () -> service.react(reactionType,mockPost,mockUser));
+
     }
 
 }
