@@ -2,6 +2,7 @@ package com.example.forum;
 
 import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.Reaction;
@@ -77,6 +78,14 @@ public class Helpers {
         mockDislike.setCreatedBy(createMockUser());
         mockDislike.setIsLiked(false);
         return mockDislike;
+    }
+    public static UserFilterOptions createMockUserFilterOptions(){
+        return new UserFilterOptions(
+                "MockUsername",
+                "MockEmail",
+                "MockFirstname",
+                "email",
+                "desc");
     }
 
     public static PostsFilterOptions createMockPostFilterOptions() {

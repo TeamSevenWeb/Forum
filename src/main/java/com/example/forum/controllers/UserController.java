@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> get(@RequestHeader HttpHeaders headers,
+    public List<User> getAll(@RequestHeader HttpHeaders headers,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String firstName,
@@ -44,7 +44,7 @@ public class UserController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             UserFilterOptions postsFilterOptions = new UserFilterOptions(username, email,firstName, sortBy, sortOrder);
-            return service.get(postsFilterOptions,user);
+            return service.getAll(postsFilterOptions,user);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
@@ -116,7 +116,7 @@ public class UserController {
     public void block(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            service.block(user,id);
+            service.block(id, user);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
@@ -128,7 +128,7 @@ public class UserController {
     public void unblock(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            service.unblock(user,id);
+            service.unblock(id, user);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
@@ -140,7 +140,7 @@ public class UserController {
     public void makeAdmin(@RequestHeader HttpHeaders headers,@PathVariable int id){
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            service.makeAdmin(user,id);
+            service.makeAdmin(id, user);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {

@@ -69,7 +69,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> get(UserFilterOptions filterOptions) {
+    public List<User> getAll(UserFilterOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
@@ -120,7 +120,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             List<Post> result = query.list();
             if (result.isEmpty()) {
-                throw new EntityNotFoundException("posts");
+                throw new EntityNotFoundException("posts from this user");
             }
 
             return result;
@@ -135,7 +135,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             List<Comment> result = query.list();
             if (result.isEmpty()) {
-                throw new EntityNotFoundException("comments");
+                throw new EntityNotFoundException("comments from this user");
             }
 
             return result;

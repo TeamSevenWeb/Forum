@@ -15,7 +15,7 @@ public interface UserService {
 
     User getByEmail(String email);
 
-    List<User> get(UserFilterOptions filterOptions, User user);
+    List<User> getAll(UserFilterOptions filterOptions, User user);
 
     List<Comment> getUserComments(int id);
 
@@ -27,9 +27,9 @@ public interface UserService {
 
    void delete (int id, User user);
 
-    void block(User user, int id);
+    void block(int id, User user);
 
-    void unblock(User user,int id);
+    void unblock(int id, User user);
 
-    void makeAdmin(User user, int id);
+    void makeAdmin(int id, User user);
 }
