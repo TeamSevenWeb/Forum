@@ -1,8 +1,10 @@
 package com.example.forum;
 
+import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
+import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.PostDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +44,7 @@ public class Helpers {
         mockPost.setPostId(1);
         mockPost.setTitle("TestTitleForTestPostTest");
         mockPost.setContent("TestContentForPostTestTestTest");
+        mockPost.setLikes(1);
         User user = createMockUser();
         mockPost.setCreatedBy(user);
         mockPost.setDateAndTimeOfCreation(LocalDateTime.now());
@@ -61,9 +64,33 @@ public class Helpers {
         return mockComment;
     }
 
+    public static Reaction createMockLike() {
+        var mockLike = new Reaction();
+        mockLike.setPost(createMockPost());
+        mockLike.setCreatedBy(createMockUser());
+        mockLike.setIsLiked(true);
+        return mockLike;
+    }
+    public static Reaction createMockDislike() {
+        var mockDislike = new Reaction();
+        mockDislike.setPost(createMockPost());
+        mockDislike.setCreatedBy(createMockUser());
+        mockDislike.setIsLiked(false);
+        return mockDislike;
+    }
+
     public static PostsFilterOptions createMockPostFilterOptions() {
         return new PostsFilterOptions(
                 "TestTitleForTestPostTest",
+                "TestContent",
+                "MockUsername",
+                "comment",
+                "desc");
+    }
+
+    public static CommentFilterOptions createMockCommentFilterOptions() {
+        return new CommentFilterOptions(
+                1,
                 "TestContent",
                 "MockUsername",
                 "title",
