@@ -16,7 +16,7 @@ public interface UserRepository {
 
     User getByEmail(String email);
 
-    List<User> get(UserFilterOptions filterOptions);
+    List<User> getAll(UserFilterOptions filterOptions);
 
     List<Comment> getUserComments(User user);
 

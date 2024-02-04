@@ -43,11 +43,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> get(UserFilterOptions filterOptions, User user) {
+    public List<User> getAll(UserFilterOptions filterOptions, User user) {
         if(!user.isAdmin()){
             throw new AuthorizationException(ADMINS_CAN_VIEW_ALL_USERS_ERROR);
         }
-        return repository.get(filterOptions);
+        return repository.getAll(filterOptions);
     }
 
     @Override
@@ -78,13 +78,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User userToBeChanged, User user) {
+    public void update(User userToBeUpdated, User user) {
 
-        checkModifyPermissions(userToBeChanged.getUsername(), user);
+        checkModifyPermissions(userToBeUpdated, user);
 
         try {
-            User existingEmail = repository.getByEmail(user.getEmail());
-            throw new EntityDuplicateException("User","email",existingEmail.getEmail());
+            User existingEmail = repository.getByEmail(userToBeUpdated.getEmail());
+            if(existingEmail.getId() != userToBeUpdated.getId()) {
+                throw new EntityDuplicateException("User", "email", existingEmail.getEmail());
+            }
         } catch (EntityNotFoundException ignored){
         }
 
@@ -94,13 +96,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(int id, User user) {
         User userToBeDeleted = repository.get(id);
-        checkModifyPermissions(userToBeDeleted.getUsername(), user);
+        checkModifyPermissions(userToBeDeleted, user);
         userToBeDeleted.setActive(false);
         repository.update(userToBeDeleted);
     }
 
     @Override
-    public void block(User user, int id) {
+    public void block(int id, User user) {
         User userToBeBlocked = repository.get(id);
         if (!user.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
@@ -111,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void unblock(User user, int id) {
+    public void unblock(int id, User user) {
         User userToBeUnblocked = repository.get(id);
         if (!user.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
@@ -121,7 +123,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void makeAdmin(User user, int id) {
+    public void makeAdmin(int id, User user) {
         User makeAdmin = repository.get(id);
         if (!user.isAdmin()){
             throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
@@ -131,9 +133,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private void checkModifyPermissions(String username, User user) {
-        User user1 = repository.getByUsername(username);
-        if (!(user.isAdmin() && user1.getId() == user.getId())) {
+    private void checkModifyPermissions(User userToBeUpdated, User user) {
+        if (!user.isAdmin() && userToBeUpdated.getId() != user.getId()) {
             throw new AuthorizationException(MODIFY_USER_ERROR_MESSAGE);
         }
     }
