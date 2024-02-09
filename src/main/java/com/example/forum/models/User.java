@@ -3,7 +3,6 @@ package com.example.forum.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -52,12 +51,12 @@ public class User {
     private boolean isBlocked;
 
     @JsonIgnore
-    @Column(name = "is_active")
-    private boolean isActive;
-
-    @JsonIgnore
     @Column(name = "is_admin")
     private boolean isAdmin;
+
+    @JsonIgnore
+    @Column(name = "is_active")
+    private boolean isActive;
 
     public int getId() {
         return id;
