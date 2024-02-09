@@ -90,7 +90,7 @@ public class UserController {
     @PostMapping
     public void create(@Valid @RequestBody UserDto userDto) {
         try {
-            User user = userMapper.fromDto(userDto);
+            User user = userMapper.fromUserDto(userDto);
             service.create(user);
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
