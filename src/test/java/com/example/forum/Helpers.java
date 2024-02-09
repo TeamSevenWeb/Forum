@@ -45,7 +45,6 @@ public class Helpers {
         mockPost.setPostId(1);
         mockPost.setTitle("TestTitleForTestPostTest");
         mockPost.setContent("TestContentForPostTestTestTest");
-        mockPost.setLikes(1);
         User user = createMockUser();
         mockPost.setCreatedBy(user);
         mockPost.setDateAndTimeOfCreation(LocalDateTime.now());

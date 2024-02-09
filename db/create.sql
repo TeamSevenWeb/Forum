@@ -51,7 +51,6 @@ create table posts
     created_by                int           not null,
     title                     varchar(64)   not null,
     content                   varchar(8192) not null,
-    likes                     int default 0 null,
     date_and_time_of_creation datetime      null,
     constraint posts_users_user_id_fk
         foreign key (created_by) references users (user_id)

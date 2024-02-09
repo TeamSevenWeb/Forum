@@ -20,8 +20,7 @@ public class Post {
     private String title;
     @Column(name = "content")
     private String content;
-    @Column(name = "likes")
-    private Integer likes;
+
     @Column(name = "date_and_time_of_creation")
     private LocalDateTime dateAndTimeOfCreation;
 
@@ -63,14 +62,6 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Integer getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Integer likes) {
-        this.likes = likes;
     }
 
     public LocalDateTime getDateAndTimeOfCreation() {

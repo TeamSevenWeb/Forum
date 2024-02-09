@@ -11,7 +11,6 @@ import com.example.forum.helpers.CommentMapper;
 import com.example.forum.helpers.PostMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
-import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
@@ -19,7 +18,6 @@ import com.example.forum.services.CommentService;
 import com.example.forum.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -134,12 +132,12 @@ public class PostController {
 
     }
 
-    @PutMapping("/react/{postId}/{reactionType}")
-    public void react(@RequestHeader HttpHeaders headers, @PathVariable int postId, @PathVariable String reactionType) {
+    @PutMapping("/upvote/{postId}")
+    public void upvote(@RequestHeader HttpHeaders headers, @PathVariable int postId) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             Post post = service.get(postId);
-            service.react(reactionType, post,user);
+            service.upvote(post,user);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
