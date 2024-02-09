@@ -10,6 +10,7 @@ import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.repositories.CommentRepository;
 import com.example.forum.repositories.PostRepository;
+import com.example.forum.repositories.ReactionRepository;
 import com.example.forum.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ public class PostServiceImplTests {
     CommentRepository mockCommentRepository;
     @Mock
     UserRepository mockUserRepository;
+
+    @Mock
+    ReactionRepository reactionRepository;
 
     @Mock
     ReactionService reactionService;
@@ -286,32 +290,19 @@ public class PostServiceImplTests {
     }
 
     @Test
-    void react_Should_Call_reactionService_if_Valid_reactionType(){
+    void upvote_Should_Call_reactionService_if_Valid_Arguments(){
         // Arrange
-        String reactionType = "like";
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
 
         // Act
-        service.react(reactionType,mockPost,mockUser);
+        Mockito.when(reactionService.hasLiked(mockPost,mockUser)).thenThrow(EntityNotFoundException.class);
+        service.upvote(mockPost,mockUser);
 
         // Assert
-        Mockito.verify(reactionService, Mockito.times(1)).hasReacted(mockPost,mockUser);
+        Mockito.verify(reactionService, Mockito.times(1)).createLike(mockPost,mockUser);
 
     }
 
-    @Test
-    void react_Should_Throw_If_Invalid_reactionType(){
-        // Arrange
-        String reactionType = "IncorrectReactionType";
-        Post mockPost = createMockPost();
-        User mockUser = createMockUser();
-
-        // Act, Assert
-        Assertions.assertThrows(
-                InvalidReactionException.class,
-                () -> service.react(reactionType,mockPost,mockUser));
-
-    }
 
 }

@@ -117,50 +117,20 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void react(String reactionType,Post post, User user) {
+    public void upvote(Post post, User user) {
 
-            if (reactionType.equals("like")){
-                if (!reactionService.hasReacted(post,user)){
-                    reactionService.createLike(post,user);
-                    incrementLikes(post);
-                }
-                else if (reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
-                    reactionService.deleteReaction(post,user);
-                    decrementLikes(post);
-                }
-                else if (!reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
-                    reactionService.setLiked(post,user);
-                    incrementLikes(post);
-                    incrementLikes(post);
-                }}
-        else if (reactionType.equals("dislike")){
-                if (!reactionService.hasReacted(post,user)){
-                    reactionService.createDislike(post,user);
-                    decrementLikes(post);
-                }
-                else if (reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
-                    reactionService.setDisliked(post,user);
-                    decrementLikes(post);
-                    decrementLikes(post);
-                }
-                else if (!reactionService.hasLiked(post,user) && reactionService.hasReacted(post,user)){
-                    reactionService.deleteReaction(post,user);
-                    incrementLikes(post);
-                }}
-        else throw new InvalidReactionException(reactionType);
-
+        try {
+            if (reactionService.hasLiked(post,user)){
+                reactionService.deleteReaction(post,user);
+            }
+            else if (!reactionService.hasLiked(post,user)){
+                reactionService.setLiked(post,user);
+            }
+        } catch (EntityNotFoundException e) {
+           reactionService.createLike(post,user);
+        }
     }
 
-    @Override
-    public void incrementLikes(Post post){
-        post.setLikes(post.getLikes() + 1);
-        repository.update(post);
-    }
-    @Override
-    public void decrementLikes(Post post){
-        post.setLikes(post.getLikes() - 1);
-        repository.update(post);
-    }
 
     private void checkModifyPermissions(int id, User user) {
         Post post = repository.get(id);
