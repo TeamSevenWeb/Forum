@@ -100,6 +100,15 @@ public class PostController {
         }
     }
 
+    @GetMapping("/most+recent")
+    public List<Post> getTenMostRecent(){
+        try {
+            return service.getTenMostRecentPosts();
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @PostMapping
     public Post create(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDto postDto) {
         try {

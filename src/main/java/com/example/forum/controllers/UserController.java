@@ -153,6 +153,8 @@ public class UserController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             service.delete(id,user);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

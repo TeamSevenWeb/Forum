@@ -15,7 +15,7 @@ public class RegisterDto extends LoginDto {
     private String lastName;
 
     @NotEmpty(message = "Email can't be empty")
-    @Email
+    @Email(message = "Email should be valid")
     private String email;
 
     public String getPasswordConfirm() {
