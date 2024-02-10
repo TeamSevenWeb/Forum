@@ -5,9 +5,7 @@ import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.UserMapper;
-import com.example.forum.models.Post;
 import com.example.forum.models.User;
-import com.example.forum.models.dtos.PostDto;
 import com.example.forum.models.dtos.UserDto;
 import com.example.forum.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -70,8 +68,25 @@ public class UserMvcController {
        }
     }
 
+    @GetMapping("/{id}")
+    public String showUserPage(@PathVariable int id, Model model, HttpSession session){
+        User userToShow;
+        try {
+            authenticationHelper.tryGetCurrentUser(session);
+            userToShow = userService.get(id);
+            model.addAttribute("user",userToShow);
+            return "UserView";
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        } catch (EntityNotFoundException e){
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
+
     @GetMapping("/update")
-    public String showEditBeerPage(Model model, HttpSession session) {
+    public String showEditUserPage(Model model, HttpSession session) {
         try {
             User user = authenticationHelper.tryGetCurrentUser(session);
             UserDto userDto = userMapper.toDto(user);
@@ -84,12 +99,18 @@ public class UserMvcController {
     }
 
     @PostMapping("/update")
-    public String updatePost(@Valid @ModelAttribute("user") UserDto userDto, BindingResult errors, Model model,HttpSession session){
+    public String updateUserView(@Valid @ModelAttribute("user") UserDto userDto, BindingResult errors, Model model,HttpSession session){
+        User user;
+        try {
+            user = authenticationHelper.tryGetCurrentUser(session);
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        }
+
         if(errors.hasErrors()){
             return "UserView";
         }
         try {
-            User user = authenticationHelper.tryGetCurrentUser(session);
             User userToUpdate = userMapper.fromDto(user.getId(),userDto);
             userService.update(user,userToUpdate);
             return "redirect:/user";
@@ -100,23 +121,6 @@ public class UserMvcController {
         }catch (EntityDuplicateException e){
             errors.rejectValue("name","post.exists",e.getMessage());
             return "UserUpdateView";
-        }
-    }
-
-    @GetMapping("/{id}")
-    public String showUserPage(@PathVariable int id, Model model, HttpSession session){
-        User userToShow;
-        try {
-            User loggedUser = authenticationHelper.tryGetCurrentUser(session);
-            userToShow = userService.get(id);
-            model.addAttribute("user",userToShow);
-            return "UserView";
-        } catch (AuthorizationException e) {
-            return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
-            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
-            model.addAttribute("error", e.getMessage());
-            return "ErrorView";
         }
     }
 }

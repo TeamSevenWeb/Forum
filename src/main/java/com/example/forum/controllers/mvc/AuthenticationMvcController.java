@@ -94,6 +94,7 @@ public class AuthenticationMvcController {
             User user = userMapper.fromRegisterDto(register);
             userService.create(user);
             return "redirect:/auth/login";
+            //TODO We can have duplicate exception for username and for email.Think how to make the catch
         } catch (EntityDuplicateException e) {
             bindingResult.rejectValue("username", "username_error", e.getMessage());
             return "RegisterView";

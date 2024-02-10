@@ -106,6 +106,12 @@ public class PostController {
         try {
             return reactionService.getUpVoteCount(id);
         } catch (EntityNotFoundException e) {
+
+    @GetMapping("/most+recent")
+    public List<Post> getTenMostRecent(){
+        try {
+            return service.getTenMostRecentPosts();
+        } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
