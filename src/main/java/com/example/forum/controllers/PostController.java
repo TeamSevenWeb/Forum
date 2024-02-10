@@ -103,9 +103,10 @@ public class PostController {
 
     @GetMapping("/{id}/upvotes")
     public long getPostUpVotes(@PathVariable int id) {
-        try {
             return reactionService.getUpVoteCount(id);
-        } catch (EntityNotFoundException e) {
+        }
+
+
 
     @GetMapping("/most+recent")
     public List<Post> getTenMostRecent(){
@@ -151,6 +152,7 @@ public class PostController {
     }
 
     @PutMapping("/upvote/{postId}")
+
     public void upvote(@RequestHeader HttpHeaders headers, @PathVariable int postId) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
