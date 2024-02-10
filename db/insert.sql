@@ -26,12 +26,12 @@ INSERT INTO forum.admins_phone_numbers (admin_id, phone_number) VALUES (1, '0899
 INSERT INTO forum.admins_phone_numbers (admin_id, phone_number)VALUES (2, '0877777777');
 INSERT INTO forum.admins_phone_numbers (admin_id, phone_number) VALUES (3, '0888888888');
 
-INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (1, 1, 'Hello', 'Hello World', 3, '2024-01-14 23:12:26');
-INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (2, 2, 'Hola', 'Que passa amigos', 2, '2024-01-16 23:12:20');
-INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (3, 3, 'Zdrastvuite ribqta', 'Kak delate druzq', 4, '2024-01-20 23:14:02');
-INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (4, 5, 'gotin forum', 'Tozi forum e strahoten !!!', 3, '2024-01-17 23:15:19');
-INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (5, 7, 'obicham telerik', 'Nai - dobrite !!!', 8, '2024-01-18 23:15:34');
-INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (6, 7, 'telerik me obicha', 'Normalno !', 1, '2024-01-18 23:15:41');
+INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (1, 1, 'Hello', 'Hello World', '2024-01-14 23:12:26');
+INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (2, 2, 'Hola', 'Que passa amigos', '2024-01-16 23:12:20');
+INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (3, 3, 'Zdrastvuite ribqta', 'Kak delate druzq', '2024-01-20 23:14:02');
+INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (4, 5, 'gotin forum', 'Tozi forum e strahoten !!!', '2024-01-17 23:15:19');
+INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (5, 7, 'obicham telerik', 'Nai - dobrite !!!', '2024-01-18 23:15:34');
+INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (6, 7, 'telerik me obicha', 'Normalno !', '2024-01-18 23:15:41');
 
 INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (1, 1);
 INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (1, 2);

@@ -1,26 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Home Page</title>
-    <link rel="icon" href="/logo.png" type="image/png">
-</head>
-<style>
-    body {
-        background-image: url('/images/home_background.jpg');
-    }
-</style>
+<div th:insert="~{fragments/PageFrame :: head('Forum Home')}"></div>
 <body>
-
-<div class="body-content">
-    <h2 th:text="#{home.welcome}">Welcome!</h2>
-</div>
-<div class="table">
-        <div class="header" th:text="#{post.header.name}"></div>
-
-        <div th:each="post:${mostCommentedPosts}">
-            <a href="#" th:href="@{https://www.youtube.com/watch?v=33EwEFfjXMQ&ab_channel=Release-Topic}" th:text="${post.getTitle()}">PostTitle</a>
+<!--NavBar Section-->
+<div th:insert="~{fragments/PageFrame :: navbar}"></div>
+<section class="page-section">
+<div class="container">
+    <!--Navigation-->
+    <div class="navigate" th:text="#{post.most.popular.header}">
+    </div>
+    <!--Display posts table-->
+    <div class="posts-table">
+        <div class="table-head">
+            <div class="status">Status</div>
+            <div class="subjects">Title</div>
+            <div class="comments">Comments</div>
+            <div class="last-comment">Last Comment</div>
         </div>
+    <!--starts here-->
+        <div class="table-row" th:each="post : ${mostCommentedPosts}">
+            <div class="status"><i class="fa fa-fire"></i></div>
+            <div class="subjects">
+                <span th:text="${post.getTitle()}">
+<!--                    <a href="#" th:href="@{/posts/__${post.id}__}"></a>-->
+                </span>
+                <br>
+                <span th:text="${post.getCreatedBy().getUsername()}">
+<!--                    <a href="#" th:href="@{/users/__${user.id}__}"></a>-->
+                </span>
+            </div>
+            <div class="comments">
+                <span></span> <!-- Add comments count -->
+            </div>
+
+            <div class="last-comment">
+                <span></span> <!-- Add info for last comments - Date and user -->
+            </div>
+        </div>
+        </div>
+        <!--ends here-->
+    </div>
+</section>
+<section>
+<div class="container">
+    <!--Navigation-->
+    <div class="navigate" th:text="#{post.most.recent.header}">
+    </div>
+    <!--Display posts table-->
+    <div class="posts-table">
+        <div class="table-head">
+            <div class="status">Status</div>
+            <div class="subjects">Title</div>
+            <div class="comments">Comments</div>
+            <div class="creation-date">Creation Date</div>
+        </div>
+        <!--starts here-->
+        <div class="table-row" th:each="post : ${mostRecentPosts}">
+            <div class="status"><i class="fa fa-fire"></i></div>
+            <div class="subjects">
+                <span th:text="${post.getTitle()}">
+<!--                    <a href="#" th:href="@{/posts/__${post.id}__}"></a>-->
+                </span>
+                <br>
+                <span th:text="${post.getCreatedBy().getUsername()}">
+<!--                    <a href="#" th:href="@{/users/__${user.id}__}"></a>-->
+                </span>
+            </div>
+            <div class="comments">
+                <span></span> <!-- Add comments count -->
+            </div>
+
+            <div class="creation-date">
+                <span></span> <!-- Add creation date -->
+            </div>
+        </div>
+    </div>
+    <!--ends here-->
 </div>
+</section>
+<!-- Footer-->
+<footer th:replace="~{/fragments/PageFrame :: footer}"></footer>
+<div th:replace="~{/fragments/PageFrame :: scripts}"></div>
 </body>
 </html>
