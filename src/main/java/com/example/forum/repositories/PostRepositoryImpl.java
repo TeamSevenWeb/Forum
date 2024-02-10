@@ -1,9 +1,7 @@
 package com.example.forum.repositories;
 
-import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.PostsFilterOptions;
-import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import org.hibernate.Session;
@@ -50,7 +48,8 @@ public class PostRepositoryImpl implements PostRepository {
                     User user = userRepository.getByUsername(value);
                     filters.add("createdBy = :created_by");
                     params.put("created_by", user);
-                } catch (AuthorizationException e){
+                    //TODO check is this the right exception
+                } catch (EntityNotFoundException e){
                     throw new EntityNotFoundException("Posts","creator",value);
                 }
             });
@@ -85,6 +84,19 @@ public class PostRepositoryImpl implements PostRepository {
                 throw new EntityNotFoundException("posts");
             }
 
+            return result;
+        }
+    }
+
+
+    @Override
+    public List<Post> getTenMostRecent() {
+        try (Session session = sessionFactory.openSession()){
+            Query<Post> query = session.createQuery("from Post order by dateAndTimeOfCreation desc LIMIT 10", Post.class);
+            List<Post> result = query.list();
+            if (result.isEmpty()){
+                throw new EntityNotFoundException("posts");
+            }
             return result;
         }
     }

@@ -12,6 +12,8 @@ public interface PostRepository {
 
     List<Post> getTopTenCommented();
 
+    List<Post> getTenMostRecent();
+
     Post get(String title);
 
     Post get(int id);

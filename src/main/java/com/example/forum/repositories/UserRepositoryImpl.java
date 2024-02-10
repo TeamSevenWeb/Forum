@@ -2,7 +2,6 @@ package com.example.forum.repositories;
 
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityNotFoundException;
-import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -120,7 +119,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             List<Post> result = query.list();
             if (result.isEmpty()) {
-                throw new EntityNotFoundException("posts from this user");
+                throw new EntityNotFoundException("posts from this user are");
             }
 
             return result;
@@ -135,7 +134,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             List<Comment> result = query.list();
             if (result.isEmpty()) {
-                throw new EntityNotFoundException("comments from this user");
+                throw new EntityNotFoundException("comments from this user are");
             }
 
             return result;

@@ -23,7 +23,9 @@ public class HomeMvcController {
     @GetMapping
     public String showHomePage(Model model) {
         List<Post> mostCommentedPosts = postService.getMostCommentedPosts();
+        List<Post> mostRecentPosts = postService.getTenMostRecentPosts();
         model.addAttribute("mostCommentedPosts", mostCommentedPosts);
+        model.addAttribute("mostRecentPosts", mostRecentPosts);
         return "HomeView";
     }
 
