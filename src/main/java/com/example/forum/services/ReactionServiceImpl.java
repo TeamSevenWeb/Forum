@@ -4,6 +4,7 @@ import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.models.Post;
 import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
+import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.ReactionRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,11 @@ public class ReactionServiceImpl implements ReactionService{
 
     private final ReactionRepository reactionRepository;
 
-    public ReactionServiceImpl(ReactionRepository reactionRepository) {
+    private final PostRepository postRepository;
+
+    public ReactionServiceImpl(ReactionRepository reactionRepository, PostRepository postRepository) {
         this.reactionRepository = reactionRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -76,6 +80,11 @@ public class ReactionServiceImpl implements ReactionService{
         Reaction reaction = reactionRepository.get(post,user);
         reaction.setIsLiked(false);
         reactionRepository.update(reaction);
+    }
+
+    @Override
+    public long getUpVoteCount(int postId) {
+        return reactionRepository.getUpVotedPostCount(postRepository.get(postId));
     }
 
 }

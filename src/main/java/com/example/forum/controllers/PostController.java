@@ -16,6 +16,7 @@ import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
 import com.example.forum.services.CommentService;
 import com.example.forum.services.PostService;
+import com.example.forum.services.ReactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,16 @@ public class PostController {
     private final PostMapper postMapper;
     private final CommentMapper commentMapper;
     private final AuthenticationHelper authenticationHelper;
+    private final ReactionService reactionService;
 
     @Autowired
-    public PostController(PostService service, CommentService commentService, PostMapper postMapper, CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
+    public PostController(PostService service, CommentService commentService, PostMapper postMapper, CommentMapper commentMapper, AuthenticationHelper authenticationHelper, ReactionService reactionService) {
         this.service = service;
         this.commentService = commentService;
         this.postMapper = postMapper;
         this.commentMapper = commentMapper;
         this.authenticationHelper = authenticationHelper;
+        this.reactionService = reactionService;
     }
 
     @GetMapping
@@ -97,6 +100,12 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+    @GetMapping("/{id}/upvotes")
+    public long getPostUpVotes(@PathVariable int id) {
+        try {
+            return reactionService.getUpVoteCount(id);
+        } catch (EntityNotFoundException e) {
 
     @GetMapping("/most+recent")
     public List<Post> getTenMostRecent(){
