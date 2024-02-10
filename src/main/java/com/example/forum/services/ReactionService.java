@@ -12,5 +12,6 @@ public interface ReactionService {
      void createDislike(Post post, User user);
      void setLiked(Post post, User user);
      void setDisliked(Post post, User user);
+    long getUpVoteCount(int postId);
 
 }
