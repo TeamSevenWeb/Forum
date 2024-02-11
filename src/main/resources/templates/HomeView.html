@@ -11,7 +11,7 @@
         <h2 th:text="#{post.most.commented.empty}">No Commented Posts</h2>
     </div>
     <div class="navigate" th:unless="${mostCommentedPosts.isEmpty()}" >
-        <h2 th:text="#{post.most.commented.header}"></h2>
+        <h2 class="ml4" th:text="#{post.most.commented.header}"></h2>
 <!--    Display posts table-->
         <div class="table">
         <div class="table-head">
@@ -44,7 +44,7 @@
         <h2 th:text="#{post.most.recent.empty}">No Recent Posts</h2>
     </div>
     <div class="navigate" th:unless="${mostRecentPosts.isEmpty()}" >
-        <h2 th:text="#{post.most.recent.header}"></h2>
+        <h2 class="ml8" th:text="#{post.most.recent.header}"></h2>
     <!--Display posts table-->
     <div class="table2">
         <div class="table-head">

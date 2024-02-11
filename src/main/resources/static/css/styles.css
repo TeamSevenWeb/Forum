@@ -1196,6 +1196,12 @@ header{
     margin-right: 0 !important;
     margin-left: 0 !important;
 }
+.ml8{
+    margin-left: 8rem !important;
+}
+.ml4{
+    margin-left: 4rem !important;
+}
 .mx-lg-1 {
     margin-right: 0.25rem !important;
     margin-left: 0.25rem !important;
@@ -1745,27 +1751,4 @@ header{
 .btn-xl {
     padding: 1rem 1.75rem;
     font-size: 1.25rem;
-}
-
-.text-boxes {
-    width: 10em;
-    margin: 0.5em;
-    white-space: normal;
-    vertical-align: top;
-    display: inline-block;
-}
-.auto {
-    line-break: auto;
-}
-.loose {
-    line-break: loose;
-}
-.normal {
-    line-break: normal;
-}
-.strict {
-    line-break: strict;
-}
-.anywhere {
-    line-break: anywhere;
 }
