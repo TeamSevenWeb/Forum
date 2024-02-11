@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('Login')}"></div>
 <body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
 
+<section class="page-section">
+    <div class="h1 center"  th:text="#{login.page.label}">Login</div>
+    <br/>
+    <div class="center">
+        <form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
+            <label th:text="#{user.label.username}">Username</label>
+            <br/>
+            <input type="text" th:field="*{username}"/>
+            <label class="error" th:errors="*{username}">Username error placeholder</label>
+            <br/><br/>
+
+            <label th:text="#{user.label.password}">Password</label>
+            <br/>
+            <input type="password" th:field="*{password}"/>
+            <label class="error" th:errors="*{password}">Password error placeholder</label>
+            <br/><br/>
+
+            <input type="submit" value="Login"/>
+        </form>
+    </div>
+</section>
+
+
+<footer th:replace="~{/fragments/PageFrame :: footer}"></footer>
+<div th:replace="~{/fragments/PageFrame :: scripts}"></div>
 </body>
 </html>

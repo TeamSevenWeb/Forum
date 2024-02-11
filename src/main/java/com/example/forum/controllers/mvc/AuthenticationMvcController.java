@@ -80,7 +80,8 @@ public class AuthenticationMvcController {
 
     @PostMapping("/register")
     public String handleRegister(@Valid @ModelAttribute("register") RegisterDto register,
-                                 BindingResult bindingResult) {
+                                 BindingResult bindingResult,
+                                 HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "RegisterView";
         }
@@ -93,7 +94,9 @@ public class AuthenticationMvcController {
         try {
             User user = userMapper.fromRegisterDto(register);
             userService.create(user);
-            return "redirect:/auth/login";
+            session.setAttribute("currentUser", user.getUsername());
+            session.setAttribute("isAdmin", false);
+            return "redirect:/";
             //TODO We can have duplicate exception for username and for email.Think how to make the catch
         } catch (EntityDuplicateException e) {
             bindingResult.rejectValue("username", "username_error", e.getMessage());
