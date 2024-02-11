@@ -102,6 +102,13 @@ h1, .h1 {
 /* ########################################### */
 /*           Forums.html                       */
 /* ########################################### */
+.footer-container{
+    width: 100%;
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+    margin-right: auto;
+    margin-left: auto;
+}
 .container,
 .container-fluid,
 .container-xxl,
@@ -112,8 +119,10 @@ h1, .h1 {
     width: 100%;
     padding-right: var(--bs-gutter-x, 0.75rem);
     padding-left: var(--bs-gutter-x, 0.75rem);
+    display: flex;
     margin-right: auto;
     margin-left: auto;
+    white-space: nowrap; /* Prevents the tables from wrapping onto new lines */
 }
 
 .subforum{
@@ -916,69 +925,54 @@ header{
 /* ########################################### */
 
 /* posts table's head  */
-.table-head{
-    display: flex;
+.table {
+    vertical-align: top; /* Aligns tables at the top */
+    display: inline-block;
+    margin-left: 6rem;
+    margin-right: auto;
 }
 
-.table-head div{
-    padding: 5px;
-    margin: 2px;
-    background-color: #2C2C2C;
+.table2 {
+    vertical-align: top; /* Aligns tables at the top */
+    display: inline-block;
+    margin-left: 9rem;
+    margin-right: auto;
+}
+
+.table-head {
+    display: table-header-group;
     font-weight: bold;
 }
 
-.table-head .status{
-    flex: 5%;
+.table-header-cell {
+    display: table-cell;
+    width: auto;
+    padding: 12px;
+    border-bottom: 2px solid #dee2e6;
+}
+.table-row {
+    display: table-row;
 }
 
-.table-head .subjects{
-    flex: 70%;
-}
-
-.table-head .comments{
-    flex: 10%;
-}
-
-.table-head .last-comment{
-    flex: 15%;
-}
-
-.table-head .creation-date{
-    flex: 15%;
+.cell {
+    display: table-cell;
+    width: auto;
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
 }
 
 /* posts table's body  */
-
-.table-row{
-    display: flex;
-}
-
-.table-row .status, .table-row .subjects, .table-row .comments, .table-row .last-comment, .table-row .creation-date{
-    padding: 5px;
-    margin: 2px;
-    background-color: #131415;
-}
-
-.table-row .status{
-    flex: 5%;
-    font-size: 30px;
+.navigate {
     text-align: center;
 }
 
-.table-row .subjects{
-    flex: 70%;
-}
-
-.table-row .comments{
-    flex: 10%;
-}
-
-.table-row .last-comment{
-    flex: 15%;
-}
-
-.table-row .creation-date{
-    flex: 15%;
+.linebreak {
+    width: 10em;
+    margin: 0.5em;
+    white-space: normal;
+    vertical-align: top;
+    display: inline-block;
+    overflow-wrap: break-word; /* Use overflow-wrap instead of line-break */
 }
 
 /* main nav*/
@@ -1751,4 +1745,27 @@ header{
 .btn-xl {
     padding: 1rem 1.75rem;
     font-size: 1.25rem;
+}
+
+.text-boxes {
+    width: 10em;
+    margin: 0.5em;
+    white-space: normal;
+    vertical-align: top;
+    display: inline-block;
+}
+.auto {
+    line-break: auto;
+}
+.loose {
+    line-break: loose;
+}
+.normal {
+    line-break: normal;
+}
+.strict {
+    line-break: strict;
+}
+.anywhere {
+    line-break: anywhere;
 }
