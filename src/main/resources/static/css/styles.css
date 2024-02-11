@@ -927,6 +927,13 @@ header{
 /* posts table's head  */
 .table {
     vertical-align: top; /* Aligns tables at the top */
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table1 {
+    vertical-align: top; /* Aligns tables at the top */
     display: inline-block;
     margin-left: 6rem;
     margin-right: auto;
@@ -1199,6 +1206,12 @@ header{
 .ml8{
     margin-left: 8rem !important;
 }
+
+.py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
 .ml4{
     margin-left: 4rem !important;
 }
@@ -1221,12 +1234,29 @@ header{
     left: 0;
     z-index: 1030;
 }
+
+/*Posts Page*/
+.px-4 {
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+}
+.px-lg-5 {
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
+}
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
 .bg-secondary {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important;
 }
 .text-center {
     text-align: center !important;
+}
+.fw-bolder {
+    font-weight: bolder !important;
 }
 
 .mx-1 {
