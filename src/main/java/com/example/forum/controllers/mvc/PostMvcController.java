@@ -5,6 +5,7 @@ import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.filters.dtos.PostFilterDto;
 import com.example.forum.helpers.PostMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -14,6 +15,7 @@ import com.example.forum.services.CommentService;
 import com.example.forum.services.PostService;
 import com.example.forum.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -46,9 +48,31 @@ public class PostMvcController {
         this.mapper = mapper;
     }
 
+    @ModelAttribute("isAuthenticated")
+    public boolean populateIsAuthenticated(HttpSession session) {
+        return session.getAttribute("currentUser") != null;
+    }
+
+    @ModelAttribute("requestURI")
+    public String requestURI(final HttpServletRequest request) {
+        return request.getRequestURI();
+    }
+
     @GetMapping
-    public String showAllPosts(Model model) {
-        model.addAttribute("posts", service.getAll(new PostsFilterOptions()));
+    public String showAllPosts(@ModelAttribute("postFilterOptions") PostFilterDto filterDto, Model model, HttpSession session) {
+        PostsFilterOptions filterOptions = new PostsFilterOptions(
+                filterDto.getTitle(),
+                filterDto.getKeyword(),
+                filterDto.getCreatedBy(),
+                filterDto.getSortBy(),
+                filterDto.getSortOrder());
+        List<Post> posts = service.getAll(filterOptions);
+        if (populateIsAuthenticated(session)){
+            String currentUsername = (String) session.getAttribute("currentUser");
+            model.addAttribute("currentUser", userService.getByUsername(currentUsername));
+        }
+        model.addAttribute("postFilterOptions", filterDto);
+        model.addAttribute("posts", posts);
         return "PostsView";
     }
 
@@ -94,7 +118,7 @@ public class PostMvcController {
     }
 
     @GetMapping("/{id}/update")
-    public String showEditBeerPage(@PathVariable int id, Model model) {
+    public String showEditPostPage(@PathVariable int id, Model model) {
         try {
             Post post = service.get(id);
             PostDto postDto = mapper.toDto(post);

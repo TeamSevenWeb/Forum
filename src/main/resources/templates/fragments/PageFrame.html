@@ -5,7 +5,7 @@
     <title th:text="${'Forum | '+ title}">Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon-->
-    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="icon" href="../../static/logo.png" type="image/png">
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Core Theme CSS (includes Bootstrap) -->
@@ -23,7 +23,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-0 mx-lg-1">
+                <li th:unless="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#" th:href="@{/posts}"
                        th:text="#{navigation.all-posts}">Browse all Posts</a></li>
                 <li th:unless="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">

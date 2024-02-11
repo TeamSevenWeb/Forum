@@ -44,6 +44,9 @@ public class PostRepositoryImpl implements PostRepository {
             });
 
             postsFilterOptions.getCreatedBy().ifPresent(value -> {
+                if(value.isEmpty()){
+                    return;
+                }
                 try {
                     User user = userRepository.getByUsername(value);
                     filters.add("createdBy = :created_by");
@@ -170,8 +173,10 @@ public class PostRepositoryImpl implements PostRepository {
                 orderBy = "title";
                 break;
             case "createdBy":
-                orderBy = "created_by";
+                orderBy = "createdBy";
                 break;
+            default:
+                return "";
         }
 
         orderBy = String.format(" order by %s", orderBy);
