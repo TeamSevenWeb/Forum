@@ -53,7 +53,7 @@
                     <br>
             </div>
         <div class="cell">
-                <a href="#" th:href="@{/users/__${post.getCreatedBy().getId()}__}">
+                <a href="#" th:href="@{/user/__${post.getCreatedBy().getId()}__}">
                     <span class="linebreak" th:text="${post.getCreatedBy().getUsername()}"></span></a>
                 <br>
         </div>

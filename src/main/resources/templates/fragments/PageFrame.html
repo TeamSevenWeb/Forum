@@ -33,7 +33,9 @@
                 <li th:if="${isAuthenticated && session.isAdmin}" class="nav-item mx-0 mx-lg-1">
                     <a th:href="@{/admin}" class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Admin Portal</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#" th:href="@{/posts/new}">Create Post</a></li>
+                    <a href="#" th:href="@{/posts/new}" class="nav-link py-3 px-0 px-lg-3 rounded">Create Post</a></li>
+                <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
+                    <a href="#" th:href="@{/user}" class="nav-link py-3 px-0 px-lg-3 rounded">Profile</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a th:href="@{/auth/logout}" class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Logout</a></li>
             </ul>

@@ -1782,3 +1782,32 @@ header{
     padding: 1rem 1.75rem;
     font-size: 1.25rem;
 }
+
+
+/*probAaaa*/
+.user-info{
+    outline: 2px solid purple;
+    row-gap: normal;
+    font-size: larger;
+}
+
+.user-button{
+    color: purple;
+    font-size: 16px;
+    padding: 10px 24px;
+    border-radius: 12px;
+    border: 2px solid #800080FF;
+    transition-duration: 0.4s;
+
+}
+
+.user-button:hover{
+    background-color: rgba(128, 0, 128, 0.87);
+    color: white;
+}
+
+.user-button:active {
+    background-color: rgba(128, 0, 128, 0.42);
+    box-shadow: 0 5px #f0f0f0;
+    transform: translateY(4px);
+}
