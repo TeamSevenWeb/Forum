@@ -1,5 +1,7 @@
 package com.example.forum.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -24,11 +26,12 @@ public class Post {
     @Column(name = "date_and_time_of_creation")
     private LocalDateTime dateAndTimeOfCreation;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "posts_comments",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id")
+    @JsonManagedReference
+    @JsonIgnore
+    @OneToMany(mappedBy = "post",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private Set<Comment> postComments;
 

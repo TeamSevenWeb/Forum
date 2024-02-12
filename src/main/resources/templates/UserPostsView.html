@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('User Posts')}"></div>
+<style>
 
+</style>
+<body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+<div class="container center">
+    <section class="page-section">
+        <label>User</label>
+        <aside class="user-info">
+            <h2 class="center" th:text="${user.username}"></h2>
+            <hr>
+            <h3 class="center" th:text="${user.firstName + ' ' + user.lastName}"></h3>
+            <hr>
+            <h3 class="center" th:text="${user.email}"></h3>
+        </aside>
+        <div class="body">
+            <a href="#" th:href="@{/user/__${user.getId()}__/posts}">
+                <div class="user-button">Get user posts</div></a>
+            <br>
+            <br/>
+            <a href="#" th:href="@{/user/__${user.getId()}__/comments}">
+                <div class="user-button">Get user comments</div></a>
+            <br>
+        </div>
+    </section>
+    <section class="page-section width">
+        <div class="navigate" th:if="${user.getUserPosts().isEmpty()}">
+            <h2 th:text="${user.username + ' hasn'+' t posted anything yet'}">User has no posts</h2>
+        </div>
+        <div class="navigate" th:unless="${user.getUserPosts().isEmpty()}" >
+            <h2 class="ml4" th:text="#{user.all.posts}"></h2>
+            <!--    Display posts table-->
+            <div class="table1 center">
+                <div class="table-head">
+                    <div class="table-header-cell outline">Title</div>
+                    <div class="table-header-cell outline">Number of comments</div>
+                    <div class="table-header-cell outline" >Posting date</div>
+                </div>
+                <!--starts here-->
+                <div class="table-row outline" th:each="post : ${user.getUserPosts()}">
+                    <div class="cell">
+                        <a href="#" th:href="@{/posts/__${post.getPostId()}__}">
+                            <span class="linebreak" th:text="${post.getTitle()}"></span></a>
+                        <br>
+                    </div>
+                    <div class="cell">
+                        <span class="linebreak" th:text="${post.getPostComments().size()}"></span> <!-- Add comment content -->
+                    </div>
+
+                    <div class="cell">
+                        <span class="linebreak" th:text="${post.getDateAndTimeOfCreation()}"></span> <!-- Add info for comment - Date -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer th:replace="~{/fragments/PageFrame :: footer}"></footer>
+<div th:replace="~{/fragments/PageFrame :: scripts}"></div>d
 </body>
 </html>

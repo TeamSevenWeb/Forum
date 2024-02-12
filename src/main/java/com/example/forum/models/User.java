@@ -1,6 +1,8 @@
 package com.example.forum.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -28,22 +30,29 @@ public class User {
     @Column(name = "date_of_registration")
     private LocalDateTime dateOfRegistration;
 
+//    @JsonIgnore
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "users_posts",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "post_id")
+//    )
+    @JsonManagedReference
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_posts",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
+    @OneToMany(mappedBy = "createdBy",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private Set<Post> userPosts;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_comments",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id")
-    )
+@JsonManagedReference
+@JsonIgnore
+@OneToMany(mappedBy = "createdBy",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.EAGER
+)
     private Set<Comment> userComments;
 
     @JsonIgnore

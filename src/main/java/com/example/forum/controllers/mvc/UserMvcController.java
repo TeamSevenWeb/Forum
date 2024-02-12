@@ -86,13 +86,37 @@ public class UserMvcController {
     }
 
     @GetMapping("/{id}/posts")
-    public String showUserPosts(@PathVariable int id, Model model){
-        return "UserPostsView";
+    public String showUserPosts(@PathVariable int id, Model model, HttpSession session){
+        User userToShow;
+        try {
+            authenticationHelper.tryGetCurrentUser(session);
+            userToShow = userService.get(id);
+            model.addAttribute("user",userToShow);
+            return "UserPostsView";
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        } catch (EntityNotFoundException e){
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
     }
 
     @GetMapping("/{id}/comments")
-    public String showUserComments(@PathVariable int id, Model model){
-        return "UserCommentsView";
+    public String showUserComments(@PathVariable int id, Model model,HttpSession session){
+        User userToShow;
+        try {
+            authenticationHelper.tryGetCurrentUser(session);
+            userToShow = userService.get(id);
+            model.addAttribute("user",userToShow);
+            return "UserCommentsView";
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        } catch (EntityNotFoundException e){
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
     }
 
 
