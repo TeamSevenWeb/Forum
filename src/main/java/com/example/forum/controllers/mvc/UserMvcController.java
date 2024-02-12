@@ -50,6 +50,12 @@ public class UserMvcController {
 //        return "UsersView";
 //    }
 
+    @ModelAttribute("isAuthenticated")
+    public boolean populateIsAuthenticated(HttpSession session) {
+    return session.getAttribute("currentUser") != null;
+}
+
+
     @GetMapping
     public String showUserOwnPage(Model model, HttpSession session){
         User user;
@@ -79,6 +85,17 @@ public class UserMvcController {
         }
     }
 
+    @GetMapping("/{id}/posts")
+    public String showUserPosts(@PathVariable int id, Model model){
+        return "UserPostsView";
+    }
+
+    @GetMapping("/{id}/comments")
+    public String showUserComments(@PathVariable int id, Model model){
+        return "UserCommentsView";
+    }
+
+
     @GetMapping("/update")
     public String showEditUserPage(Model model, HttpSession session) {
         try {
@@ -102,7 +119,7 @@ public class UserMvcController {
         }
 
         if(errors.hasErrors()){
-            return "UserView";
+            return "UserUpdateView";
         }
         try {
             User userToUpdate = userMapper.fromDto(user.getId(),userDto);
