@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 </head>
 <body>
+
+<!--<i class="fa-solid fa-thumbs-up"></i>-->
+<!--<i class="bi bi-hand-thumbs-up"></i>-->
+<!--<i class="bi bi-hand-thumbs-up-fill"></i>-->
+<!--<i class="fa-regular fa-thumbs-up"></i>-->
+<!--<input type="button" value="upvote" class="fa-regular fa-thumbs-up"/>-->
+<!--<form action="#" th:action="@{__${requestURI}__/upvote}" th:object="${post}" method="post">-->
+<!--</form>-->
+<h3>
+<a
+        th:href="@{__${requestURI}__/upvote}"
+        class="upvote-light">
+    <i class="fa-regular fa-thumbs-up"></i>
+</a>
+</h3>
+<script src="https://kit.fontawesome.com/03129db14f.js" crossorigin="anonymous"></script>
 
 </body>
 </html>

@@ -3,9 +3,11 @@ package com.example.forum.controllers.mvc;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.filters.dtos.PostFilterDto;
+import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.PostMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -40,12 +42,15 @@ public class PostMvcController {
 
     private final PostMapper mapper;
 
+    private final AuthenticationHelper authenticationHelper;
+
     @Autowired
-    public PostMvcController(PostService service, UserService userService, CommentService commentService, PostMapper mapper) {
+    public PostMvcController(PostService service, UserService userService, CommentService commentService, PostMapper mapper, AuthenticationHelper authenticationHelper) {
         this.service = service;
         this.userService = userService;
         this.commentService = commentService;
         this.mapper = mapper;
+        this.authenticationHelper = authenticationHelper;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -164,4 +169,26 @@ public class PostMvcController {
             return "ErrorView";
         }
     }
+
+    @GetMapping("{id}/upvote")
+
+    public String upvote(HttpSession session, @PathVariable int id) {
+        try {
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            Post post = service.get(id);
+            service.upvote(post,user);
+            return "redirect:/posts";
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+        catch (InvalidReactionException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
 }
