@@ -63,6 +63,7 @@ create table comments
     post_id    int          not null,
     created_by int          not null,
     comment    varchar(250) null,
+    date_and_time_of_creation datetime      null,
     constraint posts_comments_posts_post_id_fk
         foreign key (post_id) references posts (post_id),
     constraint posts_comments_users_user_id_fk

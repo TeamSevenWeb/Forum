@@ -3,6 +3,7 @@ package com.example.forum.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,9 @@ public class Comment {
     private User createdBy;
     @Column(name = "comment")
     private String comment;
+
+    @Column(name = "date_and_time_of_creation")
+    private LocalDateTime dateAndTimeOfCreation;
 
     public int getCommentId() {
         return commentId;
@@ -55,6 +59,14 @@ public class Comment {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public LocalDateTime getDateAndTimeOfCreation() {
+        return dateAndTimeOfCreation;
+    }
+
+    public void setDateAndTimeOfCreation(LocalDateTime dateAndTimeOfCreation) {
+        this.dateAndTimeOfCreation = dateAndTimeOfCreation;
     }
 
     @Override

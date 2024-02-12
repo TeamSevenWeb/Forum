@@ -1789,6 +1789,17 @@ header{
     outline: 2px solid purple;
     row-gap: normal;
     font-size: larger;
+    border-radius: 6px;
+}
+
+.outline{
+    outline: 2px solid purple;
+    row-gap: normal;
+    border-radius: 6px;
+}
+
+.width{
+    width: available ;
 }
 
 .user-button{

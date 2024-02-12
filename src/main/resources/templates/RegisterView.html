@@ -8,7 +8,7 @@
     <div class="h1 center"  th:text="#{register.page.label}">Register</div>
     <br/>
     <div class="center">
-        <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+        <form class="outline" action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
             <label th:text="#{user.label.username}">Username</label>
             <br/>
             <input type="text" th:field="*{username}"/>

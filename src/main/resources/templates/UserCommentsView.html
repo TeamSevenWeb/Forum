@@ -1,10 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('User Comments')}"></div>
+<style>
 
+</style>
+<body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+<div class="container center">
+    <section class="page-section">
+        <label>User</label>
+        <aside class="user-info">
+            <h2 class="center" th:text="${user.username}"></h2>
+            <hr>
+            <h3 class="center" th:text="${user.firstName}"></h3>
+            <hr>
+            <h3 class="center" th:text="${user.lastName}"></h3>
+            <hr>
+            <h3 class="center" th:text="${user.email}"></h3>
+        </aside>
+        <div class="body">
+            <a href="#" th:href="@{/user/__${user.getId()}__/posts}">
+                <div class="user-button">Get user posts</div></a>
+            <br>
+            <br/>
+            <a href="#" th:href="@{/user/__${user.getId()}__/comments}">
+                <div class="user-button">Get user comments</div></a>
+            <br>
+        </div>
+    </section>
+<section class="page-section width">
+    <div class="navigate" th:if="${user.getUserComments().isEmpty()}">
+        <h2 th:text="${user.username + ' hasn'+' t commented any posts yet'}">User has no comments</h2>
+    </div>
+    <div class="navigate" th:unless="${user.getUserComments().isEmpty()}" >
+        <h2 class="ml4" th:text="#{user.all.comments}"></h2>
+        <!--    Display posts table-->
+        <div class="table1 center">
+            <div class="table-head">
+                <div class="table-header-cell outline">Commented posts</div>
+                <div class="table-header-cell outline" th:text="${user.getUsername()+' comments'}">User comments</div>
+                <div class="table-header-cell outline" >Comment date</div>
+            </div>
+            <!--starts here-->
+            <div class="table-row outline" th:each="comment : ${user.getUserComments()}">
+                <div class="cell">
+                    <a href="#" th:href="@{/posts/__${comment.getPost().getPostId()}__}">
+                        <span class="linebreak" th:text="${comment.getPost().getTitle()}"></span></a>
+                    <br>
+                </div>
+                <div class="cell">
+                    <span class="linebreak" th:text="${comment.getComment()}"></span> <!-- Add comment content -->
+                </div>
+
+                <div class="cell">
+                    <span class="linebreak" th:text="${comment.getDateAndTimeOfCreation()}"></span> <!-- Add info for comment - Date -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+<footer th:replace="~{/fragments/PageFrame :: footer}"></footer>
+<div th:replace="~{/fragments/PageFrame :: scripts}"></div>d
 </body>
 </html>
