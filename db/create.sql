@@ -5,7 +5,7 @@ create table tags
     name   varchar(20) not null
 );
 
-create table forum.users
+create table users
 (
     user_id              int auto_increment
         primary key,
@@ -15,16 +15,14 @@ create table forum.users
     last_name            varchar(32) not null,
     email                varchar(50) not null,
     date_of_registration date        not null,
-    is_blocked           tinyint(0)  not null,
-    is_admin             tinyint(0)  not null,
-    is_active            tinyint(1)   not null,
+    is_blocked           tinyint     not null,
+    is_admin             tinyint     not null,
+    is_active            tinyint(1)  not null,
     constraint users_pk
         unique (username),
     constraint users_pk2
         unique (email)
 );
-
-
 
 create table admins
 (
@@ -37,11 +35,28 @@ create table admins
 
 create table admins_phone_numbers
 (
-    phone_number_id int auto_increment primary key,
-    admin_id     int         not null,
-    phone_number varchar(20) not null,
+    phone_number_id int auto_increment
+        primary key,
+    admin_id        int         not null,
+    phone_number    varchar(20) not null,
     constraint admins_phone_numbers_admins_admin_id_fk
         foreign key (admin_id) references admins (admin_id)
+);
+
+create table blocked_users
+(
+    user_id int not null
+        primary key,
+    constraint blocked_users_users_user_id
+        foreign key (user_id) references users (user_id)
+);
+
+create table deactivated_users
+(
+    user_id int not null
+        primary key,
+    constraint deactivated_users_users_user_id
+        foreign key (user_id) references users (user_id)
 );
 
 create table posts
@@ -58,12 +73,12 @@ create table posts
 
 create table comments
 (
-    comment_id int auto_increment
+    comment_id                int auto_increment
         primary key,
-    post_id    int          not null,
-    created_by int          not null,
-    comment    varchar(250) null,
-    date_and_time_of_creation datetime      null,
+    post_id                   int          not null,
+    created_by                int          not null,
+    comment                   varchar(250) null,
+    date_and_time_of_creation datetime     null,
     constraint posts_comments_posts_post_id_fk
         foreign key (post_id) references posts (post_id),
     constraint posts_comments_users_user_id_fk
@@ -102,7 +117,7 @@ create table reactions
         primary key,
     created_by  int        not null,
     post_id     int        not null,
-    isLiked     tinyint(1) null,
+    isUpVoted   tinyint(1) null,
     constraint liked_post_posts_post_id_fk
         foreign key (post_id) references posts (post_id),
     constraint liked_post_users_user_id_fk
@@ -111,9 +126,9 @@ create table reactions
 
 create table posts_reactions
 (
-    post_id    int                  not null,
+    post_id     int                  not null,
     reaction_id int                  not null,
-    isPresent    tinyint(1) default 0 not null,
+    isPresent   tinyint(1) default 0 not null,
     constraint joined_posts_reactions_posts_post_id_fk
         foreign key (post_id) references posts (post_id),
     constraint posts_reactions_reactions_reaction_id_fk
@@ -122,9 +137,10 @@ create table posts_reactions
 
 create table user_profile_photo
 (
-    profile_photo_id int auto_increment primary key,
-    user_id       int  not null,
-    profile_photo blob not null,
+    profile_photo_id int auto_increment
+        primary key,
+    user_id          int  not null,
+    profile_photo    blob not null,
     constraint user_profile_photo_users_user_id_fk
         foreign key (user_id) references users (user_id)
 );
@@ -150,20 +166,3 @@ create table users_posts
     constraint users_posts_users_user_id_fk
         foreign key (user_id) references users (user_id)
 );
-
-create table blocked_users
-(
-    user_id int not null primary key,
-    constraint  blocked_users_users_user_id
-    foreign key (user_id) references users (user_id)
-);
-
-create table deactivated_users
-(
-    user_id int not null primary key,
-    constraint  deactivated_users_users_user_id
-        foreign key (user_id) references users (user_id)
-);
-
-
-

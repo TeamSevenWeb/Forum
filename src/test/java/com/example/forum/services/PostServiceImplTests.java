@@ -3,9 +3,7 @@ package com.example.forum.services;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
-import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.PostsFilterOptions;
-import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.repositories.CommentRepository;
@@ -20,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.forum.Helpers.*;
@@ -296,11 +293,11 @@ public class PostServiceImplTests {
         User mockUser = createMockUser();
 
         // Act
-        Mockito.when(reactionService.hasLiked(mockPost,mockUser)).thenThrow(EntityNotFoundException.class);
+        Mockito.when(reactionService.hasUpVoted(mockPost,mockUser)).thenThrow(EntityNotFoundException.class);
         service.upvote(mockPost,mockUser);
 
         // Assert
-        Mockito.verify(reactionService, Mockito.times(1)).createLike(mockPost,mockUser);
+        Mockito.verify(reactionService, Mockito.times(1)).createUpVote(mockPost,mockUser);
 
     }
 

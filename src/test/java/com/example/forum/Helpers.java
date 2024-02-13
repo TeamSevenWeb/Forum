@@ -64,19 +64,19 @@ public class Helpers {
         return mockComment;
     }
 
-    public static Reaction createMockLike() {
-        var mockLike = new Reaction();
-        mockLike.setPost(createMockPost());
-        mockLike.setCreatedBy(createMockUser());
-        mockLike.setIsLiked(true);
-        return mockLike;
+    public static Reaction createMockUpvote() {
+        var mockUpVote = new Reaction();
+        mockUpVote.setPost(createMockPost());
+        mockUpVote.setCreatedBy(createMockUser());
+        mockUpVote.setIsUpVoted(true);
+        return mockUpVote;
     }
-    public static Reaction createMockDislike() {
-        var mockDislike = new Reaction();
-        mockDislike.setPost(createMockPost());
-        mockDislike.setCreatedBy(createMockUser());
-        mockDislike.setIsLiked(false);
-        return mockDislike;
+    public static Reaction createMockDownVote() {
+        var mockDownVote = new Reaction();
+        mockDownVote.setPost(createMockPost());
+        mockDownVote.setCreatedBy(createMockUser());
+        mockDownVote.setIsUpVoted(false);
+        return mockDownVote;
     }
     public static UserFilterOptions createMockUserFilterOptions(){
         return new UserFilterOptions(

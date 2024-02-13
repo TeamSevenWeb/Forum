@@ -21,20 +21,10 @@ public class ReactionServiceImpl implements ReactionService{
     }
 
     @Override
-    public boolean hasReacted(Post post, User user) {
+    public boolean hasUpVoted(Post post, User user) {
         try {
             Reaction reaction = reactionRepository.get(post,user);
-        } catch (EntityNotFoundException e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean hasLiked(Post post, User user) {
-        try {
-            Reaction reaction = reactionRepository.get(post,user);
-            if (reaction.getIsLiked()){
+            if (reaction.getIsUpVoted()){
                 return true;
             }
         }catch (EntityNotFoundException e) {
@@ -51,34 +41,19 @@ public class ReactionServiceImpl implements ReactionService{
     }
 
     @Override
-    public void createLike(Post post, User user) {
+    public void createUpVote(Post post, User user) {
         Reaction reaction = new Reaction();
         reaction.setPost(post);
         reaction.setCreatedBy(user);
-        reaction.setIsLiked(true);
+        reaction.setIsUpVoted(true);
         reactionRepository.create(reaction);
     }
 
-    @Override
-    public void createDislike(Post post, User user) {
-        Reaction reaction = new Reaction();
-        reaction.setPost(post);
-        reaction.setCreatedBy(user);
-        reaction.setIsLiked(false);
-        reactionRepository.create(reaction);
-    }
 
     @Override
-    public void setLiked(Post post, User user) {
+    public void setUpVoted(Post post, User user) {
         Reaction reaction = reactionRepository.get(post,user);
-        reaction.setIsLiked(true);
-        reactionRepository.update(reaction);
-    }
-
-    @Override
-    public void setDisliked(Post post, User user) {
-        Reaction reaction = reactionRepository.get(post,user);
-        reaction.setIsLiked(false);
+        reaction.setIsUpVoted(true);
         reactionRepository.update(reaction);
     }
 
