@@ -96,15 +96,20 @@ create table posts_comments
         foreign key (comment_id) references comments (comment_id)
 );
 
-create table posts_tags
+create table forum.reactions
 (
-    post_id int not null,
-    tag_id  int not null,
-    constraint posts_tags_posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
-    constraint posts_tags_tags_tag_id_fk
-        foreign key (tag_id) references tags (tag_id)
+    reaction_id int auto_increment
+        primary key,
+    created_by  int        not null,
+    post_id     int        not null,
+    isUpVoted   tinyint(1) null,
+    constraint liked_post_posts_post_id_fk
+        foreign key (post_id) references forum.posts (post_id),
+    constraint liked_post_users_user_id_fk
+        foreign key (created_by) references forum.users (user_id)
 );
+
+
 
 create table reactions
 (

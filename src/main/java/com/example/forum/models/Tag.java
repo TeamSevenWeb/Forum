@@ -1,6 +1,4 @@
 package com.example.forum.models;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,18 +9,6 @@ public class Tag {
     private int tagId;
     @Column(name = "name")
     private String name;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
 
     public int getTagId() {
         return tagId;

@@ -1,10 +1,7 @@
 package com.example.forum.services;
 
 import com.example.forum.filters.PostsFilterOptions;
-import com.example.forum.models.Comment;
-import com.example.forum.models.Post;
-import com.example.forum.models.Reaction;
-import com.example.forum.models.User;
+import com.example.forum.models.*;
 
 import java.util.List;
 
@@ -24,6 +21,7 @@ public interface PostService {
 
     void delete (int id,User user);
 
-    public void upvote(Post post, User user);
+    void upvote(Post post, User user);
 
+    void addTag(Post post, Tag tag);
 }
