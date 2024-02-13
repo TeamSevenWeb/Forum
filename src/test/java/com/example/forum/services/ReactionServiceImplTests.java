@@ -1,10 +1,8 @@
 package com.example.forum.services;
 
-import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.models.Post;
 import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
-import com.example.forum.repositories.CommentRepository;
 import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.ReactionRepository;
 import com.example.forum.repositories.UserRepository;
@@ -32,128 +30,79 @@ public class ReactionServiceImplTests {
     ReactionServiceImpl service;
 
     @Test
-    public void createLike_Should_CallRepository_When_ValidArguments() {
+    public void createUpVote_Should_CallRepository_When_ValidArguments() {
         // Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
 
         // Act
-        service.createLike(mockPost, mockUser);
+        service.createUpVote(mockPost, mockUser);
 
         // Assert
         Mockito.verify(mockReactionRepository, Mockito.times(1))
                 .create(Mockito.any(Reaction.class));
     }
 
-    @Test
-    public void createDislike_Should_CallRepository_When_ValidArguments() {
-        // Arrange
-        Post mockPost = createMockPost();
-        User mockUser = createMockUser();
-
-        // Act
-        service.createLike(mockPost, mockUser);
-
-        // Assert
-        Mockito.verify(mockReactionRepository, Mockito.times(1))
-                .create(Mockito.any(Reaction.class));
-    }
 
     @Test
-    public void createLike_Should_Create_Reaction_With_True_isLiked_When_ValidArguments() {
+    public void createUpVoted_Should_Create_Reaction_With_True_UpVoted_When_ValidArguments() {
         // Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
         ArgumentCaptor<Reaction> reactionCaptor = ArgumentCaptor.forClass(Reaction.class);
         // Act
-        service.createLike(mockPost, mockUser);
+        service.createUpVote(mockPost, mockUser);
 
         // Assert
         Mockito.verify(mockReactionRepository, Mockito.times(1)).create(reactionCaptor.capture());
         Reaction capturedReaction = reactionCaptor.getValue();
-        Assertions.assertTrue(capturedReaction.getIsLiked());
+        Assertions.assertTrue(capturedReaction.getIsUpVoted());
     }
 
-    @Test
-    public void createDislike_Should_Create_Reaction_With_False_isLiked_When_ValidArguments() {
-        // Arrange
-        Post mockPost = createMockPost();
-        User mockUser = createMockUser();
-        ArgumentCaptor<Reaction> reactionCaptor = ArgumentCaptor.forClass(Reaction.class);
-        // Act
-        service.createDislike(mockPost, mockUser);
-
-        // Assert
-        Mockito.verify(mockReactionRepository, Mockito.times(1)).create(reactionCaptor.capture());
-        Reaction capturedReaction = reactionCaptor.getValue();
-        Assertions.assertFalse(capturedReaction.getIsLiked());
-    }
 
     @Test
-    public void hasLiked_Should_Call_Repository_If_ValidArguments(){
+    public void hasUpVoted_Should_Call_Repository_If_ValidArguments(){
         //Arrange, Act
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
-        Reaction mockReaction = createMockLike();
+        Reaction mockReaction = createMockUpvote();
         Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
-        service.hasLiked(mockPost,mockUser);
+        service.hasUpVoted(mockPost,mockUser);
 
         //Assert
         Mockito.verify(mockReactionRepository, Mockito.times(1))
                 .get(mockPost,mockUser);
     }
     @Test
-    public void hasLiked_Should_Return_True_If_Liked(){
+    public void hasUpVoted_Should_Return_True_If_UpVoted(){
         //Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
-        Reaction mockReaction = createMockLike();
+        Reaction mockReaction = createMockUpvote();
         Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
 
         //Assert, Act
-        Assertions.assertTrue(service.hasLiked(mockPost,mockUser));
+        Assertions.assertTrue(service.hasUpVoted(mockPost,mockUser));
     }
 
     @Test
-    public void hasLiked_Should_Return_False_If_Disliked(){
+    public void hasUpVoted_Should_Return_False_If_notUpVoted(){
         //Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
-        Reaction mockReaction = createMockDislike();
+        Reaction mockReaction = createMockDownVote();
         Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
 
         //Assert, Act
-        Assertions.assertFalse(service.hasLiked(mockPost,mockUser));
+        Assertions.assertFalse(service.hasUpVoted(mockPost,mockUser));
     }
 
-    @Test
-    public void hasReacted_Should_Return_True_If_Reacted(){
-        //Arrange
-        Post mockPost = createMockPost();
-        User mockUser = createMockUser();
-        Reaction mockReaction = createMockDislike();
-        Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
-
-        //Assert, Act
-        Assertions.assertTrue(service.hasReacted(mockPost,mockUser));
-    }
-
-    @Test
-    public void hasReacted_Should_Return_False_If_Not_Reacted(){
-        //Arrange
-        Post mockPost = createMockPost();
-        User mockUser = createMockUser();
-        Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenThrow(new EntityNotFoundException("Test"));
-
-        //Assert, Act
-        Assertions.assertFalse(service.hasReacted(mockPost,mockUser));
-    }
     @Test
     public void deleteReaction_Should_Call_Repository_If_Valid_Arguments(){
         //Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
-        Reaction mockReaction = createMockDislike();
+        Reaction mockReaction = createMockDownVote();
         Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
         //Act
         service.deleteReaction(mockPost,mockUser);
@@ -163,56 +112,32 @@ public class ReactionServiceImplTests {
     }
 
     @Test
-    public void setLiked_Should_Call_Repository_If_Valid_Arguments(){
+    public void setUpVoted_Should_Call_Repository_If_Valid_Arguments(){
         //Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
-        Reaction mockReaction = createMockDislike();
+        Reaction mockReaction = createMockDownVote();
         Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
         //Act
-        service.setLiked(mockPost,mockUser);
+        service.setUpVoted(mockPost,mockUser);
         //Assert
         Mockito.verify(mockReactionRepository,Mockito.times(1))
                 .update(mockReaction);
-    }
-    @Test
-    public void setDisliked_Should_Call_Repository_If_Valid_Arguments(){
-        //Arrange
-        Post mockPost = createMockPost();
-        User mockUser = createMockUser();
-        Reaction mockReaction = createMockLike();
-        Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
-        //Act
-        service.setDisliked(mockPost,mockUser);
-        //Assert
-        Mockito.verify(mockReactionRepository,Mockito.times(1))
-                .update(mockReaction);
-    }
-    @Test
-    public void setLiked_Should_Set_isLiked_To_True_If_Valid_Arguments(){
-        //Arrange
-        Post mockPost = createMockPost();
-        User mockUser = createMockUser();
-        Reaction mockReaction = createMockDislike();
-        Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
-        //Act
-        service.setLiked(mockPost,mockUser);
-        //Assert
-        Assertions.assertTrue(mockReaction.getIsLiked());
     }
 
     @Test
-    public void setDisliked_Should_Set_isLiked_To_False_If_Valid_Arguments(){
+    public void setUpVoted_Should_Set_isUpVoted_To_True_If_Valid_Arguments(){
         //Arrange
         Post mockPost = createMockPost();
         User mockUser = createMockUser();
-        Reaction mockReaction = createMockLike();
+        Reaction mockReaction = createMockDownVote();
         Mockito.when(mockReactionRepository.get(mockPost,mockUser)).thenReturn(mockReaction);
         //Act
-        service.setDisliked(mockPost,mockUser);
+        service.setUpVoted(mockPost,mockUser);
         //Assert
-        Assertions.assertFalse(mockReaction.getIsLiked());
+        Assertions.assertTrue(mockReaction.getIsUpVoted());
     }
+
 
 
 

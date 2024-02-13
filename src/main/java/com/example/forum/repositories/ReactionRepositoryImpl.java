@@ -83,7 +83,7 @@ public class ReactionRepositoryImpl implements ReactionRepository{
     public long getUpVotedPostCount(Post post) {
         try (Session session = sessionFactory.openSession()) {
             Query<Long> query = session.createQuery(
-                    "SELECT COUNT(*) FROM Reaction r WHERE r.isLiked=true AND post = :post_id"
+                    "SELECT COUNT(*) FROM Reaction r WHERE r.isUpVoted=true AND post = :post_id"
                     , Long.class);
             query.setParameter("post_id",post);
 
