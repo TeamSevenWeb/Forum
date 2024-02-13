@@ -22,8 +22,8 @@ public class Reaction {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User createdBy;
-    @Column(name = "isLiked")
-    private boolean isLiked;
+    @Column(name = "isUpVoted")
+    private boolean isUpVoted;
 
     public int getReactionId() {
         return reactionId;
@@ -49,12 +49,12 @@ public class Reaction {
         this.createdBy = createdBy;
     }
 
-    public boolean getIsLiked() {
-        return isLiked;
+    public boolean getIsUpVoted() {
+        return isUpVoted;
     }
 
-    public void setIsLiked(boolean isLiked) {
-        this.isLiked = isLiked;
+    public void setIsUpVoted(boolean IsUpVoted) {
+        this.isUpVoted = IsUpVoted;
     }
 
     @Override

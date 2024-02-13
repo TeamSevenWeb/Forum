@@ -3,11 +3,8 @@ package com.example.forum.services;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
-import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.PostsFilterOptions;
-import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
-import com.example.forum.models.Reaction;
 import com.example.forum.models.User;
 import com.example.forum.repositories.CommentRepository;
 import com.example.forum.repositories.PostRepository;
@@ -124,14 +121,14 @@ public class PostServiceImpl implements PostService{
     public void upvote(Post post, User user) {
 
         try {
-            if (reactionService.hasLiked(post,user)){
+            if (reactionService.hasUpVoted(post,user)){
                 reactionService.deleteReaction(post,user);
             }
-            else if (!reactionService.hasLiked(post,user)){
-                reactionService.setLiked(post,user);
+            else if (!reactionService.hasUpVoted(post,user)){
+                reactionService.setUpVoted(post,user);
             }
         } catch (EntityNotFoundException e) {
-           reactionService.createLike(post,user);
+           reactionService.createUpVote(post,user);
         }
     }
 
