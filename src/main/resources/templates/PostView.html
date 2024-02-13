@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<div th:insert="~{fragments/PageFrame :: head('All posts')}"></div>
 <body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+<section class="multi-container pd-10">
+    <div class="navigate">
+        <!-- Masthead Heading-->
+        <h3 class="text-uppercase mb-0" th:text="${post.title}"/>
+    <div class="post-container">
+        <div class="user-profile-container" th:icon="${post.createdBy.username}">
+            <img src="C:\\Users\\aleks\\Desktop\\Forum\\profile_photos\\MicrosoftTeams-image - Копие.png" alt="User image"/>/>
+        </div>
+        <div class="post-content-container"></div>
+        <div class="post-content-linebreak" th:text="${post.content}"></div>
+    </div>
+    </div>
+    <div class="navigate">
+        <!-- Masthead Heading-->
+        <h3 class="text-uppercase mb-0">Details</h3>
+    <div class="post-details-container ml8">
+        <p th:text="'Creation Date : ' + ${post.dateAndTimeOfCreation}"></p>
+        <p th:text="'Comments count : '+ ${post.postComments.size()}"></p>
+    </div>
+    </div>
+</section>
 
 <!--<i class="fa-solid fa-thumbs-up"></i>-->
 <!--<i class="bi bi-hand-thumbs-up"></i>-->
@@ -23,6 +40,7 @@
 </a>
 </h3>
 <script src="https://kit.fontawesome.com/03129db14f.js" crossorigin="anonymous"></script>
-
+<div th:replace="~{fragments/PageFrame :: footer}"></div>
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
 </body>
 </html>

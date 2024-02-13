@@ -31,7 +31,7 @@
             <h2 th:text="${user.username + ' hasn'+' t posted anything yet'}">User has no posts</h2>
         </div>
         <div class="navigate" th:unless="${user.getUserPosts().isEmpty()}" >
-            <h2 class="ml4" th:text="#{user.all.posts}"></h2>
+            <h2 class="ml4" th:text="#{all.posts}"></h2>
             <!--    Display posts table-->
             <div class="table1 center">
                 <div class="table-head">

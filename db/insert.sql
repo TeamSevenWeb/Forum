@@ -33,11 +33,11 @@ INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_c
 INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (5, 7, 'obicham telerik', 'Nai - dobrite !!!', '2024-01-18 23:15:34');
 INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (6, 7, 'telerik me obicha', 'Normalno !', '2024-01-18 23:15:41');
 
-INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (1, 1);
-INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (1, 2);
-INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (3, 4);
-INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (2, 5);
-INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (5, 1);
+# INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (1, 1);
+# INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (1, 2);
+# INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (3, 4);
+# INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (2, 5);
+# INSERT INTO forum.posts_tags (post_id, tag_id) VALUES (5, 1);
 
 INSERT INTO forum.comments (comment_id, post_id, created_by, date_and_time_of_creation, comment) VALUES (1, 1, 2, '2024-01-14 23:12:26', 'Hello Alex');
 INSERT INTO forum.comments (comment_id, post_id, created_by, date_and_time_of_creation, comment) VALUES (2, 1, 3, '2024-01-14 23:16:26', 'Hi Alex');

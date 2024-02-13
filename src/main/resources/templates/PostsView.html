@@ -8,7 +8,7 @@
         <!-- Masthead Heading-->
         <h1 class="text-uppercase mb-0" th:if="${posts.isEmpty()}" th:text="#{posts.title.empty}">No
             Posts</h1>
-        <h1 class="text-uppercase mb-0" th:unless="${posts.isEmpty()}" th:text="#{post.title}">All
+        <h1 class="text-uppercase mb-0" th:unless="${posts.isEmpty()}" th:text="#{all.posts}">All
             Posts</h1>
     </header>
 </section>
@@ -49,16 +49,16 @@
             <!-- Post details-->
             <div class="cell">
                     <a href="#" th:href="@{/posts/__${post.postId}__}">
-                        <span class="linebreak" th:text="${post.getTitle()}"></span></a>
+                        <span class="cell-linebreak" th:text="${post.getTitle()}"></span></a>
                     <br>
             </div>
         <div class="cell">
                 <a href="#" th:href="@{/user/__${post.getCreatedBy().getId()}__}">
-                    <span class="linebreak" th:text="${post.getCreatedBy().getUsername()}"></span></a>
+                    <span class="cell-linebreak" th:text="${post.getCreatedBy().getUsername()}"></span></a>
                 <br>
         </div>
             <div class="cell">
-                        <span class="linebreak" th:text="${post.getDateAndTimeOfCreation()}"></span>
+                        <span class="cell-linebreak" th:text="${post.getDateAndTimeOfCreation()}"></span>
                     <br>
             </div>
             <div class="cell">
