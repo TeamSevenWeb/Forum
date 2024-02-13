@@ -920,9 +920,52 @@ header{
     background-color: rgb(0,0,0);
 }
 
+.multi-container {
+    display: flex;
+    justify-content: center; /* Center the items horizontally */
+    padding-bottom: 10rem;
+}
+
 /* ########################################### */
 /*            posts.html                       */
 /* ########################################### */
+.post-container{
+    display: flex;
+    border-top: 3px solid grey;
+    border-bottom: 3px solid grey;
+}
+.post-details-container{
+    border-top: 3px solid grey;
+}
+
+.user-profile-container{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-left: 1px;
+    margin-right: 4px;
+    overflow: hidden;
+    border: 2px solid #ddd;
+    order: -1; /* Move profile picture to the left */
+}
+.profile-picture-container img {
+    width: 100%; /* Makes the image fill the container */
+    height: 100%; /* Makes the image fill the container */
+    object-fit: cover; /* Ensures the image covers the entire container */
+}
+
+.post-content-container{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-content-linebreak{
+    width: 23em;
+    margin: 0.5em;
+    white-space: normal;
+    vertical-align: top;
+    overflow-wrap: break-word;
+}
 
 /* posts table's head  */
 .table {
@@ -973,7 +1016,7 @@ header{
     text-align: center;
 }
 
-.linebreak {
+.cell-linebreak {
     width: 10em;
     margin: 0.5em;
     white-space: normal;
@@ -981,6 +1024,7 @@ header{
     display: inline-block;
     overflow-wrap: break-word; /* Use overflow-wrap instead of line-break */
 }
+
 
 /* main nav*/
 #mainNav {
@@ -1188,6 +1232,9 @@ header{
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
 }
+.pd-10{
+    padding-top: 10rem;
+}
 .px-0 {
     padding-right: 0 !important;
     padding-left: 0 !important;
@@ -1263,6 +1310,7 @@ header{
     margin-right: 0.25rem !important;
     margin-left: 0.25rem !important;
 }
+
 /* button */
 .btn {
     display: inline-block;
