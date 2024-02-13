@@ -5,14 +5,8 @@ import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.PostsFilterOptions;
-import com.example.forum.models.Comment;
-import com.example.forum.models.Post;
-import com.example.forum.models.Reaction;
-import com.example.forum.models.User;
-import com.example.forum.repositories.CommentRepository;
-import com.example.forum.repositories.PostRepository;
-import com.example.forum.repositories.ReactionRepository;
-import com.example.forum.repositories.UserRepository;
+import com.example.forum.models.*;
+import com.example.forum.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,16 +23,14 @@ public class PostServiceImpl implements PostService{
 
     private final UserRepository userRepository;
 
-
     private final ReactionService reactionService;
-
-    private final ReactionRepository reactionRepository;
+    private final TagService tagService;
     @Autowired
-    public PostServiceImpl(PostRepository repository, UserRepository userRepository, ReactionService reactionService, ReactionRepository reactionRepository, CommentRepository commentRepository) {
+    public PostServiceImpl(PostRepository repository, UserRepository userRepository, ReactionService reactionService, ReactionRepository reactionRepository, CommentRepository commentRepository, TagRepository tagRepository, TagService tagService) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.reactionService = reactionService;
-        this.reactionRepository = reactionRepository;
+        this.tagService = tagService;
     }
 
     @Override
@@ -133,6 +125,22 @@ public class PostServiceImpl implements PostService{
         } catch (EntityNotFoundException e) {
            reactionService.createLike(post,user);
         }
+    }
+
+    @Override
+    public void addTag(Post post, Tag tag) {
+        if (post.getPostTags().contains(tag)){
+            return;
+        }
+        try {
+            tagService.create(tag);
+            post.getPostTags().add(tag);
+            repository.update(post);
+        }
+        catch (EntityDuplicateException e){
+            post.getPostTags().add(tag);
+            repository.update(post);}
+
     }
 
 

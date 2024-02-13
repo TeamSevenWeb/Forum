@@ -35,6 +35,24 @@ public class Post {
     )
     private Set<Comment> postComments;
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "posts_tags",
+            joinColumns = @JoinColumn(name="post_id"),
+            inverseJoinColumns = @JoinColumn(name="tag_id")
+
+    )
+    private Set<Tag> postTags;
+
+    public Set<Tag> getPostTags() {
+        return postTags;
+    }
+
+    public void setPostTags(Set<Tag> postTags) {
+        this.postTags = postTags;
+    }
+
     public int getPostId() {
         return postId;
     }
