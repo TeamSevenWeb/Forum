@@ -22,7 +22,6 @@ public class PostServiceImpl implements PostService{
     private final PostRepository repository;
 
     private final UserRepository userRepository;
-
     private final ReactionService reactionService;
     private final TagService tagService;
     @Autowired
@@ -116,14 +115,14 @@ public class PostServiceImpl implements PostService{
     public void upvote(Post post, User user) {
 
         try {
-            if (reactionService.hasLiked(post,user)){
+            if (reactionService.hasUpVoted(post,user)){
                 reactionService.deleteReaction(post,user);
             }
-            else if (!reactionService.hasLiked(post,user)){
-                reactionService.setLiked(post,user);
+            else if (!reactionService.hasUpVoted(post,user)){
+                reactionService.setUpVoted(post,user);
             }
         } catch (EntityNotFoundException e) {
-           reactionService.createLike(post,user);
+           reactionService.createUpVote(post,user);
         }
     }
 
