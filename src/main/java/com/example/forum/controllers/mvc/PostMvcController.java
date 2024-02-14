@@ -8,13 +8,16 @@ import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.filters.dtos.PostFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
+import com.example.forum.helpers.CommentMapper;
 import com.example.forum.helpers.PostMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
+import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
 import com.example.forum.services.CommentService;
 import com.example.forum.services.PostService;
+import com.example.forum.services.ReactionService;
 import com.example.forum.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -40,16 +43,22 @@ public class PostMvcController {
 
     private final CommentService commentService;
 
+    private final ReactionService reactionService;
+
     private final PostMapper mapper;
+
+    private final CommentMapper commentMapper;
 
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public PostMvcController(PostService service, UserService userService, CommentService commentService, PostMapper mapper, AuthenticationHelper authenticationHelper) {
+    public PostMvcController(PostService service, UserService userService, CommentService commentService, ReactionService reactionService, PostMapper mapper, CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
         this.service = service;
         this.userService = userService;
         this.commentService = commentService;
+        this.reactionService = reactionService;
         this.mapper = mapper;
+        this.commentMapper = commentMapper;
         this.authenticationHelper = authenticationHelper;
     }
 
@@ -82,10 +91,14 @@ public class PostMvcController {
     }
 
     @GetMapping("/{id}")
-    public String showSinglePost(@PathVariable int id, Model model) {
+    public String showSinglePost(@PathVariable int id, Model model,HttpSession session) {
         try {
             Post post = service.get(id);
+            boolean isUpVoted = reactionService.hasUpVoted(post, authenticationHelper.tryGetCurrentUser(session));
+            model.addAttribute("comment",new CommentDto());
+            model.addAttribute("isUpVoted",isUpVoted);
             model.addAttribute("post", post);
+            model.addAttribute("comments",post.getPostComments());
             return "PostView";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -119,6 +132,15 @@ public class PostMvcController {
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
         }
+    }
+    @PostMapping("{postId}/newComment")
+    public String createComment(@Valid @ModelAttribute("comment")CommentDto commentDto,
+                                HttpSession session,@PathVariable int postId){
+        Comment comment = commentMapper.fromDto(commentDto);
+        User user = authenticationHelper.tryGetCurrentUser(session);
+        Post post = service.get(postId);
+        commentService.create(post,comment,user);
+        return "redirect:/posts/{postId}";
     }
 
     @GetMapping("/{id}/update")
@@ -169,14 +191,14 @@ public class PostMvcController {
         }
     }
 
-    @GetMapping("{id}/upvote")
+    @GetMapping("{postId}/upvote")
 
-    public String upvote(HttpSession session, @PathVariable int id) {
+    public String upvote(HttpSession session, @PathVariable int postId) {
         try {
             User user = authenticationHelper.tryGetCurrentUser(session);
-            Post post = service.get(id);
+            Post post = service.get(postId);
             service.upvote(post,user);
-            return "redirect:/posts";
+            return "redirect:/posts/{postId}";
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }

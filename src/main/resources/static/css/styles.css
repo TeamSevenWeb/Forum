@@ -1870,3 +1870,19 @@ header{
     box-shadow: 0 5px #f0f0f0;
     transform: translateY(4px);
 }
+
+.reaction-container{
+    display: flex;
+    justify-content: left;
+    padding-top: 0.05rem;
+padding-left: 0.15rem}
+
+.upvote-light{
+    color: #e5ce5d;
+    text-decoration: none;
+}
+
+.upvote-full{
+    color: #e5ce5d;
+    text-decoration: none;
+}
