@@ -14,7 +14,22 @@
         <div class="post-content-container"></div>
         <div class="post-content-linebreak" th:text="${post.content}"></div>
     </div>
+        <div class="reaction-container">
+        <h2>
+            <a th:unless="${isUpVoted}"
+                    th:href="@{__${requestURI}__/upvote}"
+                    class="upvote-light">
+                <i class="fa-regular fa-thumbs-up"></i>
+            </a>
+            <a th:if="${isUpVoted}"
+                    th:href="@{__${requestURI}__/upvote}"
+                    class="upvote-full">
+                <i class="fa-solid fa-thumbs-up"></i>
+            </a>
+        </h2>
+        </div>
     </div>
+
     <div class="navigate">
         <!-- Masthead Heading-->
         <h3 class="text-uppercase mb-0">Details</h3>
@@ -23,22 +38,35 @@
         <p th:text="'Comments count : '+ ${post.postComments.size()}"></p>
     </div>
     </div>
-</section>
 
-<!--<i class="fa-solid fa-thumbs-up"></i>-->
-<!--<i class="bi bi-hand-thumbs-up"></i>-->
-<!--<i class="bi bi-hand-thumbs-up-fill"></i>-->
-<!--<i class="fa-regular fa-thumbs-up"></i>-->
-<!--<input type="button" value="upvote" class="fa-regular fa-thumbs-up"/>-->
-<!--<form action="#" th:action="@{__${requestURI}__/upvote}" th:object="${post}" method="post">-->
-<!--</form>-->
-<h3>
-<a
-        th:href="@{__${requestURI}__/upvote}"
-        class="upvote-light">
-    <i class="fa-regular fa-thumbs-up"></i>
-</a>
-</h3>
+</section>
+<div class="comment-area">
+    <div class="comments-container">
+        <div class="body" th:each="comment : ${comments}">
+            <div class="authors">
+                <div class="username">
+                    <a th:href="@{/user/{userId}(userId=${comment.getCreatedBy().getId()})}" th:text="${comment.getCreatedBy().getUsername()}">AnotherUser</a>
+
+                </div>
+                <div th:if="${comment.getCreatedBy().isAdmin()}"
+                     th:text="Admin">Role</div>
+                <div th:unless="${comment.getCreatedBy().isAdmin()}"
+                     th:text="User">Role</div>
+                <img src="https://i1.sndcdn.com/artworks-000006019579-vhwl3q-t240x240.jpg" alt="">
+            </div>
+            <dirv class="content" th:text="${comment.getComment()}">
+            </dirv>
+        </div>
+    </div>
+    <!--Reply Area-->
+
+    <form class="comment-area hide" action="#" th:action="@{__${requestURI}__/newComment}" th:object="${comment}" method="post">
+        <textarea type="text" th:field="*{comment}" name="comment" placeholder="Comment here ... "></textarea>
+        <input type="submit" value="comment">
+    </form>
+
+</div>
+
 <script src="https://kit.fontawesome.com/03129db14f.js" crossorigin="anonymous"></script>
 <div th:replace="~{fragments/PageFrame :: footer}"></div>
 <div th:replace="~{fragments/PageFrame :: scripts}"></div>
