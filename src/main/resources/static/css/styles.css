@@ -1886,3 +1886,9 @@ padding-left: 0.15rem}
     color: #e5ce5d;
     text-decoration: none;
 }
+.upvote-counter{
+    padding-left: 4px;
+    padding-top: 4px;
+    font-size: 19px;
+
+}

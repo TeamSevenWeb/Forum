@@ -95,6 +95,7 @@ public class PostMvcController {
         try {
             Post post = service.get(id);
             boolean isUpVoted = reactionService.hasUpVoted(post, authenticationHelper.tryGetCurrentUser(session));
+            model.addAttribute("upVoteCounter",reactionService.getUpVoteCount(id));
             model.addAttribute("comment",new CommentDto());
             model.addAttribute("isUpVoted",isUpVoted);
             model.addAttribute("post", post);
