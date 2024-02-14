@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <div th:insert="~{fragments/PageFrame :: head('All posts')}"></div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 <section class="multi-container pd-10">
@@ -15,6 +16,12 @@
         <div class="post-content-linebreak" th:text="${post.content}"></div>
     </div>
         <div class="reaction-container">
+            <h2>
+                <a href="#" th:href="@{__${requestURI}__/update}"
+                class="edit-button">Edit
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+            </h2>
         <h2>
             <a th:unless="${isUpVoted}"
                     th:href="@{__${requestURI}__/upvote}"

@@ -151,7 +151,7 @@ public class PostMvcController {
             PostDto postDto = mapper.toDto(post);
             model.addAttribute("postId", id);
             model.addAttribute("post", postDto);
-            return "PostUpdateView";
+            return "PostUpdate";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
@@ -162,7 +162,7 @@ public class PostMvcController {
     @PostMapping("/{id}/update")
     public String updatePost(@PathVariable int id,@Valid @ModelAttribute("post") PostDto postDto, BindingResult errors, Model model){
         if(errors.hasErrors()){
-            return "PostNew";
+            return "PostUpdate";
         }
         try {
             Post post = mapper.fromDto(id,postDto);
@@ -175,7 +175,7 @@ public class PostMvcController {
             return "ErrorView";
         }catch (EntityDuplicateException e){
             errors.rejectValue("name","post.exists",e.getMessage());
-            return "PostUpdateView";
+            return "PostUpdate";
         }
     }
 
