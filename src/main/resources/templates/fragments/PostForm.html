@@ -1,0 +1,20 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="details(bodyTitle)">
+    <h2 th:text="${bodyTitle}">Body Title</h2>
+    <form action="#" th:action="@{__${requestURI}__}" th:object="${post}" method="post">
+        <label th:text="#{post.label.title}">Post</label>
+        <br/>
+        <textarea class="textarea-title textarea-style" type="text" th:field="*{title}"></textarea>
+        <br/>
+        <label class="error" th:errors="*{title}">Title error placeholder</label>
+        <br/><br/>
+        <label th:text="#{post.label.content}">Content</label>
+        <br/>
+        <textarea class="textarea-content textarea-style" type="text" th:field="*{content}"></textarea>
+        <br/>
+        <label class="error" th:errors="*{content}">Content error placeholder</label>
+        <br/><br/>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
+</html>

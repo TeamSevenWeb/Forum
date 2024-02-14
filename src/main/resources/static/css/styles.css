@@ -910,8 +910,8 @@ header{
 /* Footer Styling */
 
 .footer {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    display: flex;
+    padding: 10px;
     background-color: rgb(0,0,0);
     color: #ffff;
 }
@@ -1234,6 +1234,9 @@ header{
 }
 .pd-10{
     padding-top: 10rem;
+}
+.pd-b-1{
+    padding-bottom: 6rem;
 }
 .px-0 {
     padding-right: 0 !important;
@@ -1874,8 +1877,9 @@ header{
 .reaction-container{
     display: flex;
     justify-content: left;
-    padding-top: 0.05rem;
-padding-left: 0.15rem}
+    padding-top: 1rem;
+padding-left:1rem
+}
 
 .upvote-light{
     color: #e5ce5d;
@@ -1890,5 +1894,52 @@ padding-left: 0.15rem}
     padding-left: 4px;
     padding-top: 4px;
     font-size: 19px;
+}
 
+
+.textarea-content {
+    min-height: 10rem; /* Adjust the height as needed */
+    max-height: 70rem;
+    border-radius: 10px;
+    border-style: double;
+    border-width: 6px;
+    border-color: deepskyblue;
+}
+
+.textarea-title {
+    min-height: 2.5rem; /* Adjust the height as needed */
+    max-height: 5rem;
+    border-radius: 10px;
+    border-style: double;
+    border-width: 6px;
+    border-color: deepskyblue;
+}
+
+.textarea-style{
+    width: 30%;
+    padding: 4px;
+    margin: 8px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: double;
+    border-width: 6px;
+    border-color: deepskyblue;
+    resize: vertical; /* Allows vertical resizing */
+}
+
+.error {
+    color: #721c24; /* Text color for error messages (red or a color of your choice) */
+    background-color: #f8d7da; /* Background color for error messages (light red or a color of your choice) */
+    border: 1px solid #f5c6cb; /* Border color for error messages (lighter red or a color of your choice) */
+    padding: 4px;
+    margin: 10px 0;
+    border-radius: 5px; /* Rounded corners for better appearance */
+}
+
+.edit-button {
+    margin-right:1rem;
+    font-weight: 600; /* You can adjust this value based on your preference */
+    color: skyblue; /* White text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 19px; /* Font size */
 }
