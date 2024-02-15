@@ -10,10 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -29,6 +26,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> getAll(PostsFilterOptions postsFilterOptions) {
+//        ArrayList<String> tagList;
         try (Session session = sessionFactory.openSession()) {
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
@@ -58,6 +56,12 @@ public class PostRepositoryImpl implements PostRepository {
             });
 
             StringBuilder queryString = new StringBuilder("from Post");
+//            if (postsFilterOptions.getTagName().isPresent() && !postsFilterOptions.getTagName().get().isEmpty()) {
+//                queryString.append(" join p.tags t");
+//                tagList = new ArrayList<>(Arrays.asList(postsFilterOptions.getTagName().get().split("\\s*,\\s*")));
+//                filters.add("t.name in (:tagNames)");
+//                params.put("tagNames", tagList);
+//            }
             if (!filters.isEmpty()) {
                 queryString
                         .append(" where ")

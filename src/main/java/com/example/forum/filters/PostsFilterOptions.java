@@ -7,6 +7,7 @@ public class PostsFilterOptions {
     private Optional<String> title;
     private Optional<String> keyword;
     private Optional<String> createdBy;
+//    private Optional<String> tagName;
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
@@ -19,6 +20,7 @@ public class PostsFilterOptions {
             String title,
             String keyword,
             String createdBy,
+//            String tagName,
             String sortBy,
             String sortOrder) {
         this.title = Optional.ofNullable(title);
@@ -26,7 +28,12 @@ public class PostsFilterOptions {
         this.createdBy = Optional.ofNullable(createdBy);
         this.sortBy = Optional.ofNullable(sortBy);
         this.sortOrder = Optional.ofNullable(sortOrder);
+//        this.tagName = Optional.ofNullable(tagName);
     }
+
+//    public Optional<String> getTagName() {
+//        return tagName;
+//    }
 
     public Optional<String> getTitle() {
         return title;

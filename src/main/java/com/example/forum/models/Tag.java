@@ -2,6 +2,7 @@ package com.example.forum.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "tags")
 public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

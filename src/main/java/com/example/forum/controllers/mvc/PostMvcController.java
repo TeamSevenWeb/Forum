@@ -10,11 +10,14 @@ import com.example.forum.filters.dtos.PostFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.CommentMapper;
 import com.example.forum.helpers.PostMapper;
+import com.example.forum.helpers.TagMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
+import com.example.forum.models.Tag;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.CommentDto;
 import com.example.forum.models.dtos.PostDto;
+import com.example.forum.models.dtos.TagDto;
 import com.example.forum.services.CommentService;
 import com.example.forum.services.PostService;
 import com.example.forum.services.ReactionService;
@@ -31,6 +34,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -49,16 +53,19 @@ public class PostMvcController {
 
     private final CommentMapper commentMapper;
 
+    private final TagMapper tagMapper;
+
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public PostMvcController(PostService service, UserService userService, CommentService commentService, ReactionService reactionService, PostMapper mapper, CommentMapper commentMapper, AuthenticationHelper authenticationHelper) {
+    public PostMvcController(PostService service, UserService userService, CommentService commentService, ReactionService reactionService, PostMapper mapper, CommentMapper commentMapper, TagMapper tagMapper, AuthenticationHelper authenticationHelper) {
         this.service = service;
         this.userService = userService;
         this.commentService = commentService;
         this.reactionService = reactionService;
         this.mapper = mapper;
         this.commentMapper = commentMapper;
+        this.tagMapper = tagMapper;
         this.authenticationHelper = authenticationHelper;
     }
 
@@ -102,7 +109,9 @@ public class PostMvcController {
     public String showSinglePost(@PathVariable int id, Model model,HttpSession session) {
         try {
             Post post = service.get(id);
-            boolean isUpVoted = reactionService.hasUpVoted(post, authenticationHelper.tryGetCurrentUser(session));
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            boolean isUpVoted = reactionService.hasUpVoted(post, user);
+            model.addAttribute("tags",new ArrayList<>(post.getPostTags()));
             model.addAttribute("upVoteCounter",reactionService.getUpVoteCount(id));
             model.addAttribute("comment",new CommentDto());
             model.addAttribute("isUpVoted",isUpVoted);
@@ -159,6 +168,7 @@ public class PostMvcController {
             PostDto postDto = mapper.toDto(post);
             model.addAttribute("postId", id);
             model.addAttribute("post", postDto);
+            model.addAttribute("tag",new TagDto());
             return "PostUpdate";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -166,6 +176,15 @@ public class PostMvcController {
             return "ErrorView";
         }
     }
+    @PostMapping("/{id}/update/addTags")
+    public String addTags(@PathVariable int id, @Valid @ModelAttribute("tagDto") TagDto tagDto){
+        Post post = service.get(id);
+        Tag tag = tagMapper.fromDto(tagDto);
+        service.addTag(post,tag);
+            return "redirect:/posts/{id}";
+
+    }
+
 
     @PostMapping("/{id}/update")
     public String updatePost(@PathVariable int id,@Valid @ModelAttribute("post") PostDto postDto, BindingResult errors, Model model){

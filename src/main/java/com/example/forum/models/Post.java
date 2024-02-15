@@ -36,7 +36,7 @@ public class Post {
     private Set<Comment> postComments;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "posts_tags",
             joinColumns = @JoinColumn(name="post_id"),

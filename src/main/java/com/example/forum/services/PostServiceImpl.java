@@ -131,13 +131,17 @@ public class PostServiceImpl implements PostService{
         if (post.getPostTags().contains(tag)){
             return;
         }
+        Tag existingTag = tagService.get(tag.getName());
+        if (existingTag == null) {
+            existingTag = tagService.create(tag);
+        }
         try {
-            tagService.create(tag);
-            post.getPostTags().add(tag);
+            tagService.create(existingTag);
+            post.getPostTags().add(existingTag);
             repository.update(post);
         }
         catch (EntityDuplicateException e){
-            post.getPostTags().add(tag);
+            post.getPostTags().add(existingTag);
             repository.update(post);}
 
     }

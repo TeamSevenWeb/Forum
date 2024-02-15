@@ -6,7 +6,7 @@ import com.example.forum.models.User;
 
 public interface TagService {
 
-    void create(Tag tag);
+    Tag create(Tag tag);
 
     void update(Tag tag);
 

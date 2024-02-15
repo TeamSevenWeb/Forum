@@ -2002,3 +2002,10 @@ padding-left:1rem
     cursor: pointer; /* Pointer cursor on hover */
     font-size: 19px; /* Font size */
 }
+
+.tag-container{
+    display: flex;
+    justify-content: left;
+    padding-top: 1rem;
+    padding-left:1rem
+}

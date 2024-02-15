@@ -15,6 +15,7 @@
         <div class="post-content-container"></div>
         <div class="post-content-linebreak" th:text="${post.content}"></div>
     </div>
+
         <div class="reaction-container">
             <h2>
                 <a href="#" th:href="@{__${requestURI}__/update}"
@@ -39,13 +40,22 @@
         </div>
     </div>
 
+
     <div class="navigate">
         <!-- Masthead Heading-->
         <h3 class="text-uppercase mb-0">Details</h3>
     <div class="post-details-container ml8">
         <p th:text="'Creation Date : ' + ${post.dateAndTimeOfCreation}"></p>
         <p th:text="'Comments count : '+ ${post.postComments.size()}"></p>
+        <div class="tag-container">
+            <h4><span th:text="#{tags.label}"></span>&nbsp;&nbsp;&nbsp;</h4>
+            <div th:each="tag,iterStat : ${tags}">
+                <a  th:text="${tag.name}"></a>
+                <span th:if="${!iterStat.last}">&nbsp;</span>
+            </div>
+        </div>
     </div>
+
     </div>
 
 </section>
