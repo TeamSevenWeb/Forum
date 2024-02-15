@@ -128,6 +128,7 @@ public class PostMvcController {
     @GetMapping("/new")
     public String showNewPostPage(Model model){
         model.addAttribute("post",new PostDto());
+        model.addAttribute("tag",new TagDto());
         return "NewPostView";
     }
 
