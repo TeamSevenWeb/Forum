@@ -71,6 +71,16 @@ create table posts
         foreign key (created_by) references users (user_id)
 );
 
+create table posts_tags
+(
+    post_id int,
+    constraint posts_tags_post_id_fk
+        foreign key (post_id) references posts (post_id),
+    tag_id int,
+    constraint posts_tags_tag_id_fk
+        foreign key (tag_id) references tags (tag_id)
+);
+
 create table comments
 (
     comment_id                int auto_increment
