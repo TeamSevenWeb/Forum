@@ -1893,9 +1893,8 @@ header{
     background-color: #131415;
     padding-bottom: 10em;
 }
-.user-leftside{
+.user-leftside {
     border-right: 2px solid purple;
-    border-radius: 0 12px;
 }
 .user-rightside{
     align-content: center;
