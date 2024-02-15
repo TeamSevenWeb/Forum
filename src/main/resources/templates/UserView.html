@@ -3,30 +3,96 @@
 <div th:insert="~{fragments/PageFrame :: head('User')}"></div>
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
-<div class="container">
-<section class="page-section">
-    <label>User</label>
-<aside class="user-info">
-    <h2 class="center" th:text="${user.username}"></h2>
-    <hr>
-    <h3 class="center" th:text="${user.firstName}"></h3>
-    <hr>
-    <h3 class="center" th:text="${user.lastName}"></h3>
-    <hr>
-    <h3 class="center" th:text="${user.email}"></h3>
-</aside>
-<div class="body">
-    <a href="#" th:href="@{/user/__${user.getId()}__/posts}">
+<div class="user-block">
+  <div>
+      <img class="user-photo" src="../static/images/home_background.jpg" alt="Picture"/>
+      <br/>
+      <div class="user-info">
+          <h2 class="center" th:text="${user.username}"></h2>
+          <hr>
+          <h3 class="center" th:text="${user.firstName}"></h3>
+          <hr>
+          <h3 class="center" th:text="${user.lastName}"></h3>
+          <hr>
+          <h3 class="center" th:text="${user.email}"></h3>
+          <br/>
+      </div>
+  </div>
+    <div class="user-rightside">
+
+<!--   User getPost and getComment methods-->
+    <div class="methods-body">
+      <a href="#" th:href="@{/user/__${user.getId()}__/posts}">
         <div class="user-button">Get user posts</div></a>
-    <br>
-    <br/>
-    <a href="#" th:href="@{/user/__${user.getId()}__/comments}">
+      <div>    </div>
+      <a href="#" th:href="@{/user/__${user.getId()}__/comments}">
         <div class="user-button">Get user comments</div></a>
-    <br>
+    </div>
+
+<!--    Show User most recent posts-->
+
+        <div class="user-wall">
+            <div class="recent-post" th:if="${user.getUserPosts().isEmpty()}">
+                <h3 th:text="${user.username + ' hasn'+''''+'t posted anything yet'}">User has no posts</h3>
+            </div>
+
+            <div class="recent-post" th:unless="${user.getUserPosts().isEmpty()}">
+                <br/>
+            <h3 th:text="#{most.recent.post}"></h3>
+                <hr>
+            <!--    Display posts -->
+                <div class="user-post-container">
+                    <span class="posts-label">Title:</span>
+                    <br/>
+                    <br/>
+                    <a href="#" th:href="@{/posts/__${user.getUserLastPost().getPostId()}__}">
+                        <span th:text="${user.getUserLastPost().getTitle()}">Post title</span></a>
+                    <br/>
+
+                    <br/>
+                    <span class="posts-label">Content::</span>
+                    <p th:text="${user.getUserLastPost().getContent()}">Post content</p>
+                    <br/>
+                </div>
+
+            </div>
+
+<!--            Most recent comment-->
+
+            <div class="recent-post" th:if="${user.getUserComments().isEmpty()}">
+                <h3 th:text="${user.username + ' hasn'+''''+'t commented anything yet'}">User has no comments</h3>
+            </div>
+
+            <div class="recent-post" th:unless="${user.getUserComments().isEmpty()}">
+                <br/>
+                <h3 th:text="#{most.recent.comment}"></h3>
+                <hr>
+                <!--    Display posts -->
+                <div class="user-post-container">
+                    <span class="posts-label">Title commented:</span>
+                    <br/>
+                    <br/>
+                    <a href="#" th:href="@{/posts/__${user.getUserLastComment().getPost().getPostId()}__}">
+                        <span  th:text="${user.getUserLastComment().getPost().getTitle()}">Post title</span></a>
+                    <br/>
+
+                    <br/>
+                    <span class="posts-label">Comment:</span>
+                    <br/>
+                    <br/>
+                    <span th:text="${user.getUserLastComment().getComment()}">Comment content</span>
+                    <br/>
+                </div>
+
+            </div>
+
+        </div>
+
+  </div>
 </div>
-</section>
-</div>
-<footer th:replace="~{/fragments/PageFrame :: footer}"></footer>
-<div th:replace="~{/fragments/PageFrame :: scripts}"></div>
+
+<div th:replace="~{fragments/PageFrame :: footer}"></div>
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
+
 </body>
 </html>

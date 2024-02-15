@@ -67,6 +67,11 @@ public class PostMvcController {
         return session.getAttribute("currentUser") != null;
     }
 
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session) {
+        return session.getAttribute("isAdmin") != null;
+    }
+
     @ModelAttribute("requestURI")
     public String requestURI(final HttpServletRequest request) {
         return request.getRequestURI();
@@ -74,20 +79,23 @@ public class PostMvcController {
 
     @GetMapping
     public String showAllPosts(@ModelAttribute("postFilterOptions") PostFilterDto filterDto, Model model, HttpSession session) {
+        User user;
         PostsFilterOptions filterOptions = new PostsFilterOptions(
                 filterDto.getTitle(),
                 filterDto.getKeyword(),
                 filterDto.getCreatedBy(),
                 filterDto.getSortBy(),
                 filterDto.getSortOrder());
-        List<Post> posts = service.getAll(filterOptions);
-        if (populateIsAuthenticated(session)){
-            String currentUsername = (String) session.getAttribute("currentUser");
-            model.addAttribute("currentUser", userService.getByUsername(currentUsername));
+        try {
+            user = authenticationHelper.tryGetCurrentUser(session);
+            model.addAttribute("user",user);
+            List<Post> posts = service.getAll(filterOptions);
+            model.addAttribute("postFilterOptions", filterDto);
+            model.addAttribute("posts", posts);
+            return "PostsView";
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
         }
-        model.addAttribute("postFilterOptions", filterDto);
-        model.addAttribute("posts", posts);
-        return "PostsView";
     }
 
     @GetMapping("/{id}")

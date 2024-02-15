@@ -33,6 +33,11 @@ public class HomeMvcController {
         return session.getAttribute("currentUser") != null;
     }
 
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session) {
+        return session.getAttribute("isAdmin") != null;
+    }
+
     @GetMapping
     public String showHomePage(Model model) {
         List<Post> mostCommentedPosts = postService.getMostCommentedPosts();
