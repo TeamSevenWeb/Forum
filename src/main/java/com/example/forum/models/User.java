@@ -163,6 +163,16 @@ public class User {
         this.isBlocked = isBlocked;
     }
 
+    public Comment getUserLastComment(){
+        int lastIndex = userComments.size();
+        return userComments.stream().toList().get(lastIndex - 1);
+    }
+
+    public Post getUserLastPost(){
+        int lastIndex = userPosts.size();
+        return userPosts.stream().toList().get(lastIndex - 1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

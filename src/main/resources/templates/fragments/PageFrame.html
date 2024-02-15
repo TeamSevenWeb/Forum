@@ -12,9 +12,9 @@
     <link href="../../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-secondary text-uppercase " id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="#" th:href="@{/}">Forum</a>
+        <a class="brand" href="#" th:href="@{/}">Forum 7</a>
         <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -23,15 +23,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
-                <li th:unless="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
+                <li class="nav-item mx-0 mx-lg-1">
                     <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#" th:href="@{/posts}"
                        th:text="#{navigation.all-posts}">Browse all Posts</a></li>
+                <li th:if="${isAuthenticated && session.isAdmin}" class="nav-item mx-0 mx-lg-1">
+                    <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#" th:href="@{/user/all}"
+                       th:text="#{navigation.all-users}">Browse all Users</a></li>
                 <li th:unless="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a th:href="@{/auth/login}" class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Login</a></li>
                 <li th:unless="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a th:href="@{/auth/register}" class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Register</a></li>
-                <li th:if="${isAuthenticated && session.isAdmin}" class="nav-item mx-0 mx-lg-1">
-                    <a th:href="@{/admin}" class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Admin Portal</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a href="#" th:href="@{/posts/new}" class="nav-link py-3 px-0 px-lg-3 rounded">Create Post</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">

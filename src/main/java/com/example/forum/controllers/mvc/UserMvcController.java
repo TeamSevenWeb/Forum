@@ -3,8 +3,13 @@ package com.example.forum.controllers.mvc;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.filters.UserFilterOptions;
+import com.example.forum.filters.dtos.PostFilterDto;
+import com.example.forum.filters.dtos.UserFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.UserMapper;
+import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.UserDto;
 import com.example.forum.services.UserService;
@@ -15,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -32,28 +39,37 @@ public class UserMvcController {
         this.authenticationHelper = authenticationHelper;
     }
 
-//    @GetMapping
-//    public String showAllUsers(@ModelAttribute("userFilterOptions") UserFilterDto userFilterDto, Model model, HttpSession session) {
-//       UserFilterOptions userFilterOptions = new UserFilterOptions(
-//                userFilterDto.getUsername(),
-//                userFilterDto.getEmail(),
-//                userFilterDto.getFirstName(),
-//                userFilterDto.getSortBy(),
-//                userFilterDto.getSortOrder());
-//        List<User> users = userService.getAll(userFilterOptions);
-//        if (populateIsAuthenticated(session)){
-//            String currentUsername = (String) session.getAttribute("currentUser");
-//            model.addAttribute("currentUser", userService.getByUsername(currentUsername));
-//        }
-//        model.addAttribute("userFilterOptions", userFilterDto);
-//        model.addAttribute("users", users);
-//        return "UsersView";
-//    }
+    @GetMapping("/all")
+    public String showAllPosts(@ModelAttribute("postFilterOptions") UserFilterDto filterDto, Model model, HttpSession session) {
+        User user;
+        UserFilterOptions userFilterOptions = new UserFilterOptions(
+                filterDto.getUsername(),
+                filterDto.getEmail(),
+                filterDto.getFirstName(),
+                filterDto.getSortBy(),
+                filterDto.getSortOrder());
+        try {
+            user = authenticationHelper.tryGetCurrentUser(session);
+            model.addAttribute("user",user);
+            List<User> users = userService.getAll(userFilterOptions,user);
+            model.addAttribute("userFilterOptions", filterDto);
+            model.addAttribute("users", users);
+            return "AllUsersView";
+        } catch (AuthorizationException e) {
+            return "redirect:/";
+        }
+    }
 
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
     return session.getAttribute("currentUser") != null;
 }
+
+    @ModelAttribute("isAdmin")
+    public boolean populateIsAdmin(HttpSession session) {
+        return session.getAttribute("isAdmin") != null;
+    }
+
 
 
     @GetMapping
