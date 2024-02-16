@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -44,6 +45,10 @@ public class Post {
 
     )
     private Set<Tag> postTags;
+
+    public LocalDateTime getMostRecentComment(){
+        return postComments.stream().map(Comment::getDateAndTimeOfCreation).max(Comparator.naturalOrder()).get();
+    }
 
     public Set<Tag> getPostTags() {
         return postTags;

@@ -20,20 +20,19 @@
             <div class="table-header-cell">Last Comment</div>
         </div>
     <!--starts here-->
-        <div class="table-row" th:each="post : ${mostCommentedPosts}">
+        <div  class="table-row" th:each="post : ${mostCommentedPosts}">
             <div class="cell">
                 <span class="cell-linebreak">
-<!--                    <a href="#" th:href="@{/posts/__${post.id}__}"></a>-->
-                Kvo sta aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                    <a th:text="${post.title}" href="#" th:href="@{/posts/__${post.postId}__}"></a>
                 </span>
                 <br>
             </div>
             <div class="cell">
-                <span th:number="${post.getPostComments().size()}"></span> <!-- Add comments count -->
+                <span th:text="${post.getPostComments().size()}"></span> <!-- Add comments count -->
             </div>
 
             <div class="cell">
-                <span class="cell-linebreak"></span> <!-- Add info for last comments - Date and user -->
+                <span th:text="${post.getMostRecentComment()}" class="cell-linebreak"></span> <!-- Add info for last comments - Date and user -->
             </div>
         </div>
         </div>

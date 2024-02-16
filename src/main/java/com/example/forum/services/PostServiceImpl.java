@@ -128,10 +128,16 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void addTag(Post post, Tag tag) {
+        //TODO optimize method
         if (post.getPostTags().contains(tag)){
             return;
         }
-        Tag existingTag = tagService.get(tag.getName());
+        Tag existingTag;
+        try {
+            existingTag = tagService.get(tag.getName());
+        } catch (EntityNotFoundException e) {
+            existingTag = tagService.create(tag);
+        }
         if (existingTag == null) {
             existingTag = tagService.create(tag);
         }
