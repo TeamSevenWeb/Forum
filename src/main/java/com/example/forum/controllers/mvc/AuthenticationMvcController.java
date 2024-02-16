@@ -1,6 +1,6 @@
 package com.example.forum.controllers.mvc;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.UserMapper;
@@ -64,8 +64,9 @@ public class AuthenticationMvcController {
             User user = authenticationHelper.verifyAuthentication(login.getUsername(), login.getPassword());
             session.setAttribute("currentUser", login.getUsername());
             session.setAttribute("isAdmin", user.isAdmin());
+            session.setAttribute("userId", user.getId());
             return "redirect:/";
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
             return "LoginView";
         }

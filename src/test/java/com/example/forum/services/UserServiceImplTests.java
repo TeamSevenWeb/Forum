@@ -1,6 +1,6 @@
 package com.example.forum.services;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.UserFilterOptions;
@@ -52,7 +52,7 @@ public class UserServiceImplTests {
         UserFilterOptions mockFilterOptions = createMockUserFilterOptions();
 
         //Act,Assert
-        Assertions.assertThrows(AuthorizationException.class,
+        Assertions.assertThrows(AuthenticationException.class,
                 ()-> mockUserService.getAll(mockFilterOptions,mockUser));
 
     }
@@ -286,7 +286,7 @@ public class UserServiceImplTests {
         mockUserToBeUpdated.setId(2);
 
         // Act,Assert
-       Assertions.assertThrows(AuthorizationException.class,
+       Assertions.assertThrows(AuthenticationException.class,
                ()-> mockUserService.update(mockUserToBeUpdated,mockUser));
     }
 
@@ -355,7 +355,7 @@ public class UserServiceImplTests {
                 .thenReturn(mockUserToBeDeleted);
 
         //Assert
-        Assertions.assertThrows(AuthorizationException.class,
+        Assertions.assertThrows(AuthenticationException.class,
                 ()-> mockUserService.delete(Mockito.anyInt(),mockUser));
     }
 
@@ -386,7 +386,7 @@ public class UserServiceImplTests {
                 .thenReturn(mockUserToBeDeleted);
 
         //Act, Assert
-        Assertions.assertThrows(AuthorizationException.class,
+        Assertions.assertThrows(AuthenticationException.class,
                 ()-> mockUserService.block(Mockito.anyInt(),mockUser));
     }
 
@@ -417,7 +417,7 @@ public class UserServiceImplTests {
                 .thenReturn(mockUserToBeDeleted);
 
         //Act, Assert
-        Assertions.assertThrows(AuthorizationException.class,
+        Assertions.assertThrows(AuthenticationException.class,
                 ()-> mockUserService.unblock(Mockito.anyInt(),mockUser));
     }
 
@@ -448,7 +448,7 @@ public class UserServiceImplTests {
                 .thenReturn(mockUserToBeDeleted);
 
         //Act, Assert
-        Assertions.assertThrows(AuthorizationException.class,
+        Assertions.assertThrows(AuthenticationException.class,
                 ()-> mockUserService.makeAdmin(Mockito.anyInt(),mockUser));
     }
 }

@@ -1,6 +1,6 @@
 package com.example.forum.services;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.UserFilterOptions;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll(UserFilterOptions filterOptions, User user) {
         if(!user.isAdmin()){
-            throw new AuthorizationException(ADMINS_CAN_VIEW_ALL_USERS_ERROR);
+            throw new AuthenticationException(ADMINS_CAN_VIEW_ALL_USERS_ERROR);
         }
         return repository.getAll(filterOptions);
     }
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     public void block(int id, User user) {
         User userToBeBlocked = repository.get(id);
         if (!user.isAdmin()){
-            throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
+            throw new AuthenticationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
         userToBeBlocked.setIsBlocked(true);
         repository.update(userToBeBlocked);
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
     public void unblock(int id, User user) {
         User userToBeUnblocked = repository.get(id);
         if (!user.isAdmin()){
-            throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
+            throw new AuthenticationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
         userToBeUnblocked.setIsBlocked(false);
         repository.update(user);
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
     public void makeAdmin(int id, User user) {
         User makeAdmin = repository.get(id);
         if (!user.isAdmin()){
-            throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
+            throw new AuthenticationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
         makeAdmin.setIsAdmin(true);
         repository.update(makeAdmin);
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
     private void checkModifyPermissions(User userToBeUpdated, User user) {
         if (!user.isAdmin() && userToBeUpdated.getId() != user.getId()) {
-            throw new AuthorizationException(MODIFY_USER_ERROR_MESSAGE);
+            throw new AuthenticationException(MODIFY_USER_ERROR_MESSAGE);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.example.forum.controllers;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.exceptions.InvalidReactionException;
@@ -60,7 +60,7 @@ public class PostController {
             User user = authenticationHelper.tryGetUser(headers);
             PostsFilterOptions postsFilterOptions = new PostsFilterOptions(title, keyWord,createdBy, sortBy, sortOrder);
             return service.getAll(postsFilterOptions);
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -78,7 +78,7 @@ public class PostController {
             User user = authenticationHelper.tryGetUser(headers);
             CommentFilterOptions commentFilterOptions = new CommentFilterOptions(post, keyWord,createdBy, sortBy, sortOrder);
             return commentService.getAll(commentFilterOptions);
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -129,7 +129,7 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -143,7 +143,7 @@ public class PostController {
             commentService.create(post,comment,user);
             return comment;
         }
-        catch (AuthorizationException e) {
+        catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
         catch (EntityNotFoundException e) {
@@ -159,7 +159,7 @@ public class PostController {
             User user = authenticationHelper.tryGetUser(headers);
             Post post = service.get(postId);
             service.upvote(post,user);
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
         catch (EntityNotFoundException e) {
@@ -183,7 +183,7 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -197,7 +197,7 @@ public class PostController {
         return comment;
        } catch (EntityNotFoundException e) {
            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-       } catch (AuthorizationException e) {
+       } catch (AuthenticationException e) {
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
        }
     }
@@ -209,7 +209,7 @@ public class PostController {
             service.delete(id,user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -221,7 +221,7 @@ public class PostController {
             commentService.delete(id,user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }

@@ -1,10 +1,9 @@
 package com.example.forum.controllers.mvc;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.exceptions.InvalidReactionException;
-import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.filters.dtos.PostFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
@@ -26,7 +25,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,7 +98,7 @@ public class PostMvcController {
             model.addAttribute("postFilterOptions", filterDto);
             model.addAttribute("posts", posts);
             return "PostsView";
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             return "redirect:/auth/login";
         }
     }
@@ -248,7 +246,7 @@ public class PostMvcController {
             Post post = service.get(postId);
             service.upvote(post,user);
             return "redirect:/posts/{postId}";
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
         catch (EntityNotFoundException e) {
