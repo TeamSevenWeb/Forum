@@ -161,6 +161,28 @@ public class PostMvcController {
         commentService.create(post,comment,user);;
         return "redirect:/posts/{postId}";
     }
+    @GetMapping("{postId}/{commentId}/deleteComment")
+    public String deleteComment(HttpSession session,@PathVariable int commentId){
+        User user = authenticationHelper.tryGetCurrentUser(session);
+        commentService.delete(commentId,user);
+        return "redirect:/posts/{postId}";
+    }
+
+    @GetMapping("{postId}/{commentId}/update")
+    public String updateCommentView(HttpSession session,@PathVariable int commentId, Model model){
+        User user = authenticationHelper.tryGetCurrentUser(session);
+        CommentDto commentDto = commentMapper.toDto(commentService.getById(commentId));
+        model.addAttribute("commentDto",commentDto);
+        return "CommentEdit";
+    }
+    @PostMapping("{postId}/{commentId}/update")
+    public String updateComment(HttpSession session,@PathVariable int commentId
+            , @Valid @ModelAttribute ("commentDto") CommentDto commentDto){
+        User user = authenticationHelper.tryGetCurrentUser(session);
+        Comment comment = commentMapper.fromDto(commentId,commentDto);
+        commentService.update(comment,user);
+        return "redirect:/posts/{postId}";
+    }
 
     @GetMapping("/{id}/update")
     public String showEditPostPage(@PathVariable int id, Model model) {
@@ -177,15 +199,6 @@ public class PostMvcController {
             return "ErrorView";
         }
     }
-    @PostMapping("/{id}/update/addTags")
-    public String addTags(@PathVariable int id, @Valid @ModelAttribute("tagDto") TagDto tagDto){
-        Post post = service.get(id);
-        Tag tag = tagMapper.fromDto(tagDto);
-        service.addTag(post,tag);
-            return "redirect:/posts/{id}";
-
-    }
-
 
     @PostMapping("/{id}/update")
     public String updatePost(@PathVariable int id,@Valid @ModelAttribute("post") PostDto postDto, BindingResult errors, Model model){
@@ -206,7 +219,14 @@ public class PostMvcController {
             return "PostUpdate";
         }
     }
+    @PostMapping("/{id}/update/addTags")
+    public String addTags(@PathVariable int id, @Valid @ModelAttribute("tagDto") TagDto tagDto){
+        Post post = service.get(id);
+        Tag tag = tagMapper.fromDto(tagDto);
+        service.addTag(post,tag);
+        return "redirect:/posts/{id}";
 
+    }
     @GetMapping("/{id}/delete")
     public String deletePost(@PathVariable int id, Model model) {
         try {

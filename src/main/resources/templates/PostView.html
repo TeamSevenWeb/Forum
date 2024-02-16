@@ -75,6 +75,10 @@
             </div>
             <dirv class="content" th:text="${comment.getComment()}">
             </dirv>
+            <div class="comment">
+                <a href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${comment.commentId})}" >Edit </a>
+                <a href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${comment.commentId})}" >Delete</a>
+            </div>
         </div>
     </div>
     <!--Reply Area-->
