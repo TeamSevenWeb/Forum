@@ -48,6 +48,31 @@
     <script src="../../static/js/scripts.js" th:src="@{/js/scripts.js}"></script>
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 </div>
-
+<footer th:fragment="footer" class="footer text-center">
+    <div class="footer-container">
+        <div class="row">
+            <!-- Footer Location-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <h4 class="text-uppercase mb-4">Location</h4>
+                <p class="lead mb-0">
+                    30, ul. "Krastyu Rakovski"
+                    <br />
+                    1729 Sofia
+                </p>
+            </div>
+            <!-- Footer Copyright Text-->
+            <div class="col-lg-4 mt-1">
+                <p class="text-uppercase mb-4" th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Forum Team 7'}">Forum</p>
+            </div>
+            <!-- Footer Social Icons-->
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <h4 class="text-uppercase mb-4">Around the Web</h4>
+                <a class="btn btn-outline-light btn-social mx-1" href="https://www.facebook.com/TelerikAcademy"><i class="fab fa-fw fa-facebook-f"></i></a>
+                <a class="btn btn-outline-light btn-social mx-1" href="https://twitter.com/telerikacademy"><i class="fab fa-fw fa-twitter"></i></a>
+                <a class="btn btn-outline-light btn-social mx-1" href="https://bg.linkedin.com/company/telerik-academy"><i class="fab fa-fw fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

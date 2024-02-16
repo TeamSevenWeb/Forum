@@ -3,15 +3,17 @@
 <div th:insert="~{fragments/PageFrame :: head('Update Post')}"></div>
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
-<div class="page-section text-center">
+<section class="page-section text-center">
 <h2 th:text="#{edit.comment.label}">Edit Comment</h2>
 <form  class="form-tags" action="#" th:action="@{__${requestURI}__}" th:object="${commentDto}" method="post">
     <textarea class="textarea-title textarea-style" type="text" th:field="*{comment}"></textarea>
     <br/>
     <input type="submit" value="Save"/>
 </form>
-</div>
+</section>
 <div th:replace="~{fragments/PageFrame :: scripts}"></div>
 
 </body>
+<div th:replace="~{/fragments/PageFrame :: footer}"></div>
+
 </html>
