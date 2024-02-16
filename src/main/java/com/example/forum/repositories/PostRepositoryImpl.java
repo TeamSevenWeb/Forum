@@ -26,7 +26,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> getAll(PostsFilterOptions postsFilterOptions) {
-//        ArrayList<String> tagList;
+        ArrayList<String> tagList;
         try (Session session = sessionFactory.openSession()) {
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
@@ -55,18 +55,17 @@ public class PostRepositoryImpl implements PostRepository {
                 }
             });
 
-            StringBuilder queryString = new StringBuilder("from Post");
-//            if (postsFilterOptions.getTagName().isPresent() && !postsFilterOptions.getTagName().get().isEmpty()) {
-//                queryString.append(" join p.tags t");
-//                tagList = new ArrayList<>(Arrays.asList(postsFilterOptions.getTagName().get().split("\\s*,\\s*")));
-//                filters.add("t.name in (:tagNames)");
-//                params.put("tagNames", tagList);
-//            }
-            if (!filters.isEmpty()) {
-                queryString
-                        .append(" where ")
-                        .append(String.join(" and ", filters));
+            StringBuilder queryString = new StringBuilder("from Post p");
+            if (postsFilterOptions.getTagName().isPresent() && !postsFilterOptions.getTagName().get().isEmpty()) {
+                queryString.append(" join p.postTags t");
+                tagList = new ArrayList<>(Arrays.asList(postsFilterOptions.getTagName().get().split("\\s*,\\s*")));
+                filters.add("t.name in (:tagNames)");
+                params.put("tagNames", tagList);
             }
+            if (!filters.isEmpty()) {
+                queryString.append(" where ").append(String.join(" and ", filters));
+            }
+            queryString.append(" group by p");
             queryString.append(generateOrderBy(postsFilterOptions));
 
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);

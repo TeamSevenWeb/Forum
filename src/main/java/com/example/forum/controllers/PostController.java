@@ -53,12 +53,12 @@ public class PostController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String keyWord,
             @RequestParam(required = false) String createdBy,
-//            @RequestParam(required = false) String tagName,
+            @RequestParam(required = false) String tagName,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortOrder) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            PostsFilterOptions postsFilterOptions = new PostsFilterOptions(title, keyWord,createdBy, sortBy, sortOrder);
+            PostsFilterOptions postsFilterOptions = new PostsFilterOptions(title, keyWord,createdBy, tagName, sortBy, sortOrder);
             return service.getAll(postsFilterOptions);
         } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
