@@ -48,26 +48,26 @@
     <div class="table2">
         <div class="table-head">
             <div class="table-header-cell">Title</div>
-            <div class="table-header-cell">Details</div>
+            <div class="table-header-cell">Created by</div>
             <div class="table-header-cell">Creation Date</div>
         </div>
         <!--starts here-->
         <div class="table-row" th:each="post : ${mostRecentPosts}">
             <div class="cell">
-                <span class="linebreak" th:text="${post.getTitle()}">
-<!--                    <a href="#" th:href="@{/posts/__${post.id}__}"></a>-->
+                <span class="linebreak" >
+                    <a th:text="${post.getTitle()}" href="#" th:href="@{/posts/__${post.getPostId()}__}"></a>
                 </span>
                 <br>
             </div>
             <div class="cell">
-                <span></span> <!-- Add comments count -->
-                <span th:text="#{post.label.createdBy} +' '+${post.getCreatedBy().getUsername()}">
-<!--                    <a href="#" th:href="@{/users/__${user.id}__}"></a>-->
+                <span >
+                    <a th:text="${post.getCreatedBy().getUsername()}"
+                       href="#" th:href="@{/user/__${post.getCreatedBy().getId()}__}"></a>
                 </span>
             </div>
 
             <div class="cell">
-                <span></span> <!-- Add creation date -->
+                <span class="linebreak" th:text="${post.getDateAndTimeOfCreation()}"></span> <!-- Add creation date -->
             </div>
         </div>
     </div>

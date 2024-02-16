@@ -11,6 +11,7 @@ import com.example.forum.helpers.UserMapper;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.RegisterDto;
 import com.example.forum.models.dtos.UserDto;
+import com.example.forum.models.dtos.UserUpdateDto;
 import com.example.forum.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -151,10 +152,9 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
             if (!user.isAdmin() && user.getId() != id){
                 throw new AuthorizationException(NOT_AUTHORIZED);
             }
-            UserDto userDto = userMapper.toDto(userToUpdate);
+            UserUpdateDto userDto = userMapper.toUpdateDto(userToUpdate);
             model.addAttribute("userId", id);
             model.addAttribute("user", userDto);
-            model.addAttribute("passwordConfirm", new RegisterDto());
             return "UserUpdateView";
         }catch (AuthenticationException e){
             return "redirect:/auth/login";
@@ -171,14 +171,14 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
 
     @PostMapping("/{id}/update")
     public String updateUserView(@PathVariable int id
-            ,@ModelAttribute("passwordConfirm") RegisterDto passwordConfirm
-            ,@Valid @ModelAttribute("user") UserDto userDto
+            ,@Valid @ModelAttribute("user") UserUpdateDto userDto
             ,BindingResult errors
             ,Model model
             ,HttpSession session){
         User user;
         try {
             user = authenticationHelper.tryGetCurrentUser(session);
+            User userToUpdate = userService.get(id);
             if (!user.isAdmin() && user.getId() != id){
                 throw new AuthorizationException(NOT_AUTHORIZED);
             }
@@ -192,12 +192,9 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
         if(errors.hasErrors()){
             return "UserUpdateView";
         }
-//        if (!user.getPassword().equals(passwordConfirm.getPasswordConfirm())) {
-//            errors.rejectValue("passwordConfirm", "password_error", "Password confirmation should match password.");
-//            return "UserUpdateView";
-//        }
+        
         try {
-            User userToUpdate = userMapper.fromDto(id,userDto);
+            User userToUpdate = userMapper.fromUpdateDto(id,userDto);
             userService.update(userToUpdate,user);
             return "redirect:/user";
         } catch (EntityNotFoundException e) {
