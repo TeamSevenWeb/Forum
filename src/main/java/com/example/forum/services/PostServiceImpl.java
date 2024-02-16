@@ -1,9 +1,8 @@
 package com.example.forum.services;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
-import com.example.forum.exceptions.InvalidReactionException;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.*;
 import com.example.forum.repositories.*;
@@ -54,7 +53,7 @@ public class PostServiceImpl implements PostService{
     @Override
     public void create(Post post, User user) {
         if(user.isBlocked()){
-            throw new AuthorizationException(CREATE_POST_ERROR_MESSAGE);
+            throw new AuthenticationException(CREATE_POST_ERROR_MESSAGE);
         }
         if (user.getUserPosts().stream().anyMatch(p -> p.getPostId() == post.getPostId())) {
             return;
@@ -156,7 +155,7 @@ public class PostServiceImpl implements PostService{
     private void checkModifyPermissions(int id, User user) {
         Post post = repository.get(id);
         if (!post.getCreatedBy().equals(user)&&!user.isAdmin()) {
-            throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);
+            throw new AuthenticationException(MODIFY_POST_ERROR_MESSAGE);
         }
     }
 }

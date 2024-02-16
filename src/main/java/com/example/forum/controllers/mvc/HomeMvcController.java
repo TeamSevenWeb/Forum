@@ -1,6 +1,6 @@
 package com.example.forum.controllers.mvc;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
@@ -61,7 +61,7 @@ public class HomeMvcController {
             }
             model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
             return "ErrorView";
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             return "redirect:/auth/login";
         }
     }

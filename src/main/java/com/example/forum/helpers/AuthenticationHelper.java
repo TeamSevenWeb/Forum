@@ -1,6 +1,6 @@
 package com.example.forum.helpers;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.models.User;
 import com.example.forum.services.UserService;
@@ -23,7 +23,7 @@ public class AuthenticationHelper {
 
     public User tryGetUser(HttpHeaders headers) {
         if (!headers.containsKey(AUTHORIZATION_HEADER_NAME)) {
-            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
         }
 
         try {
@@ -33,19 +33,19 @@ public class AuthenticationHelper {
             User user = userService.getByUsername(username);
 
             if (!user.getPassword().equals(password)) {
-                throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+                throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
             }
 
             return user;
         } catch (EntityNotFoundException e) {
-            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
         }
     }
 
     private String getUsername(String userInfo) {
         int firstSpace = userInfo.indexOf(" ");
         if (firstSpace == -1) {
-            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
         }
 
         return userInfo.substring(0, firstSpace);
@@ -54,7 +54,7 @@ public class AuthenticationHelper {
     private String getPassword(String userInfo) {
         int firstSpace = userInfo.indexOf(" ");
         if (firstSpace == -1) {
-            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
         }
 
         return userInfo.substring(firstSpace + 1);
@@ -64,7 +64,7 @@ public class AuthenticationHelper {
         String currentUsername = (String) session.getAttribute("currentUser");
 
         if (currentUsername == null) {
-            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
         }
 
         return userService.getByUsername(currentUsername);
@@ -74,11 +74,11 @@ public class AuthenticationHelper {
         try {
             User user = userService.getByUsername(username);
             if (!user.getPassword().equals(password)) {
-                throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+                throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
             }
             return user;
         } catch (EntityNotFoundException e) {
-            throw new AuthorizationException(INVALID_AUTHENTICATION_ERROR);
+            throw new AuthenticationException(INVALID_AUTHENTICATION_ERROR);
         }
     }
 }

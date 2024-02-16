@@ -1,9 +1,8 @@
 package com.example.forum.services;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.CommentFilterOptions;
-import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
@@ -61,7 +60,7 @@ public class CommentServiceImplTests {
 
         // Act, Assert
         Assertions.assertThrows(
-                AuthorizationException.class,
+                AuthenticationException.class,
                 () -> service.create(mockPost,mockComment, mockUser));
     }
 
@@ -108,7 +107,7 @@ public class CommentServiceImplTests {
 
         // Act, Assert
         Assertions.assertThrows(
-                AuthorizationException.class,
+                AuthenticationException.class,
                 () -> service.update(mockComment, Mockito.mock(User.class)));
     }
 
@@ -170,7 +169,7 @@ public class CommentServiceImplTests {
 
         // Act, Assert
         Assertions.assertThrows(
-                AuthorizationException.class,
+                AuthenticationException.class,
                 () -> service.delete(mockComment.getCommentId(),Mockito.mock(User.class)));
     }
 

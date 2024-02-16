@@ -11,39 +11,33 @@
         <form class="outline" action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
             <label th:text="#{user.label.username}">Username</label>
             <br/>
-            <input type="text" th:field="*{username}"/>
-            <label class="error" th:errors="*{username}">Username error placeholder</label>
-            <br/><br/>
+            <input type="text" th:field="*{username}"/><br/>
+            <div class="error error-login" th:errors="*{username}">Username error placeholder</div>
 
             <label th:text="#{user.label.password}">Password</label>
             <br/>
-            <input type="password" th:field="*{password}"/>
-            <label class="error" th:errors="*{password}">Password error placeholder</label>
-            <br/><br/>
+            <input type="password" th:field="*{password}"/><br/>
+            <div class="error error-login" th:errors="*{password}">Password error placeholder</div>
 
             <label th:text="#{user.label.password-confirm}">Confirm Password</label>
             <br/>
-            <input type="password" th:field="*{passwordConfirm}"/>
-            <label class="error" th:errors="*{passwordConfirm}">Password confirm error placeholder</label>
-            <br/><br/>
+            <input type="password" th:field="*{passwordConfirm}"/><br/>
+            <div class="error error-login" th:errors="*{passwordConfirm}">Password confirm error placeholder</div>
 
             <label th:text="#{user.label.first-name}">First Name</label>
             <br/>
-            <input type="text" th:field="*{firstName}"/>
-            <label class="error" th:errors="*{firstName}">First name error placeholder</label>
-            <br/><br/>
+            <input type="text" th:field="*{firstName}"/><br/>
+            <div class="error error-login" th:errors="*{firstName}">First name error placeholder</div>
 
             <label th:text="#{user.label.last-name}">Last Name</label>
             <br/>
-            <input type="text" th:field="*{lastName}"/>
-            <label class="error" th:errors="*{lastName}">Last name error placeholder</label>
-            <br/><br/>
+            <input type="text" th:field="*{lastName}"/><br/>
+            <div class="error error-login" th:errors="*{lastName}">Last name error placeholder</div>
 
             <label th:text="#{user.label.email}">Email</label>
             <br/>
-            <input type="text" th:field="*{email}"/>
-            <label class="error" th:errors="*{email}">Email error placeholder</label>
-            <br/><br/>
+            <input type="text" th:field="*{email}"/><br/>
+            <div class="error error-login" th:errors="*{email}">Email error placeholder</div>
 
             <input type="submit" value="Register"/>
         </form>

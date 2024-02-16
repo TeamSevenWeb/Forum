@@ -1871,6 +1871,10 @@ header{
     transition-duration: 0.4s;
 
 }
+#update-button{
+    display: flex;
+    justify-content: center;
+}
 
 .user-button:hover{
     background-color: rgba(128, 0, 128, 0.87);
@@ -1905,8 +1909,11 @@ header{
 }
 
 .user-photo{
-    margin: 4em;
     object-fit: cover;
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    border: 2px solid purple;
 }
 
 .methods-body{
@@ -1993,6 +2000,10 @@ padding-left:1rem
     padding: 4px;
     margin: 10px 0;
     border-radius: 5px; /* Rounded corners for better appearance */
+}
+
+.error-login{
+    width: 180px;
 }
 
 .edit-button {

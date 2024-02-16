@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:insert="~{fragments/PageFrame :: head('Update User')}"></div>
 <body>
+<div th:replace="~{fragments/PageFrame :: navbar}"></div>
+<section class="page-section text-center">
+    <h2 th:text="#{user.update}">Title</h2>
+    <form action="#" th:action="@{__${requestURI}__}" th:object="${user}" method="post">
+        <label th:text="#{user.label.first-name}">First name</label>
+        <br/>
+        <textarea class="textarea-title textarea-style" type="text" th:field="*{firstName}"></textarea>
+        <br/>
+        <label class="error" th:errors="*{firstName}">First name error placeholder</label>
+        <br/><br/>
+        <label th:text="#{user.label.last-name}">Last name</label>
+        <br/>
+        <textarea class="textarea-title textarea-style" type="text" th:field="*{lastName}"></textarea>
+        <br/>
+        <label class="error" th:errors="*{lastName}">Last name error placeholder</label>
+        <br/><br/>
+        <label th:text="#{user.label.email}">Last name</label>
+        <br/>
+        <textarea class="textarea-title textarea-style" type="text" th:field="*{email}"></textarea>
+        <br/>
+        <label class="error" th:errors="*{email}">Email error placeholder</label>
+        <br/><br/>
+        <label th:text="#{user.label.password}">Password</label>
+        <br/>
+        <textarea class="textarea-title textarea-style" type="password" th:field="*{password}"></textarea>
+        <br/>
+        <label class="error" th:errors="*{password}">Password error placeholder</label>
+        <br/><br/>
+<!--        <label th:text="#{user.label.password-confirm}">Password confirm</label>-->
+<!--        <br/>-->
+<!--        <textarea th:object="passwordConfirm" class="textarea-title textarea-style" type="password" th:field="*{passwordConfirm}"></textarea>-->
+<!--        <br/>-->
+<!--        <label th:object="passwordConfirm" class="error" th:errors="*{passwordConfirm}">Password error placeholder</label>-->
+<!--        <br/><br/>-->
 
+        <input type="submit" value="Save"/>
+    </form>
+</section>
+
+<div th:replace="~{fragments/PageFrame :: scripts}"></div>
 </body>
 </html>

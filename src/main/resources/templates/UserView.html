@@ -5,7 +5,11 @@
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 <div class="user-block">
   <div class="user-leftside">
-      <img class="user-photo" src="../static/images/home_background.jpg" alt="Picture"/>
+      <br/>
+      <img class="user-photo" src="https://www.flagman.bg/files-news/2019/files/February%202024/14/benco.JPG" alt="Picture"/>
+      <br/>
+      <a id="update-button" th:if="${session.isAdmin || session.userId == user.getId()}" ihref="#" th:href="@{/user/__${user.getId()}__/update}">
+          <div class="user-button" >Update profile</div></a>
       <br/>
       <div class="user-info">
           <h2 class="center" th:text="${user.username}"></h2>

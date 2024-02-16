@@ -1,6 +1,5 @@
 package com.example.forum.repositories;
 
-import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.models.Comment;
@@ -74,22 +73,18 @@ public class UserRepositoryImpl implements UserRepository {
             Map<String, Object> params = new HashMap<>();
 
             filterOptions.getUsername().ifPresent(value -> {
-                filters.add("username = :username");
-                params.put("username", value);
+                filters.add("username like :username");
+                params.put("username",String.format("%%%s%%", value));
             });
 
             filterOptions.getEmail().ifPresent(value -> {
-                filters.add("email = :email");
-                params.put("email", value);
+                filters.add("email like :email");
+                params.put("email",String.format("%%%s%%", value));
             });
 
             filterOptions.getFirstName().ifPresent(value -> {
-                try {
-                    filters.add("firstName = :first_name");
-                    params.put("first_name", value);
-                } catch (AuthorizationException e){
-                    throw new EntityNotFoundException("User","first name",value);
-                }
+                    filters.add("firstName like :first_name");
+                    params.put("first_name",String.format("%%%s%%", value));
             });
 
             StringBuilder queryString = new StringBuilder("from User");
@@ -170,7 +165,7 @@ public class UserRepositoryImpl implements UserRepository {
                 orderBy = "id";
                 break;
             case "firstName":
-                orderBy = "first_name";
+                orderBy = "firstName";
                 break;
         }
 

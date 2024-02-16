@@ -1,6 +1,6 @@
 package com.example.forum.services;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.CommentFilterOptions;
@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment create(Post post, Comment comment, User user) {
         if(user.isBlocked()){
-            throw new AuthorizationException(CREATE_COMMENT_ERROR_MESSAGE);
+            throw new AuthenticationException(CREATE_COMMENT_ERROR_MESSAGE);
         };
         boolean duplicateExists = true;
         try {
@@ -72,7 +72,7 @@ public class CommentServiceImpl implements CommentService {
     private void checkModifyPermissions(int id, User user) {
         Comment comment = repository.getById(id);
         if (!comment.getCreatedBy().equals(user)&&!user.isAdmin()) {
-            throw new AuthorizationException(MODIFY_COMMENT_ERROR_MESSAGE);
+            throw new AuthenticationException(MODIFY_COMMENT_ERROR_MESSAGE);
         }
     }
 }

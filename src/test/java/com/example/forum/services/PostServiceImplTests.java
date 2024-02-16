@@ -1,6 +1,6 @@
 package com.example.forum.services;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.PostsFilterOptions;
@@ -138,7 +138,7 @@ public class PostServiceImplTests {
 
         // Act, Assert
         Assertions.assertThrows(
-                AuthorizationException.class,
+                AuthenticationException.class,
                 () -> service.create(mockPost, mockUser));
     }
 
@@ -212,7 +212,7 @@ public class PostServiceImplTests {
 
         // Act, Assert
         Assertions.assertThrows(
-                AuthorizationException.class,
+                AuthenticationException.class,
                 () -> service.update(mockPost, Mockito.mock(User.class)));
     }
 
@@ -282,7 +282,7 @@ public class PostServiceImplTests {
 
         // Act, Assert
         Assertions.assertThrows(
-                AuthorizationException.class,
+                AuthenticationException.class,
                 () -> service.delete(1, mockUser));
     }
 

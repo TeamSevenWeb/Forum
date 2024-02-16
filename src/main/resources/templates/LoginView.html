@@ -8,22 +8,19 @@
     <div class="h1 center"  th:text="#{login.page.label}">Login</div>
     <br/>
     <div class="center">
+
         <form class="outline" action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
             <label th:text="#{user.label.username}">Username</label>
             <br/>
-            <input type="text" th:field="*{username}"/>
-            <br/>
-            <span class="error" th:errors="*{username}">Username error placeholder</span>
-            <br/><br/>
+            <input type="text" th:field="*{username}"/><br/>
+                <div class="error error-login" th:errors="*{username}">Username error placeholder</div>
 
             <label th:text="#{user.label.password}">Password</label>
             <br/>
             <input type="password" th:field="*{password}"/>
-            <br/>
-            <span class="error" th:errors="*{password}">Password error placeholder</span>
-            <br/><br/>
+                <div class="error error-login" th:errors="*{password}">Password error placeholder</div>
 
-            <input type="submit" value="Login"/>
+            <input class=center type="submit" value="Login"/>
         </form>
     </div>
 </section>

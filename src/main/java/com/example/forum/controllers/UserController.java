@@ -1,6 +1,6 @@
 package com.example.forum.controllers;
 
-import com.example.forum.exceptions.AuthorizationException;
+import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.UserFilterOptions;
@@ -45,7 +45,7 @@ public class UserController {
             User user = authenticationHelper.tryGetUser(headers);
             UserFilterOptions postsFilterOptions = new UserFilterOptions(username, email,firstName, sortBy, sortOrder);
             return service.getAll(postsFilterOptions,user);
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -57,7 +57,7 @@ public class UserController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             return service.get(id);
-        }  catch (AuthorizationException e){
+        }  catch (AuthenticationException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
@@ -68,7 +68,7 @@ public class UserController {
        try {
            User user = authenticationHelper.tryGetUser(headers);
            return service.getUserPosts(id);
-       }  catch (AuthorizationException e){
+       }  catch (AuthenticationException e){
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
        } catch (EntityNotFoundException e){
            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
@@ -80,7 +80,7 @@ public class UserController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             return service.getUserComments(id);
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
@@ -105,7 +105,7 @@ public class UserController {
             service.update(userToBeUpdated, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (EntityDuplicateException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -119,7 +119,7 @@ public class UserController {
             service.block(id, user);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -131,7 +131,7 @@ public class UserController {
             service.unblock(id, user);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -143,7 +143,7 @@ public class UserController {
             service.makeAdmin(id, user);
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -153,7 +153,7 @@ public class UserController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             service.delete(id,user);
-        } catch (AuthorizationException e) {
+        } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }  catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
