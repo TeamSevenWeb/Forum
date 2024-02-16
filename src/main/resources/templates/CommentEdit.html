@@ -8,6 +8,8 @@
 <form  class="form-tags" action="#" th:action="@{__${requestURI}__}" th:object="${commentDto}" method="post">
     <textarea class="textarea-title textarea-style" type="text" th:field="*{comment}"></textarea>
     <br/>
+    <label class="error" th:errors="*{comment}">Content error placeholder</label>
+    <br/><br/>
     <input type="submit" value="Save"/>
 </form>
 </section>
