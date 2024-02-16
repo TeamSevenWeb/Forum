@@ -158,7 +158,7 @@ public class PostMvcController {
         Comment comment = commentMapper.fromDto(commentDto);
         User user = authenticationHelper.tryGetCurrentUser(session);
         Post post = service.get(postId);
-        commentService.create(post,comment,user);
+        commentService.create(post,comment,user);;
         return "redirect:/posts/{postId}";
     }
 
