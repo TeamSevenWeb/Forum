@@ -19,11 +19,6 @@
     <br>
     <br>
     <br>
-    <h2 th:text="#{add.tag.label}">Add Tag</h2>
-    <form class="form-tags" action="#" th:action="@{__${requestURI}__/addTags}" th:object="${tag}" method="post">
-        <textarea class="textarea-tags" placeholder="Add tag here..." type="text" th:field="*{tagName}"></textarea>
-        <br/>
-        <input type="submit" value="Add"/>
-    </form>
+
 </div>
 </html>
