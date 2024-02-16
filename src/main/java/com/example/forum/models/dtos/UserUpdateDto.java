@@ -4,11 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class UserDto {
-
-    @NotEmpty(message = "Username can't be empty")
-    @Size(min = 4, max = 32, message = "Username should be between 4 and 32 symbols")
-    private String username;
+public class UserUpdateDto {
     @NotNull(message = "Password can't be empty")
     @Size(min = 8, max = 32, message = "Password should be between 8 and 32 symbols")
     private String password;
@@ -22,15 +18,7 @@ public class UserDto {
     @Size(min = 4, max = 32, message = "Email should be between 4 and 32 symbols")
     private String email;
 
-    public UserDto(){
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public UserUpdateDto(){
     }
 
     public String getPassword() {

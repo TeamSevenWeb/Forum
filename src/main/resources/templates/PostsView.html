@@ -44,7 +44,7 @@
             <div class="table-header-cell">Title</div>
             <div class="table-header-cell">Created By</div>
             <div class="table-header-cell">Creation Date</div>
-            <div class="table-header-cell">Comment</div>
+            <div class="table-header-cell">Number of comments</div>
         </div>
         <div class="table-row" th:each="post : ${posts}">
             <!-- Post details-->
@@ -63,7 +63,7 @@
                     <br>
             </div>
             <div class="cell">
-                    <span>Add comment brah</span>  <!--Should start creating comment or redirect-->
+                   <span class="cell-linebreak" th:text="${post.getPostComments().size()}"></span>
                 <br>
             </div>
     </div>
