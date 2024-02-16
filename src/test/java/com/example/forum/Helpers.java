@@ -92,6 +92,7 @@ public class Helpers {
                 "TestTitleForTestPostTest",
                 "TestContent",
                 "MockUsername",
+                "MockTags",
                 "comment",
                 "desc");
     }

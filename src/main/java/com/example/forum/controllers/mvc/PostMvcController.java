@@ -87,6 +87,7 @@ public class PostMvcController {
                 filterDto.getTitle(),
                 filterDto.getKeyword(),
                 filterDto.getCreatedBy(),
+                filterDto.getTagName(),
                 filterDto.getSortBy(),
                 filterDto.getSortOrder());
         try {

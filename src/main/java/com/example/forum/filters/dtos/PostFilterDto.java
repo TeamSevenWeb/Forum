@@ -8,15 +8,15 @@ public class PostFilterDto {
     private String sortBy;
     private String sortOrder;
 
-//    private String tagName;
+    private String tagName;
 
-//    public String getTagName() {
-//        return tagName;
-//    }
-//
-//    public void setTagName(String tagName) {
-//        this.tagName = tagName;
-//    }
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
 
     public PostFilterDto(){
     }
