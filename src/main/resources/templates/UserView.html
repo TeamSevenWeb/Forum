@@ -12,7 +12,8 @@
           <div class="user-button" >Update profile</div></a>
       <br/>
       <div class="user-info">
-          <h2 class="center" th:text="${user.username}"></h2>
+          <a href="#" th:href="@{/user/__${user.getId()}__}">
+              <h2 class="center" th:text="${user.username}"></h2></a>
           <hr>
           <h3 class="center" th:text="${user.firstName}"></h3>
           <hr>
@@ -45,7 +46,7 @@
             <h3 th:text="#{most.recent.post}"></h3>
                 <hr>
             <!--    Display posts -->
-                <div class="user-post-container">
+                <div class="user-post-container break-word">
                     <span class="posts-label">Title:</span>
                     <br/>
                     <br/>
@@ -72,7 +73,7 @@
                 <h3 th:text="#{most.recent.comment}"></h3>
                 <hr>
                 <!--    Display posts -->
-                <div class="user-post-container">
+                <div class="user-post-container break-word">
                     <span class="posts-label">Title commented:</span>
                     <br/>
                     <br/>

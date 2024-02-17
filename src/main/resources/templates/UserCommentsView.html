@@ -8,7 +8,8 @@
         <img class="user-photo" src="../static/images/home_background.jpg" alt="Picture"/>
         <br/>
         <div class="user-info">
-            <h2 class="center" th:text="${user.username}"></h2>
+            <a href="#" th:href="@{/user/__${user.getId()}__}">
+                <h2 class="center" th:text="${user.username}"></h2></a>
             <hr>
             <h3 class="center" th:text="${user.firstName}"></h3>
             <hr>
@@ -44,7 +45,7 @@
                     <div class="table-header-cell outline" >Comment date</div>
                 </div>
                 <!--starts here-->
-                <div class="table-row outline" th:each="comment : ${user.getUserComments()}">
+                <div class="table-row outline break-word" th:each="comment : ${user.getUserComments()}">
                     <div class="cell">
                         <a href="#" th:href="@{/posts/__${comment.getPost().getPostId()}__}">
                             <span class="linebreak" th:text="${comment.getPost().getTitle()}"></span></a>
