@@ -48,20 +48,22 @@
         <p th:text="'Creation Date : ' + ${post.dateAndTimeOfCreation}"></p>
         <p th:text="'Comments count : '+ ${post.postComments.size()}"></p>
         <div class="tag-container">
-            <h4><span th:text="#{tags.label}"></span>&nbsp;&nbsp;&nbsp;</h4>
-            <div th:each="tag,iterStat : ${tags}">
-                <a th:href="@{/posts?title=&keyword=&tagName=__${tag.name}__&createdBy=&sortBy=&sortOrder=}" th:text="${tag.name}"></a>
-                <span th:if="${!iterStat.last}">&nbsp;</span>
-            </div>
+<!--            <h4><span th:text="#{tags.label}"></span>&nbsp;&nbsp;&nbsp;</h4>-->
+            <ul class="tags">
+                <li th:each="tag, iterStat : ${tags}">
+                    <a th:href="@{/posts(title='', keyword='', tagName=${tag.name}, createdBy='', sortBy='', sortOrder='')}" th:text="${tag.name}"></a>
+                    <!-- No need for an additional span for spacing, CSS can handle spacing between tags -->
+                </li>
+            </ul>
         </div>
     </div>
 
     </div>
 
 </section>
-
-<div class="comment-area">
+<section class="multi-container pd-5">
     <div class="comments-container">
+        <h3 class="text-uppercase comments-header mb-0 ">Comments</h3>
         <div class="body" th:each="comment : ${comments}">
             <div class="authors">
                 <div class="username">
@@ -76,23 +78,20 @@
             </div>
             <dirv class="content" th:text="${comment.getComment()}">
             </dirv>
-            <div class="comment">
-                <a  th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername()}" href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${comment.commentId})}" >Edit </a>
-                <a  th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername() || loggedInUser.isAdmin()}" href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${comment.commentId})}" >Delete</a>
+            <div class="comment-buttons center">
+                <a class="btn btn-secondary comment-button"  th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername()}" href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${comment.commentId})}" >Edit </a>
+                <a class="btn btn-secondary comment-button" th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername() || loggedInUser.isAdmin()}" href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${comment.commentId})}" >Delete</a>
             </div>
         </div>
+        <form class="comment-area hide" action="#" th:action="@{__${requestURI}__/newComment}" th:object="${comment}" method="post">
+            <textarea type="text" th:field="*{comment}" name="comment" placeholder="Comment here ... "></textarea>
+            <input type="submit" value="comment">
+        </form>
+        <div  th:if="${validationError}">
+            <div class="error" th:text="${validationError}">Comment error placeholder</div>
+        </div>
     </div>
-    <!--Reply Area-->
-
-    <form class="comment-area hide" action="#" th:action="@{__${requestURI}__/newComment}" th:object="${comment}" method="post">
-        <textarea type="text" th:field="*{comment}" name="comment" placeholder="Comment here ... "></textarea>
-        <input type="submit" value="comment">
-    </form>
-    <div  th:if="${validationError}">
-        <div class="error" th:text="${validationError}">Comment error placeholder</div>
-    </div>
-
-</div>
+</section>
 
 <script src="https://kit.fontawesome.com/03129db14f.js" crossorigin="anonymous"></script>
 <div th:replace="~{fragments/PageFrame :: scripts}"></div>
