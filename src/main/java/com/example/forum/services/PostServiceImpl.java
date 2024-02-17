@@ -9,6 +9,7 @@ import com.example.forum.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,12 +39,20 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public List<Post> getMostCommentedPosts() {
-        return repository.getTopTenCommented();
+        try {
+            return repository.getTopTenCommented();
+        } catch (EntityNotFoundException e) {
+            return new ArrayList<Post>();
+        }
     }
 
     @Override
     public List<Post> getTenMostRecentPosts(){
-        return repository.getTenMostRecent();
+        try {
+            return repository.getTenMostRecent();
+        } catch (EntityNotFoundException e) {
+            return new ArrayList<Post>();
+        }
     }
     @Override
     public Post get(int id) {

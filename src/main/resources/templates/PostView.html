@@ -59,6 +59,7 @@
     </div>
 
 </section>
+
 <div class="comment-area">
     <div class="comments-container">
         <div class="body" th:each="comment : ${comments}">
@@ -87,6 +88,9 @@
         <textarea type="text" th:field="*{comment}" name="comment" placeholder="Comment here ... "></textarea>
         <input type="submit" value="comment">
     </form>
+    <div  th:if="${validationError}">
+        <div class="error" th:text="${validationError}">Comment error placeholder</div>
+    </div>
 
 </div>
 
