@@ -8,7 +8,8 @@
     <img class="user-photo" src="../static/images/home_background.jpg" alt="Picture"/>
     <br/>
     <div class="user-info">
-      <h2 class="center" th:text="${user.username}"></h2>
+      <a href="#" th:href="@{/user/__${user.getId()}__}">
+        <h2 class="center" th:text="${user.username}"></h2></a>
       <hr>
       <h3 class="center" th:text="${user.firstName}"></h3>
       <hr>
@@ -32,7 +33,7 @@
     <!--    Show User most recent posts-->
 
     <div class="navigate" th:if="${user.getUserPosts().isEmpty()}">
-      <h2 th:text="${user.username + ' hasn'+' t posted anything yet'}">User has no posts</h2>
+      <h2 th:text="${user.username + ' hasn'+''''+'t posted anything yet'}">User has no posts</h2>
     </div>
     <div class="navigate" th:unless="${user.getUserPosts().isEmpty()}" >
       <h2 class="ml4" th:text="#{all.posts}"></h2>
@@ -44,7 +45,7 @@
           <div class="table-header-cell outline" >Posting date</div>
         </div>
         <!--starts here-->
-        <div class="table-row outline" th:each="post : ${user.getUserPosts()}">
+        <div class="table-row outline break-word" th:each="post : ${user.getUserPosts()}">
           <div class="cell">
             <a href="#" th:href="@{/posts/__${post.getPostId()}__}">
               <span class="linebreak" th:text="${post.getTitle()}"></span></a>

@@ -9,7 +9,8 @@
     <br/>
     <div class="center">
 
-        <form class="outline" action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
+        <form class="outline login-container" action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
+            <br/>
             <label th:text="#{user.label.username}">Username</label>
             <br/>
             <input type="text" th:field="*{username}"/><br/>
@@ -19,8 +20,10 @@
             <br/>
             <input type="password" th:field="*{password}"/>
                 <div class="error error-login" th:errors="*{password}">Password error placeholder</div>
-
-            <input class=center type="submit" value="Login"/>
+            <br/>
+            <div class="login-button">
+            <input class="py-3 rounded" type="submit" value="Login"/>
+            </div>
         </form>
     </div>
 </section>

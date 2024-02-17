@@ -23,7 +23,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
-                <li th:if="${isAuthenticated && session.isAdmin}" class="nav-item mx-0 mx-lg-1">
+                <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a class="nav-link py-3 px-0 px-lg-3 rounded" href="#" th:href="@{/posts}"
                        th:text="#{navigation.all-posts}">Browse all Posts</a></li>
                 <li th:if="${isAuthenticated && session.isAdmin}" class="nav-item mx-0 mx-lg-1">
