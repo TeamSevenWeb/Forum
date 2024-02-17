@@ -75,6 +75,11 @@ public class PostMvcController {
         return session.getAttribute("isAdmin") != null;
     }
 
+    @ModelAttribute("loggedInUser")
+    public User currentUser(HttpSession session) {
+        return authenticationHelper.tryGetCurrentUser(session);
+    }
+
     @ModelAttribute("requestURI")
     public String requestURI(final HttpServletRequest request) {
         return request.getRequestURI();
