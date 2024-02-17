@@ -37,6 +37,7 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostMvcController {
 
+    public static final String COMMENT_VALIDATION_ERR = "Comment should be between 2 and 142 symbols";
     private final PostService service;
 
     private final UserService userService;
@@ -157,8 +158,9 @@ public class PostMvcController {
     @PostMapping("{postId}/newComment")
     public String createComment(@Valid @ModelAttribute("comment")CommentDto commentDto,
                                 BindingResult errors,
-                                HttpSession session, @PathVariable int postId, Model model){
+                                HttpSession session, @PathVariable int postId, Model model, RedirectAttributes redirectAttributes){
         if (errors.hasErrors()) {
+            redirectAttributes.addFlashAttribute("validationError", COMMENT_VALIDATION_ERR);
             return "redirect:/posts/{postId}";
         }
         try {
