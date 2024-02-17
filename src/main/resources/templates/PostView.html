@@ -50,7 +50,7 @@
         <div class="tag-container">
             <h4><span th:text="#{tags.label}"></span>&nbsp;&nbsp;&nbsp;</h4>
             <div th:each="tag,iterStat : ${tags}">
-                <a  th:text="${tag.name}"></a>
+                <a th:href="@{/posts?title=&keyword=&tagName=__${tag.name}__&createdBy=&sortBy=&sortOrder=}" th:text="${tag.name}"></a>
                 <span th:if="${!iterStat.last}">&nbsp;</span>
             </div>
         </div>
