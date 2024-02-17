@@ -44,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
         }
         comment.setCreatedBy(user);
         comment.setPost(post);
+        post.getPostComments().add(comment);
         repository.create(comment);
         return comment;
     }
