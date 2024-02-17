@@ -43,6 +43,8 @@ public class UserMapper {
         user.setUsername(repositoryUser.getUsername());
         user.setUserComments(repositoryUser.getUserComments());
         user.setUserPosts(repositoryUser.getUserPosts());
+        user.setIsAdmin(repositoryUser.isAdmin());
+        user.setIsBlocked(repositoryUser.isBlocked());
         if (repositoryUser.isAdmin()){
             user.setIsAdmin(true);
         }
@@ -97,6 +99,8 @@ public class UserMapper {
         userUpdateDto.setFirstName(user.getFirstName());
         userUpdateDto.setLastName(user.getLastName());
         userUpdateDto.setEmail(user.getEmail());
+        userUpdateDto.setAdmin(user.isAdmin());
+        userUpdateDto.setBlocked(user.isBlocked());
         return userUpdateDto;
     }
 }

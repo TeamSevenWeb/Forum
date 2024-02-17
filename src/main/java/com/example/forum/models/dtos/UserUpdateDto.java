@@ -18,6 +18,9 @@ public class UserUpdateDto {
     @Size(min = 4, max = 32, message = "Email should be between 4 and 32 symbols")
     private String email;
 
+    private boolean isAdmin;
+    private boolean isBlocked;
+
     public UserUpdateDto(){
     }
 
@@ -51,5 +54,21 @@ public class UserUpdateDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 }

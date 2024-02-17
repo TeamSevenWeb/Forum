@@ -1,4 +1,4 @@
-package com.example.forum.controllers;
+package com.example.forum.controllers.rest;
 
 import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;

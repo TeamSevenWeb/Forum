@@ -1,6 +1,7 @@
 package com.example.forum.services;
 
 import com.example.forum.exceptions.AuthenticationException;
+import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.UserFilterOptions;
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
         } catch (EntityNotFoundException ignored){
         }
 
-        repository.update(user);
+        repository.update(userToBeUpdated);
     }
 
     @Override
@@ -105,11 +106,17 @@ public class UserServiceImpl implements UserService {
     public void block(int id, User user) {
         User userToBeBlocked = repository.get(id);
         if (!user.isAdmin()){
-            throw new AuthenticationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
+            throw new AuthorizationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
+
+        if (userToBeBlocked.isBlocked()) {
+            userToBeBlocked.setIsBlocked(false);
+            repository.update(userToBeBlocked);
+            return;
+        }
+
         userToBeBlocked.setIsBlocked(true);
         repository.update(userToBeBlocked);
-
     }
 
     @Override
@@ -128,6 +135,12 @@ public class UserServiceImpl implements UserService {
         if (!user.isAdmin()){
             throw new AuthenticationException(IS_NOT_ADMIN_BLOCK_ERROR_MESSAGE);
         }
+        if (makeAdmin.isAdmin()) {
+            makeAdmin.setIsAdmin(false);
+            repository.update(makeAdmin);
+            return;
+        }
+
         makeAdmin.setIsAdmin(true);
         repository.update(makeAdmin);
     }

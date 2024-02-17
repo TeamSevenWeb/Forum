@@ -1871,9 +1871,37 @@ header{
     transition-duration: 0.4s;
 
 }
+
 #update-button{
     display: flex;
     justify-content: center;
+}
+
+.user-update-buttons-container{
+    width: 80px;
+    border: 2px solid red;
+}
+
+#make-admin-button{
+    justify-content: center;
+    color: green;
+    border: 2px solid green;
+}
+
+#make-no-admin-button{
+    justify-content: center;
+    color: red;
+    border: 2px solid red;
+}
+#unblock-user-button{
+    justify-content: center;
+    color: green;
+    border: 2px solid green;
+}
+#block-user-button{
+    justify-content: center;
+    color: red;
+    border: 2px solid red;
 }
 
 .user-button:hover{

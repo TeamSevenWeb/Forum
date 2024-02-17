@@ -1,13 +1,11 @@
 package com.example.forum.controllers.mvc;
 
-import com.example.forum.exceptions.AuthenticationException;
-import com.example.forum.exceptions.AuthorizationException;
-import com.example.forum.exceptions.EntityDuplicateException;
-import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.exceptions.*;
 import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.filters.dtos.UserFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.UserMapper;
+import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.RegisterDto;
 import com.example.forum.models.dtos.UserDto;
@@ -29,6 +27,7 @@ import java.util.List;
 public class UserMvcController {
 
     public static final String NOT_AUTHORIZED = "Not authorized";
+    public static final String UNAUTHORIZED = "Unauthorized";
     private final UserService userService;
 
     private final UserMapper userMapper;
@@ -43,10 +42,13 @@ public class UserMvcController {
 
     @ModelAttribute("isAuthenticated")
     public boolean populateIsAuthenticated(HttpSession session) {
-    return session.getAttribute("currentUser") != null;
-}
-@ModelAttribute("userId")
-public boolean populateUserId(HttpSession session) { return session.getAttribute("userId") != null;}
+        return session.getAttribute("currentUser") != null;
+    }
+
+    @ModelAttribute("userId")
+    public boolean populateUserId(HttpSession session) {
+        return session.getAttribute("userId") != null;
+    }
 
     @ModelAttribute("isAdmin")
     public boolean populateIsAdmin(HttpSession session) {
@@ -60,7 +62,7 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
 
     @GetMapping("/all")
     public String showAllUsers(@ModelAttribute("userFilterOption") UserFilterDto filterDto
-            ,Model model, HttpSession session) {
+            , Model model, HttpSession session) {
         User user;
         UserFilterOptions userFilterOptions = new UserFilterOptions(
                 filterDto.getUsername(),
@@ -70,39 +72,39 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
                 filterDto.getSortOrder());
         try {
             user = authenticationHelper.tryGetCurrentUser(session);
-            model.addAttribute("user",user);
-            List<User> users = userService.getAll(userFilterOptions,user);
+            model.addAttribute("user", user);
+            List<User> users = userService.getAll(userFilterOptions, user);
             model.addAttribute("userFilterOptions", filterDto);
             model.addAttribute("users", users);
             return "AllUsersView";
         } catch (AuthenticationException e) {
-            return "redirect:/";
+            return "redirect:/auth/login";
         }
     }
 
     @GetMapping
-    public String showUserOwnPage(Model model, HttpSession session){
+    public String showUserOwnPage(Model model, HttpSession session) {
         User user;
-       try {
-           user = authenticationHelper.tryGetCurrentUser(session);
-           model.addAttribute("user",user);
-           return "UserView";
-       } catch (AuthenticationException e) {
-           return "redirect:/auth/login";
-       }
+        try {
+            user = authenticationHelper.tryGetCurrentUser(session);
+            model.addAttribute("user", user);
+            return "UserView";
+        } catch (AuthenticationException e) {
+            return "redirect:/auth/login";
+        }
     }
 
     @GetMapping("/{id}")
-    public String showUserPage(@PathVariable int id, Model model, HttpSession session){
+    public String showUserPage(@PathVariable int id, Model model, HttpSession session) {
         User userToShow;
         try {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
-            model.addAttribute("user",userToShow);
+            model.addAttribute("user", userToShow);
             return "UserView";
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -110,16 +112,16 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
     }
 
     @GetMapping("/{id}/posts")
-    public String showUserPosts(@PathVariable int id, Model model, HttpSession session){
+    public String showUserPosts(@PathVariable int id, Model model, HttpSession session) {
         User userToShow;
         try {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
-            model.addAttribute("user",userToShow);
+            model.addAttribute("user", userToShow);
             return "UserPostsView";
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -127,16 +129,16 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
     }
 
     @GetMapping("/{id}/comments")
-    public String showUserComments(@PathVariable int id, Model model,HttpSession session){
+    public String showUserComments(@PathVariable int id, Model model, HttpSession session) {
         User userToShow;
         try {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
-            model.addAttribute("user",userToShow);
+            model.addAttribute("user", userToShow);
             return "UserCommentsView";
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -145,24 +147,24 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
 
 
     @GetMapping("/{id}/update")
-    public String showUpdateUserPage(@PathVariable int id,Model model, HttpSession session) {
+    public String showUpdateUserPage(@PathVariable int id, Model model, HttpSession session) {
         try {
             User user = authenticationHelper.tryGetCurrentUser(session);
             User userToUpdate = userService.get(id);
-            if (!user.isAdmin() && user.getId() != id){
+            if (!user.isAdmin() && user.getId() != id) {
                 throw new AuthorizationException(NOT_AUTHORIZED);
             }
             UserUpdateDto userDto = userMapper.toUpdateDto(userToUpdate);
             model.addAttribute("userId", id);
             model.addAttribute("user", userDto);
             return "UserUpdateView";
-        }catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             return "redirect:/auth/login";
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
-        }catch (AuthorizationException e) {
+        } catch (AuthorizationException e) {
             model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
@@ -171,39 +173,89 @@ public boolean populateUserId(HttpSession session) { return session.getAttribute
 
     @PostMapping("/{id}/update")
     public String updateUserView(@PathVariable int id
-            ,@Valid @ModelAttribute("user") UserUpdateDto userDto
-            ,BindingResult errors
-            ,Model model
-            ,HttpSession session){
+            , @Valid @ModelAttribute("user") UserUpdateDto userDto
+            , BindingResult errors
+            , Model model
+            , HttpSession session) {
         User user;
         try {
             user = authenticationHelper.tryGetCurrentUser(session);
             User userToUpdate = userService.get(id);
-            if (!user.isAdmin() && user.getId() != id){
+            if (!user.isAdmin() && user.getId() != id) {
                 throw new AuthorizationException(NOT_AUTHORIZED);
             }
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";
-        }catch (AuthorizationException e) {
+        } catch (AuthorizationException e) {
             model.addAttribute("statusCode", HttpStatus.UNAUTHORIZED.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
         }
-        if(errors.hasErrors()){
+        if (errors.hasErrors()) {
             return "UserUpdateView";
         }
-        
+
         try {
-            User userToUpdate = userMapper.fromUpdateDto(id,userDto);
-            userService.update(userToUpdate,user);
+            User userToUpdate = userMapper.fromUpdateDto(id, userDto);
+            userService.update(userToUpdate, user);
             return "redirect:/user";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
-        }catch (EntityDuplicateException e){
-            errors.rejectValue("email","email.exists",e.getMessage());
+        } catch (EntityDuplicateException e) {
+            errors.rejectValue("email", "email.exists", e.getMessage());
             return "UserUpdateView";
         }
+    }
+
+    @GetMapping("{id}/update/block")
+
+    public String blockAndUnblockUser(HttpSession session, @PathVariable int id, Model model) {
+        try {
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            if (!user.isAdmin()){
+                throw new AuthorizationException(UNAUTHORIZED);
+            }
+            User userToUpdate = userService.get(id);
+            userService.block(id, user);
+            return "redirect:/user/{id}/update";
+        } catch (AuthenticationException e) {
+            return "redirect:/auth/login";
+        } catch (AuthorizationException e) {
+            model.addAttribute("statusCode", (HttpStatus.UNAUTHORIZED));
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+
+    }
+
+    @GetMapping("{id}/update/admin")
+
+    public String makeAdminAndNotAdmin(HttpSession session, @PathVariable int id, Model model) {
+        try {
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            if (!user.isAdmin()){
+                throw new AuthorizationException(UNAUTHORIZED);
+            }
+            User userToUpdate = userService.get(id);
+            userService.makeAdmin(id, user);
+            return "redirect:/user/{id}/update";
+        } catch (AuthenticationException e) {
+            return "redirect:/auth/login";
+        } catch (AuthorizationException e) {
+            model.addAttribute("statusCode", (HttpStatus.UNAUTHORIZED));
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+
     }
 }
