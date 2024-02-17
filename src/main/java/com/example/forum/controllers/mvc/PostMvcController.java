@@ -136,13 +136,13 @@ public class PostMvcController {
     }
 
     @PostMapping("/new")
-    public String createPost(@Valid @ModelAttribute("post") PostDto postDto, BindingResult errors, Model model){
+    public String createPost(@Valid @ModelAttribute("post") PostDto postDto,HttpSession session, BindingResult errors, Model model){
         if(errors.hasErrors()){
             return "NewPostView";
         }
         try {
             Post post = mapper.fromDto(postDto);
-            User user = userService.get(1);
+            User user = authenticationHelper.tryGetCurrentUser(session);
             service.create(post, user);
             return "redirect:/posts";
         }catch (EntityDuplicateException e){
@@ -257,13 +257,13 @@ public class PostMvcController {
     }
 
     @PostMapping("/{id}/update")
-    public String updatePost(@PathVariable int id,@Valid @ModelAttribute("post") PostDto postDto, BindingResult errors, Model model){
+    public String updatePost(@PathVariable int id,@Valid @ModelAttribute("post") PostDto postDto,HttpSession session, BindingResult errors, Model model){
         if(errors.hasErrors()){
             return "PostUpdate";
         }
         try {
             Post post = mapper.fromDto(id,postDto);
-            User user = userService.get(1);
+            User user = authenticationHelper.tryGetCurrentUser(session);
             service.update(post, user);
             return "redirect:/posts";
         } catch (EntityNotFoundException e) {
