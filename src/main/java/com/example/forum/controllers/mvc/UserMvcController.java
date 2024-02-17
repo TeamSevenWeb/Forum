@@ -79,6 +79,10 @@ public class UserMvcController {
             return "AllUsersView";
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
         }
     }
 

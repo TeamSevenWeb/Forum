@@ -167,6 +167,8 @@ public class UserRepositoryImpl implements UserRepository {
             case "firstName":
                 orderBy = "firstName";
                 break;
+            default:
+                return "";
         }
 
         orderBy = String.format(" order by %s", orderBy);

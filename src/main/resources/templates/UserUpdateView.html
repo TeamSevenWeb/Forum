@@ -36,18 +36,18 @@
 <!--        <br/>-->
 <!--        <label th:object="passwordConfirm" class="error" th:errors="*{passwordConfirm}">Password error placeholder</label>-->
 <!--        <br/><br/>-->
-        <div th:if="${session.isAdmin}" class="table">
-        <div id="make-admin-button" th:unless="${user.isAdmin()}">
-        <a href="#" th:href="@{__${requestURI}__/admin}">Make user admin</a>
+        <div th:if="${session.isAdmin}" class="table user-update-buttons-container">
+        <div class="make-admin-button" th:unless="${user.isAdmin()}">
+        <a href="#" style="color: forestgreen" th:href="@{__${requestURI}__/admin}">Make user admin</a>
         </div>
-        <div id="make-no-admin-button" th:if="${user.isAdmin()}">
+        <div class="make-no-admin-button" th:if="${user.isAdmin()}">
             <a href="#" th:href="@{__${requestURI}__/admin}">Make user regular</a>
         </div>
             <br/>
-        <div id="unblock-user-button" th:if="${user.isBlocked()}">
-            <a href="#" th:href="@{__${requestURI}__/block}">Unblock user</a>
+        <div class="make-admin-button" th:if="${user.isBlocked()}">
+            <a href="#" style="color: forestgreen" th:href="@{__${requestURI}__/block}">Unblock user</a>
         </div>
-        <div id="block-user-button" th:unless="${user.isBlocked()}">
+        <div class="make-no-admin-button" th:unless="${user.isBlocked()}">
             <a href="#" th:href="@{__${requestURI}__/block}">Block user</a>
         </div>
 
