@@ -74,7 +74,7 @@
                      th:text="Admin">Role</div>
                 <div th:unless="${comment.getCreatedBy().isAdmin()}"
                      th:text="User">Role</div>
-                <img src="https://i1.sndcdn.com/artworks-000006019579-vhwl3q-t240x240.jpg" alt="">
+                <img class="user-profile-container" src="https://i1.sndcdn.com/artworks-000006019579-vhwl3q-t240x240.jpg" alt="">
             </div>
             <dirv class="content" th:text="${comment.getComment()}">
             </dirv>
