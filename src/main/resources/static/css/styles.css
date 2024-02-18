@@ -1178,11 +1178,12 @@ header{
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-    height: 40%; /* Adjust based on your layout, 100vh for full viewport height */
+    height: 47%; /* Adjust based on your layout, 100vh for full viewport height */
 }
 
 .comment-area textarea{
     width: 80%;
+    min-width: 400px;
     min-height: 100px;
     padding: 10px;
     margin-block: 10px;
@@ -2118,14 +2119,18 @@ padding-left:1rem
     cursor: pointer;
 }
 .tags{
+
+    height: 20px;
     margin:0;
     padding:0;
     position:absolute;
     right:24px;
     bottom:-12px;
     list-style:none;
+
 }
 .tags li, .tags a{
+    margin-top: 10px;
     float:left;
     height:24px;
     line-height:24px;
@@ -2134,6 +2139,7 @@ padding-left:1rem
 }
 .tags a{
     margin-left:20px;
+    margin-bottom: 20px;
     padding:0 10px 0 12px;
     background: #778891;
     color:#fff;
@@ -2146,6 +2152,7 @@ padding-left:1rem
     border-top-right-radius:4px;
 }
 .tags a:before{
+
     content:"";
     float:left;
     position:absolute;
@@ -2172,8 +2179,10 @@ padding-left:1rem
     -moz-box-shadow:-1px -1px 2px #004977;
     -webkit-box-shadow:-1px -1px 2px #004977;
     box-shadow:-1px -1px 2px #004977;
+
 }
 
 .comments-header{
     border-bottom: 5px solid grey;
+    padding-bottom: 1px;
 }

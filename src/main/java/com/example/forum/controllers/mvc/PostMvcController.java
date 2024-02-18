@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/posts")
@@ -119,7 +120,7 @@ public class PostMvcController {
             model.addAttribute("comment",new CommentDto());
             model.addAttribute("isUpVoted",isUpVoted);
             model.addAttribute("post", post);
-            model.addAttribute("comments",post.getPostComments());
+            model.addAttribute("comments",post.getRecentPostComments());
             return "PostView";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
