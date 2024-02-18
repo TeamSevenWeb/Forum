@@ -1,7 +1,6 @@
 package com.example.forum.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -16,6 +15,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     private int id;
+
     @Column(name = "username")
     private String username;
     @JsonIgnore
@@ -54,6 +54,15 @@ public class User {
         fetch = FetchType.EAGER
 )
     private Set<Comment> userComments;
+
+    @JsonManagedReference
+    @JsonIgnore
+    @OneToOne(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private UserProfilePhoto profilePictures;
 
     @JsonIgnore
     @Column(name = "is_blocked")
@@ -135,9 +144,19 @@ public class User {
         return userComments;
     }
 
+    public UserProfilePhoto getUserProfilePicture() {
+        return profilePictures;
+    }
+
+
     public void setUserComments(Set<Comment> userComments) {
         this.userComments = userComments;
     }
+
+    public void setUserProfilePictures(UserProfilePhoto userProfilePictures) {
+        this.profilePictures = userProfilePictures;
+    }
+
 
     public boolean isBlocked() {
         return this.isBlocked;

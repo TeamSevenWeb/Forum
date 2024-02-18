@@ -38,4 +38,7 @@ public interface UserService {
     void makeAdmin(int id, User user);
 
     void uploadPhoto(UserProfilePhoto userProfilePhoto);
+
+    void updatePhoto(UserProfilePhoto userProfilePhoto, User user);
+
 }

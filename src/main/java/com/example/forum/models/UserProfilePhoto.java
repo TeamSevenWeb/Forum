@@ -1,14 +1,16 @@
 package com.example.forum.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user_profile_photo", schema = "forum", catalog = "")
+@Table(name = "profile_photos")
 public class UserProfilePhoto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "profile_photo_id")
     private int profilePhotoId;
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
