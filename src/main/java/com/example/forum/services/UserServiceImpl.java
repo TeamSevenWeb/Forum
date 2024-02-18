@@ -123,7 +123,6 @@ public class UserServiceImpl implements UserService {
             }
         } catch (EntityNotFoundException ignored){
         }
-
         repository.update(userToBeUpdated);
     }
 
@@ -183,6 +182,12 @@ public class UserServiceImpl implements UserService {
         userProfilePhotoRepository.upload(userProfilePhoto);
     }
 
+    @Override
+    public void updatePhoto(UserProfilePhoto userProfilePhoto, User user) {
+        userProfilePhotoRepository.delete(user.getUserProfilePicture().getProfilePhotoId());
+        user.setUserProfilePictures(userProfilePhoto);
+        userProfilePhotoRepository.update(userProfilePhoto);
+    }
 
     private void checkModifyPermissions(User userToBeUpdated, User user) {
         if (!user.isAdmin() && userToBeUpdated.getId() != user.getId()) {

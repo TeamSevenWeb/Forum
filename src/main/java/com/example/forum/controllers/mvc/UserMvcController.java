@@ -128,14 +128,14 @@ public class UserMvcController {
 
     @GetMapping("/{id}/posts")
     public String showUserPosts(@ModelAttribute("userPostsFilterOption") UserPostsFilterDto filterDto
-            ,@PathVariable int id, Model model, HttpSession session) {
+            , @PathVariable int id, Model model, HttpSession session) {
         User userToShow;
-        List<Post>userPosts;
+        List<Post> userPosts;
         try {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
             model.addAttribute("user", userToShow);
-            userPosts = userService.getUserPosts(filterDto,userToShow);
+            userPosts = userService.getUserPosts(filterDto, userToShow);
             model.addAttribute("userPostsFilterOption", filterDto);
             model.addAttribute("posts", userPosts);
             return "UserPostsView";
@@ -150,14 +150,14 @@ public class UserMvcController {
 
     @GetMapping("/{id}/comments")
     public String showUserComments(@ModelAttribute("userPostsFilterOption") UserPostsFilterDto filterDto
-            ,@PathVariable int id, Model model, HttpSession session) {
+            , @PathVariable int id, Model model, HttpSession session) {
         User userToShow;
-        List<Comment>userComments;
+        List<Comment> userComments;
         try {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
             model.addAttribute("user", userToShow);
-            userComments = userService.getUserComments(filterDto,userToShow);
+            userComments = userService.getUserComments(filterDto, userToShow);
             model.addAttribute("userPostsFilterOption", filterDto);
             model.addAttribute("comments", userComments);
             return "UserCommentsView";
@@ -195,18 +195,36 @@ public class UserMvcController {
             return "ErrorView";
         }
     }
-    @PostMapping("/{id}/update/uploadImage")
-    public String uploadImage(@RequestParam("avatar") MultipartFile file, HttpSession session){
+
+    @PostMapping("/update/uploadImage")
+    public String uploadImage(@RequestParam("avatar") MultipartFile file, HttpSession session) {
         try {
             UserProfilePhoto userProfilePhoto = new UserProfilePhoto();
             User user = authenticationHelper.tryGetCurrentUser(session);
-            Map upload = cloudinary.uploader()
-                    .upload(file.getBytes()
-                            , ObjectUtils.asMap("resource_type", "auto"));
-            String url = (String) upload.get("url");
-            userProfilePhoto.setUser(user);
+            String url = cloudinaryUploader(file);
+
             userProfilePhoto.setProfilePhoto(url);
+            userProfilePhoto.setUser(user);
+            user.setUserProfilePictures(userProfilePhoto);
             userService.uploadPhoto(userProfilePhoto);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/user";
+    }
+
+    @PostMapping("{id}/update/updateImage")
+    public String updateImage(@RequestParam("avatar") MultipartFile file, HttpSession session) {
+        try {
+            UserProfilePhoto userProfilePhoto = new UserProfilePhoto();
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            String url = cloudinaryUploader(file);
+            if (user.getUserProfilePicture().getProfilePhoto().equals(url)){
+                return "redirect:/user";
+            }
+            userProfilePhoto.setProfilePhoto(url);
+            userProfilePhoto.setUser(user);
+            userService.updatePhoto(userProfilePhoto, user);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -256,7 +274,7 @@ public class UserMvcController {
     public String blockAndUnblockUser(HttpSession session, @PathVariable int id, Model model) {
         try {
             User user = authenticationHelper.tryGetCurrentUser(session);
-            if (!user.isAdmin()){
+            if (!user.isAdmin()) {
                 throw new AuthorizationException(UNAUTHORIZED);
             }
             User userToUpdate = userService.get(id);
@@ -281,7 +299,7 @@ public class UserMvcController {
     public String makeAdminAndNotAdmin(HttpSession session, @PathVariable int id, Model model) {
         try {
             User user = authenticationHelper.tryGetCurrentUser(session);
-            if (!user.isAdmin()){
+            if (!user.isAdmin()) {
                 throw new AuthorizationException(UNAUTHORIZED);
             }
             User userToUpdate = userService.get(id);
@@ -299,5 +317,14 @@ public class UserMvcController {
             return "ErrorView";
         }
 
+    }
+
+    private String cloudinaryUploader(MultipartFile file) throws IOException {
+        Map upload = cloudinary.uploader()
+                .upload(file.getBytes()
+                        , ObjectUtils.asMap("resource_type", "auto"));
+        String url = (String) upload.get("url");
+
+        return url;
     }
 }

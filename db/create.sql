@@ -131,7 +131,7 @@ create table posts_reactions
         foreign key (reaction_id) references reactions (reaction_id)
 );
 
-create table user_profile_photo
+create table profile_photos
 (
     profile_photo_id int auto_increment
         primary key,
