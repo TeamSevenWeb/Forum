@@ -76,7 +76,7 @@
                      th:text="User">Role</div>
                 <img class="user-profile-container" src="https://i1.sndcdn.com/artworks-000006019579-vhwl3q-t240x240.jpg" alt="">
             </div>
-            <dirv class="content" th:text="${comment.getComment()}">
+            <dirv class="content break-word" th:text="${comment.getComment()}">
             </dirv>
             <div class="comment-buttons center">
                 <a class="btn btn-secondary comment-button"  th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername()}" href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${comment.commentId})}" >Edit </a>

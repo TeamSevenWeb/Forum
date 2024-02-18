@@ -4,15 +4,22 @@ import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.AuthorizationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
+import com.example.forum.filters.CommentFilterOptions;
+import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.filters.UserFilterOptions;
+import com.example.forum.filters.UserPostsFilterOptions;
+import com.example.forum.filters.dtos.UserPostsFilterDto;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
+import com.example.forum.repositories.PostRepository;
 import com.example.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,10 +30,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
+    private final PostService postService;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, PostService postService) {
         this.repository = repository;
+        this.postService = postService;
     }
     @Override
     public User get(int id) {
@@ -52,16 +62,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Post> getUserPosts(int id) {
-        User user = repository.get(id);
-        return repository.getUserPosts(user);
+    public List<Post> getUserPosts(UserPostsFilterDto filterDto, User user) {
+
+        PostsFilterOptions filterOptions = new PostsFilterOptions(
+                filterDto.getTitle(),
+                filterDto.getContent(),
+                user.getUsername(),
+                "",
+                "title",
+                filterDto.getSortOrder());
+
+        return postService.getAll(filterOptions);
+
     }
 
-    @Override
-    public List<Comment> getUserComments(int id) {
-        User user = repository.get(id);
-        return repository.getUserComments(user);
-    }
+//    @Override
+//    public List<Comment> getUserComments(UserPostsFilterDto filterDto, User user) {
+//
+//        CommentFilterOptions filterOptions = new CommentFilterOptions();
+//    }
 
     @Override
     public void create(User user) {

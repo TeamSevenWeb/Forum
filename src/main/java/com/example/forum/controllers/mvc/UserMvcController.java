@@ -2,9 +2,12 @@ package com.example.forum.controllers.mvc;
 
 import com.example.forum.exceptions.*;
 import com.example.forum.filters.UserFilterOptions;
+import com.example.forum.filters.UserPostsFilterOptions;
 import com.example.forum.filters.dtos.UserFilterDto;
+import com.example.forum.filters.dtos.UserPostsFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.UserMapper;
+import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.models.dtos.RegisterDto;
@@ -116,12 +119,17 @@ public class UserMvcController {
     }
 
     @GetMapping("/{id}/posts")
-    public String showUserPosts(@PathVariable int id, Model model, HttpSession session) {
+    public String showUserPosts(@ModelAttribute("userPostsFilterOption") UserPostsFilterDto filterDto
+            ,@PathVariable int id, Model model, HttpSession session) {
         User userToShow;
+        List<Post>userPosts;
         try {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
             model.addAttribute("user", userToShow);
+            userPosts = userService.getUserPosts(filterDto,userToShow);
+            model.addAttribute("userPostsFilterOption", filterDto);
+            model.addAttribute("posts", userPosts);
             return "UserPostsView";
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";
@@ -133,12 +141,17 @@ public class UserMvcController {
     }
 
     @GetMapping("/{id}/comments")
-    public String showUserComments(@PathVariable int id, Model model, HttpSession session) {
+    public String showUserComments(@ModelAttribute("userPostsFilterOption") UserPostsFilterDto filterDto
+            ,@PathVariable int id, Model model, HttpSession session) {
         User userToShow;
+        List<Comment>userComments;
         try {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
             model.addAttribute("user", userToShow);
+//            userComments = userService.getUserComments(filterDto,userToShow);
+//            model.addAttribute("userPostsFilterOption", filterDto);
+//            model.addAttribute("comments", userComments);
             return "UserCommentsView";
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";
