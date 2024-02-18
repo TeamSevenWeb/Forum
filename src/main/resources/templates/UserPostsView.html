@@ -45,8 +45,8 @@
             <input type="text" placeholder="Content" th:field="*{content}"/>
             <select th:field="*{sortOrder}">
               <option value="">Sort Order</option>
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
+              <option value="asc">Oldest</option>
+              <option value="desc">Newest</option>
             </select>
           </div>
           <br/>
@@ -65,7 +65,7 @@
         <div class="table-row outline break-word" th:each="post : ${posts}">
           <div class="cell">
             <a href="#" th:href="@{/posts/__${post.getPostId()}__}">
-              <span class="linebreak" th:text="${post.getTitle()}"></span></a>
+              <span class="linebreak break-word" th:text="${post.getTitle()}"></span></a>
             <br>
           </div>
           <div class="cell">

@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
                 filterDto.getContent(),
                 user.getUsername(),
                 "",
-                "title",
+                "dateAndTime",
                 filterDto.getSortOrder());
 
         return postService.getAll(filterOptions);
