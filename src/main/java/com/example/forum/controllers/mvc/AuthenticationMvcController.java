@@ -110,7 +110,7 @@ public class AuthenticationMvcController {
             session.setAttribute("isAdmin", false);
             UserProfilePhoto userProfilePhoto = new UserProfilePhoto();
             Map upload = cloudinary.uploader()
-                    .upload(register.getUserProfilePhoto().getBytes()
+                    .upload("./src/main/resources/static/images/default_profile.jpg"
                             , ObjectUtils.asMap("resource_type", "auto"));
             String url = (String) upload.get("url");
 
