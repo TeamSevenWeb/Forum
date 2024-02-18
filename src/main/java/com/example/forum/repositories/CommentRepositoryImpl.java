@@ -46,7 +46,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
             commentFilterOptions.getKeyword().ifPresent(value -> {
                 filters.add("comment like :comment");
-                params.put("comment", String.format("%%%s%%", value.toLowerCase()));
+                params.put("comment", String.format("%%%s%%", value));
             });
 
             commentFilterOptions.getCreatedBy().ifPresent(value -> {
@@ -61,6 +61,7 @@ public class CommentRepositoryImpl implements CommentRepository {
                         .append(" where ")
                         .append(String.join(" and ", filters));
             }
+            queryString.append(generateOrderBy(commentFilterOptions));
 
             Query<Comment> query = session.createQuery(queryString.toString(), Comment.class);
             query.setProperties(params);
@@ -113,6 +114,33 @@ public class CommentRepositoryImpl implements CommentRepository {
             return comment;
 
         }
+    }
+
+
+    private String generateOrderBy(CommentFilterOptions filterOptions) {
+        if (filterOptions.getSortBy().isEmpty()) {
+            return "";
+        }
+
+        String orderBy = "";
+        switch (filterOptions.getSortBy().get()) {
+            case "dateAndTime":
+                orderBy = "dateAndTimeOfCreation";
+                break;
+            case "title":
+                orderBy = "title";
+                break;
+            default:
+                return "";
+        }
+
+        orderBy = String.format(" order by %s", orderBy);
+
+        if (filterOptions.getSortOrder().isPresent() && filterOptions.getSortOrder().get().equalsIgnoreCase("desc")) {
+            orderBy = String.format("%s desc", orderBy);
+        }
+
+        return orderBy;
     }
 
 }
