@@ -44,10 +44,6 @@
         </form>
     </div>
 </section>
-<form action="#" th:action="@{__${requestURI}__/uploadImage}" method="post" enctype="multipart/form-data">
-    <input type="file" name="avatar"/>
-    <button type="submit">Upload</button>
-</form>
 
 <div th:replace="~{/fragments/PageFrame :: scripts}"></div>
 </body>

@@ -10,7 +10,7 @@
         <h3 class="text-uppercase mb-0" th:text="${post.title}"/>
     <div class="post-container">
         <div class="user-profile-container" th:icon="${post.createdBy.username}">
-            <img src="C:\\Users\\aleks\\Desktop\\Forum\\profile_photos\\MicrosoftTeams-image - Копие.png" alt="User image"/>/>
+            <img class="user-photo" th:src="${post.getCreatedBy().getUserProfilePicture().profilePhoto}" alt="User image"/>/>
         </div>
         <div class="post-content-container"></div>
         <div class="post-content-linebreak" th:text="${post.content}"></div>

@@ -3,6 +3,7 @@ package com.example.forum.models.dtos;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
+
 public class RegisterDto extends LoginDto {
 
     @NotEmpty(message = "Password confirmation can't be empty")
@@ -17,6 +18,7 @@ public class RegisterDto extends LoginDto {
     @NotEmpty(message = "Email can't be empty")
     @Email(message = "Email should be valid")
     private String email;
+
 
     public String getPasswordConfirm() {
         return passwordConfirm;
@@ -49,5 +51,4 @@ public class RegisterDto extends LoginDto {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
