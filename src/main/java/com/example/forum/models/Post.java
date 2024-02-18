@@ -6,8 +6,10 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "posts")
@@ -100,6 +102,9 @@ public class Post {
 
     public Set<Comment> getPostComments() {
         return postComments;
+    }
+    public List<Comment> getRecentPostComments() {
+        return postComments.stream().sorted(Comparator.comparing(Comment::getDateAndTimeOfCreation)).collect(Collectors.toList());
     }
 
     public void setPostComments(Set<Comment> postComments) {

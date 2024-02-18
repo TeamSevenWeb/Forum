@@ -18,8 +18,9 @@
 
         <div class="reaction-container">
             <h2>
-                <a href="#" th:href="@{__${requestURI}__/update}"
+                <a th:if="${post.getCreatedBy().getUsername() == loggedInUser.getUsername()}" href="#" th:href="@{__${requestURI}__/update}"
                 class="edit-button">Edit
+
                     <i class="fas fa-pencil-alt"></i>
                 </a>
             </h2>
@@ -63,7 +64,7 @@
 </section>
 <section class="multi-container pd-5">
     <div class="comments-container">
-        <h3 class="text-uppercase comments-header mb-0 ">Comments</h3>
+        <h3 class="text-uppercase comments-header mb-0 " th:text="#{post.label.comments}">Comments</h3>
         <div class="body" th:each="comment : ${comments}">
             <div class="authors">
                 <div class="username">
@@ -83,9 +84,10 @@
                 <a class="btn btn-secondary comment-button" th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername() || loggedInUser.isAdmin()}" href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${comment.commentId})}" >Delete</a>
             </div>
         </div>
+        <br>
         <form class="comment-area hide" action="#" th:action="@{__${requestURI}__/newComment}" th:object="${comment}" method="post">
             <textarea type="text" th:field="*{comment}" name="comment" placeholder="Comment here ... "></textarea>
-            <input type="submit" value="comment">
+            <input class="btn btn-secondary comment-button" type="submit" value="comment">
         </form>
         <div  th:if="${validationError}">
             <div class="error" th:text="${validationError}">Comment error placeholder</div>
