@@ -7,7 +7,6 @@ import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.CommentFilterOptions;
 import com.example.forum.filters.PostsFilterOptions;
 import com.example.forum.filters.UserFilterOptions;
-import com.example.forum.filters.UserPostsFilterOptions;
 import com.example.forum.filters.dtos.UserPostsFilterDto;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
@@ -17,9 +16,7 @@ import com.example.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,13 +27,19 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
+    private final PostRepository postRepository;
+
     private final PostService postService;
+
+    private final CommentService commentService;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, PostService postService) {
+    public UserServiceImpl(UserRepository repository, PostRepository postRepository, PostService postService, CommentService commentService) {
         this.repository = repository;
+        this.postRepository = postRepository;
         this.postService = postService;
+        this.commentService = commentService;
     }
     @Override
     public User get(int id) {
@@ -76,11 +79,17 @@ public class UserServiceImpl implements UserService {
 
     }
 
-//    @Override
-//    public List<Comment> getUserComments(UserPostsFilterDto filterDto, User user) {
-//
-//        CommentFilterOptions filterOptions = new CommentFilterOptions();
-//    }
+    @Override
+    public List<Comment> getUserComments(UserPostsFilterDto filterDto, User user) {
+        CommentFilterOptions filterOptions = new CommentFilterOptions(
+                null,
+                filterDto.getContent(),
+                user.getUsername(),
+                "dateAndTime"
+                ,filterDto.getSortOrder());
+
+        return commentService.getAll(filterOptions);
+    }
 
     @Override
     public void create(User user) {

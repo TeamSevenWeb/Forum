@@ -149,9 +149,9 @@ public class UserMvcController {
             authenticationHelper.tryGetCurrentUser(session);
             userToShow = userService.get(id);
             model.addAttribute("user", userToShow);
-//            userComments = userService.getUserComments(filterDto,userToShow);
-//            model.addAttribute("userPostsFilterOption", filterDto);
-//            model.addAttribute("comments", userComments);
+            userComments = userService.getUserComments(filterDto,userToShow);
+            model.addAttribute("userPostsFilterOption", filterDto);
+            model.addAttribute("comments", userComments);
             return "UserCommentsView";
         } catch (AuthenticationException e) {
             return "redirect:/auth/login";

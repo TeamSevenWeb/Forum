@@ -25,6 +25,7 @@ public class UserPostsFilterDto {
         this.content = content;
     }
 
+
     public String getSortOrder() {
         return sortOrder;
     }
