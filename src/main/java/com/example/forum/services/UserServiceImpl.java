@@ -11,7 +11,9 @@ import com.example.forum.filters.dtos.UserPostsFilterDto;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
+import com.example.forum.models.UserProfilePhoto;
 import com.example.forum.repositories.PostRepository;
+import com.example.forum.repositories.UseProfilePhotoRepository;
 import com.example.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,15 +31,18 @@ public class UserServiceImpl implements UserService {
 
     private final PostRepository postRepository;
 
+    private final UseProfilePhotoRepository userProfilePhotoRepository ;
+
     private final PostService postService;
 
     private final CommentService commentService;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, PostRepository postRepository, PostService postService, CommentService commentService) {
+    public UserServiceImpl(UserRepository repository, PostRepository postRepository, UseProfilePhotoRepository userProfilePhotoRepository, PostService postService, CommentService commentService) {
         this.repository = repository;
         this.postRepository = postRepository;
+        this.userProfilePhotoRepository = userProfilePhotoRepository;
         this.postService = postService;
         this.commentService = commentService;
     }
@@ -171,6 +176,11 @@ public class UserServiceImpl implements UserService {
 
         makeAdmin.setIsAdmin(true);
         repository.update(makeAdmin);
+    }
+
+    @Override
+    public void uploadPhoto(UserProfilePhoto userProfilePhoto) {
+        userProfilePhotoRepository.upload(userProfilePhoto);
     }
 
 

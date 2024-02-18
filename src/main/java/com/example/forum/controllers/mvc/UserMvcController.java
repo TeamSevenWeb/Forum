@@ -1,8 +1,9 @@
 package com.example.forum.controllers.mvc;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.forum.exceptions.*;
 import com.example.forum.filters.UserFilterOptions;
-import com.example.forum.filters.UserPostsFilterOptions;
 import com.example.forum.filters.dtos.UserFilterDto;
 import com.example.forum.filters.dtos.UserPostsFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
@@ -10,20 +11,23 @@ import com.example.forum.helpers.UserMapper;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
-import com.example.forum.models.dtos.RegisterDto;
-import com.example.forum.models.dtos.UserDto;
+import com.example.forum.models.UserProfilePhoto;
 import com.example.forum.models.dtos.UserUpdateDto;
 import com.example.forum.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -37,10 +41,14 @@ public class UserMvcController {
 
     private final AuthenticationHelper authenticationHelper;
 
-    public UserMvcController(UserService userService, UserMapper userMapper, AuthenticationHelper authenticationHelper) {
+    private final Cloudinary cloudinary;
+
+    @Autowired
+    public UserMvcController(UserService userService, UserMapper userMapper, AuthenticationHelper authenticationHelper, Cloudinary cloudinary) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.authenticationHelper = authenticationHelper;
+        this.cloudinary = cloudinary;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -186,6 +194,23 @@ public class UserMvcController {
             model.addAttribute("error", e.getMessage());
             return "ErrorView";
         }
+    }
+    @PostMapping("/{id}/update/uploadImage")
+    public String uploadImage(@RequestParam("avatar") MultipartFile file, HttpSession session){
+        try {
+            UserProfilePhoto userProfilePhoto = new UserProfilePhoto();
+            User user = authenticationHelper.tryGetCurrentUser(session);
+            Map upload = cloudinary.uploader()
+                    .upload(file.getBytes()
+                            , ObjectUtils.asMap("resource_type", "auto"));
+            String url = (String) upload.get("url");
+            userProfilePhoto.setUser(user);
+            userProfilePhoto.setProfilePhoto(url);
+            userService.uploadPhoto(userProfilePhoto);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/user";
     }
 
     @PostMapping("/{id}/update")

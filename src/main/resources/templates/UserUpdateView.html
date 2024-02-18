@@ -52,8 +52,14 @@
         </div>
 
         </div>
+
         <br/>
         <input class="py-3-create rounded" type="submit" value="Save"/>
+
+    </form>
+    <form action="#" th:action="@{__${requestURI}__/uploadImage}" method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar"/>
+        <button type="submit">Upload</button>
     </form>
 </section>
 
