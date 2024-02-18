@@ -196,22 +196,6 @@ public class UserMvcController {
         }
     }
 
-    @PostMapping("/update/uploadImage")
-    public String uploadImage(@RequestParam("avatar") MultipartFile file, HttpSession session) {
-        try {
-            UserProfilePhoto userProfilePhoto = new UserProfilePhoto();
-            User user = authenticationHelper.tryGetCurrentUser(session);
-            String url = cloudinaryUploader(file);
-
-            userProfilePhoto.setProfilePhoto(url);
-            userProfilePhoto.setUser(user);
-            user.setUserProfilePictures(userProfilePhoto);
-            userService.uploadPhoto(userProfilePhoto);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return "redirect:/user";
-    }
 
     @PostMapping("{id}/update/updateImage")
     public String updateImage(@RequestParam("avatar") MultipartFile file, HttpSession session) {

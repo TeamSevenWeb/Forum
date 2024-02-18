@@ -9,6 +9,11 @@
     <br/>
     <div class="center">
         <form class="outline login-container" action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+            <label th:text="#{user.label.profile.picture}">Profile picture</label>
+            <br/>
+            <input type="file" th:field="*{file}" name="avatar"/>
+            <div class="error error-login" th:errors="*{userProfilePhoto}">Profile picture error placeholder</div>
+
             <label th:text="#{user.label.username}">Username</label>
             <br/>
             <input type="text" th:field="*{username}"/><br/>
@@ -44,10 +49,6 @@
         </form>
     </div>
 </section>
-<form action="#" th:action="@{__${requestURI}__/uploadImage}" method="post" enctype="multipart/form-data">
-    <input type="file" name="avatar"/>
-    <button type="submit">Upload</button>
-</form>
 
 <div th:replace="~{/fragments/PageFrame :: scripts}"></div>
 </body>
