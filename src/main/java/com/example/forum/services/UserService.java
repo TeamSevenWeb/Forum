@@ -1,6 +1,9 @@
 package com.example.forum.services;
 
 import com.example.forum.filters.UserFilterOptions;
+import com.example.forum.filters.UserPostsFilterOptions;
+import com.example.forum.filters.dtos.UserFilterDto;
+import com.example.forum.filters.dtos.UserPostsFilterDto;
 import com.example.forum.models.Comment;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
@@ -17,9 +20,9 @@ public interface UserService {
 
     List<User> getAll(UserFilterOptions filterOptions, User user);
 
-    List<Comment> getUserComments(int id);
+//    List<Comment> getUserComments(UserPostsFilterDto filterDto, User user);
 
-    List<Post> getUserPosts(int id);
+    List<Post> getUserPosts(UserPostsFilterDto filterDto, User user);
 
     void create(User user);
 

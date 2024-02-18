@@ -4,6 +4,9 @@ import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.UserFilterOptions;
+import com.example.forum.filters.UserPostsFilterOptions;
+import com.example.forum.filters.dtos.UserCommentsFilterDto;
+import com.example.forum.filters.dtos.UserPostsFilterDto;
 import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.helpers.UserMapper;
 import com.example.forum.models.Comment;
@@ -65,9 +68,11 @@ public class UserController {
     }
     @GetMapping("/{id}/posts")
     public List<Post> getUserPosts(@RequestHeader HttpHeaders headers,@PathVariable int id){
+        //TODO
+        UserPostsFilterDto postsFilterOptions = new UserPostsFilterDto();
        try {
            User user = authenticationHelper.tryGetUser(headers);
-           return service.getUserPosts(id);
+           return service.getUserPosts(postsFilterOptions,user);
        }  catch (AuthenticationException e){
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
        } catch (EntityNotFoundException e){
@@ -75,17 +80,19 @@ public class UserController {
        }
     }
 
-    @GetMapping("/{id}/comments")
-    public List<Comment> getUserComments(@RequestHeader HttpHeaders headers,@PathVariable int id){
-        try {
-            User user = authenticationHelper.tryGetUser(headers);
-            return service.getUserComments(id);
-        } catch (AuthenticationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        } catch (EntityNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
-        }
-    }
+//    @GetMapping("/{id}/comments")
+//    public List<Comment> getUserComments(@RequestHeader HttpHeaders headers,@PathVariable int id){
+//        //TODO
+//        UserPostsFilterDto commentsFilterOptions = new UserPostsFilterDto();
+//        try {
+//            User user = authenticationHelper.tryGetUser(headers);
+//            return service.getUserComments(commentsFilterOptions,user);
+//        } catch (AuthenticationException e) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+//        } catch (EntityNotFoundException e){
+//            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage());
+//        }
+//    }
 
     @PostMapping
     public void create(@Valid @RequestBody UserDto userDto) {

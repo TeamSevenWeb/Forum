@@ -30,22 +30,42 @@
                 <div class="user-button">Get user comments</div></a>
         </div>
 
-        <!--    Show User most recent posts-->
+        <!--    Show User most recent posts-->=
 
         <div class="navigate" th:if="${user.getUserComments().isEmpty()}">
             <h2 th:text="${user.username + ' hasn'+''''+'t commented anything yet'}">User has no comments</h2>
         </div>
         <div class="navigate" th:unless="${user.getUserComments().isEmpty()}" >
-            <h2 class="ml4" th:text="#{user.all.comments}"></h2>
+            <br/>
+            <h2 th:text="${'All '+user.username+' comments'}"></h2>
+            <br/>
+            <div class="navigate">
+<!--                <form action="#" th:action="@{/user/__${user.getId()}__/comments}" method="get" th:object="${userPostsFilterOption}">-->
+<!--                    <h3 th:text="#{posts.filter.label}">Filter Options</h3>-->
+<!--                    <br/>-->
+<!--                    <div>-->
+<!--                        <input type="text" placeholder="Title commented" th:field="*{title}"/>-->
+<!--                        <input type="text" placeholder="Comment" th:field="*{content}"/>-->
+<!--                        <select th:field="*{sortOrder}">-->
+<!--                            <option value="">Sort Order</option>-->
+<!--                            <option value="asc">Ascending</option>-->
+<!--                            <option value="desc">Descending</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <br/>-->
+<!--                    <input class="py-3 rounded" type="submit" value="Search"/>-->
+<!--                    <br/>-->
+<!--                </form>-->
+                <br/>
             <!--    Display posts table-->
             <div class="table1 center">
                 <div class="table-head">
                     <div class="table-header-cell outline">Commented posts</div>
-                    <div class="table-header-cell outline" th:text="${user.getUsername()+' comments'}">User comments</div>
+                    <div class="table-header-cell outline" th:text="${user.getUsername()+' comment'}">User comments</div>
                     <div class="table-header-cell outline" >Comment date</div>
                 </div>
                 <!--starts here-->
-                <div class="table-row outline break-word" th:each="comment : ${user.getUserComments()}">
+                <div class="table-row outline break-word" th:each="comment : ${comments}">
                     <div class="cell">
                         <a href="#" th:href="@{/posts/__${comment.getPost().getPostId()}__}">
                             <span class="linebreak" th:text="${comment.getPost().getTitle()}"></span></a>

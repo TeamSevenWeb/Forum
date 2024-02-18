@@ -11,7 +11,7 @@ public class PostsFilterOptions {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
-    public PostsFilterOptions() {
+    public PostsFilterOptions(String title, String content, String username, String sortBy, String sortOrder) {
         this(null, null, null, null, null,null);
     }
 
