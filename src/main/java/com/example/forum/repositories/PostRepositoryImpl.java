@@ -178,6 +178,9 @@ public class PostRepositoryImpl implements PostRepository {
             case "createdBy":
                 orderBy = "createdBy";
                 break;
+            case "dateAndTime":
+                orderBy = "dateAndTimeOfCreation";
+                break;
             default:
                 return "";
         }
