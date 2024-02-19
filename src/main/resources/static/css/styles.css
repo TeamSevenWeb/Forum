@@ -1898,9 +1898,6 @@ header{
     width: available ;
 }
 
-.count-box{
-    font-size: 30pt;
-}
 
 #update-button{
     display: flex;
@@ -2025,12 +2022,22 @@ header{
 
 .count-body{
     display: grid;
-    column-gap: 10px;
+    column-gap: 20px;
     justify-content: center;
-    grid-template-columns: 45% 10% 45%;
+    grid-template-columns: 45% 45%;
     padding-left: 100px;
     font-family: 'aquire',FangSong,Georgia;
     text-align: center;
+}
+.count-box{
+    font-size: 30pt;
+    border: 2px solid gray;
+    background-color: rebeccapurple;
+    padding: 20px;
+
+}
+#users{
+    background-color: #37a693;
 }
 .big{
     font-size: 16pt;
