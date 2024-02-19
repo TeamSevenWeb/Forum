@@ -1,11 +1,11 @@
-create table tags
+create table forum.tags
 (
     tag_id int auto_increment
         primary key,
     name   varchar(20) not null
 );
 
-create table users
+create table forum.users
 (
     user_id              int auto_increment
         primary key,
@@ -24,42 +24,42 @@ create table users
         unique (email)
 );
 
-create table admins
+create table forum.admins
 (
     admin_id int auto_increment
         primary key,
     user_id  int not null,
     constraint admins_users_user_id_fk
-        foreign key (user_id) references users (user_id)
+        foreign key (user_id) references forum.users (user_id)
 );
 
-create table admins_phone_numbers
+create table forum.admins_phone_numbers
 (
     phone_number_id int auto_increment
         primary key,
     admin_id        int         not null,
     phone_number    varchar(20) not null,
     constraint admins_phone_numbers_admins_admin_id_fk
-        foreign key (admin_id) references admins (admin_id)
+        foreign key (admin_id) references forum.admins (admin_id)
 );
 
-create table blocked_users
+create table forum.blocked_users
 (
     user_id int not null
         primary key,
     constraint blocked_users_users_user_id
-        foreign key (user_id) references users (user_id)
+        foreign key (user_id) references forum.users (user_id)
 );
 
-create table deactivated_users
+create table forum.deactivated_users
 (
     user_id int not null
         primary key,
     constraint deactivated_users_users_user_id
-        foreign key (user_id) references users (user_id)
+        foreign key (user_id) references forum.users (user_id)
 );
 
-create table posts
+create table forum.posts
 (
     post_id                   int auto_increment
         primary key,
@@ -68,20 +68,10 @@ create table posts
     content                   varchar(8192) not null,
     date_and_time_of_creation datetime      null,
     constraint posts_users_user_id_fk
-        foreign key (created_by) references users (user_id)
+        foreign key (created_by) references forum.users (user_id)
 );
 
-create table posts_tags
-(
-    post_id int,
-    constraint posts_tags_post_id_fk
-        foreign key (post_id) references posts (post_id),
-    tag_id int,
-    constraint posts_tags_tag_id_fk
-        foreign key (tag_id) references tags (tag_id)
-);
-
-create table comments
+create table forum.comments
 (
     comment_id                int auto_increment
         primary key,
@@ -90,24 +80,43 @@ create table comments
     comment                   varchar(250) null,
     date_and_time_of_creation datetime     null,
     constraint posts_comments_posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
+        foreign key (post_id) references forum.posts (post_id),
     constraint posts_comments_users_user_id_fk
-        foreign key (created_by) references users (user_id)
+        foreign key (created_by) references forum.users (user_id)
 );
 
-create table posts_comments
+create table forum.posts_comments
 (
     post_id    int                  not null,
     comment_id int                  not null,
     deleted    tinyint(1) default 0 not null,
     constraint joined_posts_comments_posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
+        foreign key (post_id) references forum.posts (post_id),
     constraint posts_comments_comments_comment_id_fk
-        foreign key (comment_id) references comments (comment_id)
+        foreign key (comment_id) references forum.comments (comment_id)
 );
 
+create table forum.posts_tags
+(
+    post_id int null,
+    tag_id  int null,
+    constraint posts_tags_post_id_fk
+        foreign key (post_id) references forum.posts (post_id),
+    constraint posts_tags_tag_id_fk
+        foreign key (tag_id) references forum.tags (tag_id)
+);
 
-create table reactions
+create table forum.profile_photos
+(
+    profile_photo_id int auto_increment
+        primary key,
+    user_id          int          not null,
+    profile_photo    varchar(640) not null,
+    constraint profile_photos_users_user_id_fk
+        foreign key (user_id) references forum.users (user_id)
+);
+
+create table forum.reactions
 (
     reaction_id int auto_increment
         primary key,
@@ -115,50 +124,30 @@ create table reactions
     post_id     int        not null,
     isUpVoted   tinyint(1) null,
     constraint liked_post_posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
+        foreign key (post_id) references forum.posts (post_id),
     constraint liked_post_users_user_id_fk
-        foreign key (created_by) references users (user_id)
+        foreign key (created_by) references forum.users (user_id)
 );
 
-create table posts_reactions
-(
-    post_id     int                  not null,
-    reaction_id int                  not null,
-    isPresent   tinyint(1) default 0 not null,
-    constraint joined_posts_reactions_posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
-    constraint posts_reactions_reactions_reaction_id_fk
-        foreign key (reaction_id) references reactions (reaction_id)
-);
-
-create table profile_photos
-(
-    profile_photo_id int auto_increment
-        primary key,
-    user_id          int  not null,
-    profile_photo    blob not null,
-    constraint user_profile_photo_users_user_id_fk
-        foreign key (user_id) references users (user_id)
-);
-
-create table users_comments
+create table forum.users_comments
 (
     user_id    int                  not null,
     comment_id int                  not null,
     deleted    tinyint(1) default 0 not null,
     constraint users_comments_comments_comment_id_fk
-        foreign key (comment_id) references comments (comment_id),
+        foreign key (comment_id) references forum.comments (comment_id),
     constraint users_comments_users_user_id_fk
-        foreign key (user_id) references users (user_id)
+        foreign key (user_id) references forum.users (user_id)
 );
 
-create table users_posts
+create table forum.users_posts
 (
     user_id int                  not null,
     post_id int                  not null,
     deleted tinyint(1) default 0 not null,
     constraint users_posts_posts_post_id_fk
-        foreign key (post_id) references posts (post_id),
+        foreign key (post_id) references forum.posts (post_id),
     constraint users_posts_users_user_id_fk
-        foreign key (user_id) references users (user_id)
+        foreign key (user_id) references forum.users (user_id)
 );
+
