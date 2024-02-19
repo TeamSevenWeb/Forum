@@ -115,13 +115,16 @@ public class PostServiceImpl implements PostService{
     @Override
     public void delete(int id, User user) {
         checkModifyPermissions(id, user);
-        if (!user.isAdmin()) {
-            user.getUserPosts().stream()
-                    .filter(p -> p.getPostId() == id)
-                    .findAny().orElseThrow( () -> new EntityNotFoundException("Post", id));
-        }
+       if (user.getUserPosts().stream()
+                    .noneMatch(p -> p.getPostId() == id)){
+           throw  new EntityNotFoundException("Post", id);
+       }
+
         Post post = repository.get(id);
         user.getUserPosts().remove(post);
+        if(!post.getPostComments().isEmpty()){
+            post.getPostComments().clear();
+        }
         userRepository.update(user);
         repository.delete(id);
     }
@@ -170,7 +173,7 @@ public class PostServiceImpl implements PostService{
 
     private void checkModifyPermissions(int id, User user) {
         Post post = repository.get(id);
-        if (!post.getCreatedBy().equals(user)&&!user.isAdmin()) {
+        if (!post.getCreatedBy().equals(user)) {
             throw new AuthenticationException(MODIFY_POST_ERROR_MESSAGE);
         }
     }

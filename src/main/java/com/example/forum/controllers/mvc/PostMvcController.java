@@ -303,9 +303,9 @@ public class PostMvcController {
 
     }
     @GetMapping("/{id}/delete")
-    public String deletePost(@PathVariable int id, Model model) {
+    public String deletePost(@PathVariable int id, Model model, HttpSession session) {
         try {
-            User user = userService.get(1);
+            User user = authenticationHelper.tryGetCurrentUser(session);
             service.delete(id, user);
             return "redirect:/posts";
         } catch (EntityNotFoundException e) {
@@ -316,7 +316,6 @@ public class PostMvcController {
     }
 
     @GetMapping("{postId}/upvote")
-
     public String upvote(HttpSession session, @PathVariable int postId, Model model) {
         try {
             User user = authenticationHelper.tryGetCurrentUser(session);
