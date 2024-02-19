@@ -4,8 +4,8 @@
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 
-<section class="page-section">
-    <div class="h1 center"  th:text="#{register.page.label}">Register</div>
+<section class="page-section font-aquire">
+    <div class="h1 center font-aquire"  th:text="#{register.page.label}">Register</div>
     <br/>
     <div class="center">
         <form class="outline login-container" action="#" th:action="@{/auth/register}" th:object="${register}" method="post">

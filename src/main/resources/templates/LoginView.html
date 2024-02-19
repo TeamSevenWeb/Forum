@@ -4,13 +4,12 @@
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 
-<section class="page-section">
-    <div class="h1 center"  th:text="#{login.page.label}">Login</div>
+<section class="page-section font-aquire">
+    <div class="h1 center font-aquire"  th:text="#{login.page.label}">Login</div>
     <br/>
-    <div class="center">
+    <div class="center ">
 
         <form class="outline login-container" action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
-            <br/>
             <label th:text="#{user.label.username}">Username</label>
             <br/>
             <input type="text" th:field="*{username}"/><br/>
