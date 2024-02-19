@@ -190,7 +190,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePhoto(UserProfilePhoto userProfilePhoto, User user) {
-        userProfilePhotoRepository.delete(user.getUserProfilePicture().getProfilePhotoId());
+        if(user.hasProfilePicture()) {
+            userProfilePhotoRepository.delete(user.getUserProfilePicture().getProfilePhotoId());
+        }
         user.setUserProfilePictures(userProfilePhoto);
         userProfilePhotoRepository.update(userProfilePhoto);
     }

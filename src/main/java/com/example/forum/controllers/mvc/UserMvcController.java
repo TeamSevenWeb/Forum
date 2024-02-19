@@ -203,9 +203,6 @@ public class UserMvcController {
             UserProfilePhoto userProfilePhoto = new UserProfilePhoto();
             User user = authenticationHelper.tryGetCurrentUser(session);
             String url = cloudinaryUploader(file);
-            if (user.getUserProfilePicture().getProfilePhoto().equals(url)){
-                return "redirect:/user";
-            }
             userProfilePhoto.setProfilePhoto(url);
             userProfilePhoto.setUser(user);
             userService.updatePhoto(userProfilePhoto, user);
