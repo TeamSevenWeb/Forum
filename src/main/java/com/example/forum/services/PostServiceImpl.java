@@ -120,6 +120,9 @@ public class PostServiceImpl implements PostService{
         if(!post.getPostComments().isEmpty()){
             post.getPostComments().clear();
         }
+        if(reactionService.getUpVoteCount(id)!=0){
+            reactionService.deleteReaction(post,user);
+        }
         userRepository.update(user);
         repository.delete(id);
     }
