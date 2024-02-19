@@ -115,13 +115,8 @@ public class PostServiceImpl implements PostService{
     @Override
     public void delete(int id, User user) {
         checkModifyPermissions(id, user);
-       if (user.getUserPosts().stream()
-                    .noneMatch(p -> p.getPostId() == id)){
-           throw  new EntityNotFoundException("Post", id);
-       }
 
         Post post = repository.get(id);
-        user.getUserPosts().remove(post);
         if(!post.getPostComments().isEmpty()){
             post.getPostComments().clear();
         }
