@@ -9,6 +9,7 @@ public interface PostService {
 
     List<Post> getAll(PostsFilterOptions postsFilterOptions);
 
+    int getAllPostsCount();
     List<Post> getMostCommentedPosts();
 
     List<Post> getTenMostRecentPosts();

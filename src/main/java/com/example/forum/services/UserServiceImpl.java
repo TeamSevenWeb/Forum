@@ -70,6 +70,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getAllUsersCount() {
+        UserFilterOptions filterOptions1 = new UserFilterOptions();
+        return repository.getAll(filterOptions1).size();
+    }
+
+    @Override
     public List<Post> getUserPosts(UserPostsFilterDto filterDto, User user) {
 
         PostsFilterOptions filterOptions = new PostsFilterOptions(

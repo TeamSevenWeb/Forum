@@ -6,9 +6,16 @@
 <div class="user-block">
   <div class="user-leftside">
       <br/>
-      <img class="user-photo" th:src="${user.getUserProfilePicture().profilePhoto}" alt="Picture"/>
+      <div th:if="${user.hasProfilePicture()}">
+          <img class="user-photo" th:src="${user.getUserProfilePicture().profilePhoto}" alt="Picture"/>
+      </div>
+      <div th:unless="${user.hasProfilePicture()}">
+          <img class="user-photo"
+               src="https://w0.peakpx.com/wallpaper/979/89
+      /HD-wallpaper-purple-smile-design-eye-smily-profile-pic-face-thumbnail.jpg" alt="Picture"/>
+      </div>
       <br/>
-      <a id="update-button" th:if="${session.isAdmin || session.userId == user.getId()}" ihref="#" th:href="@{/user/__${user.getId()}__/update}">
+      <a id="update-button" th:if="${session.isAdmin || session.currentUser == user.getUsername()}" href="#" th:href="@{/user/__${user.getId()}__/update}">
           <div class="user-button" >Update profile</div></a>
       <br/>
       <div class="user-info">

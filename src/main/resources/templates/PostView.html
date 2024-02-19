@@ -10,7 +10,15 @@
         <h3 class="text-uppercase mb-0" th:text="${post.title}"/>
     <div class="post-container">
         <div class="user-profile-container" th:icon="${post.createdBy.username}">
-            <img class="user-photo" th:src="${post.getCreatedBy().getUserProfilePicture().profilePhoto}" alt="User image"/>/>
+            <br/>
+            <div th:if="${post.getCreatedBy().hasProfilePicture()}">
+                <img class="user-post-photo" th:src="${post.getCreatedBy().getUserProfilePicture().profilePhoto}" alt="Picture"/>
+            </div>
+            <div th:unless="${post.getCreatedBy().hasProfilePicture()}">
+                <img class="user-post-photo"
+                     src="https://w0.peakpx.com/wallpaper/979/89
+      /HD-wallpaper-purple-smile-design-eye-smily-profile-pic-face-thumbnail.jpg" alt="Picture"/>
+            </div>
         </div>
         <div class="post-content-container"></div>
         <div class="post-content-linebreak" th:text="${post.content}"></div>
@@ -18,7 +26,7 @@
 
         <div class="reaction-container">
             <h2>
-                <a th:if="${post.getCreatedBy().getUsername() == loggedInUser.getUsername()}" href="#" th:href="@{__${requestURI}__/update}"
+                <a th:if="${post.getCreatedBy().getUsername() == session.currentUser || session.isAdmin}" href="#" th:href="@{__${requestURI}__/update}"
                 class="edit-button">Edit
 
                     <i class="fas fa-pencil-alt"></i>
@@ -80,8 +88,8 @@
             <dirv class="content break-word" th:text="${comment.getComment()}">
             </dirv>
             <div class="comment-buttons center">
-                <a class="btn btn-secondary comment-button"  th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername()}" href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${comment.commentId})}" >Edit </a>
-                <a class="btn btn-secondary comment-button" th:if="${comment.getCreatedBy().getUsername() == loggedInUser.getUsername() || loggedInUser.isAdmin()}" href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${comment.commentId})}" >Delete</a>
+                <a class="btn btn-secondary comment-button"  th:if="${comment.getCreatedBy().getUsername() == session.currentUser}" href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${comment.commentId})}" >Edit </a>
+                <a class="btn btn-secondary comment-button" th:if="${comment.getCreatedBy().getUsername() == session.currentUser|| session.isAdmin}" href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${comment.commentId})}" >Delete</a>
             </div>
         </div>
         <br>

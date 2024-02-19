@@ -77,10 +77,10 @@ public class PostMvcController {
         return session.getAttribute("isAdmin") != null;
     }
 
-    @ModelAttribute("loggedInUser")
-    public User currentUser(HttpSession session) {
-        return authenticationHelper.tryGetCurrentUser(session);
-    }
+//    @ModelAttribute("loggedInUser")
+//    public User currentUser(HttpSession session) {
+//        return authenticationHelper.tryGetCurrentUser(session);
+//    }
 
     @ModelAttribute("requestURI")
     public String requestURI(final HttpServletRequest request) {
@@ -122,6 +122,8 @@ public class PostMvcController {
             model.addAttribute("post", post);
             model.addAttribute("comments",post.getRecentPostComments());
             return "PostView";
+        } catch (AuthenticationException e){
+            return "redirect:/auth/login";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());

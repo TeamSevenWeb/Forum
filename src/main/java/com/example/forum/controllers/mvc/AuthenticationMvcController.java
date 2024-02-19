@@ -71,6 +71,7 @@ public class AuthenticationMvcController {
             session.setAttribute("currentUser", login.getUsername());
             session.setAttribute("isAdmin", user.isAdmin());
             session.setAttribute("userId", user.getId());
+            session.setAttribute("username", user.getUsername());
             return "redirect:/";
         } catch (AuthenticationException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());
