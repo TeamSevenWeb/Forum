@@ -47,6 +47,11 @@ public class AuthenticationMvcController {
         return session.getAttribute("currentUser") != null;
     }
 
+    @ModelAttribute("isBlocked")
+    public boolean populateIsBlocked(HttpSession session) {
+        return session.getAttribute("isBlocked") != null;
+    }
+
     @ModelAttribute("isAdmin")
     public boolean populateIsAdmin(HttpSession session) {
         return session.getAttribute("isAdmin") != null;
@@ -72,6 +77,7 @@ public class AuthenticationMvcController {
             session.setAttribute("isAdmin", user.isAdmin());
             session.setAttribute("userId", user.getId());
             session.setAttribute("username", user.getUsername());
+            session.setAttribute("isBlocked", user.isBlocked());
             return "redirect:/";
         } catch (AuthenticationException e) {
             bindingResult.rejectValue("username", "auth_error", e.getMessage());

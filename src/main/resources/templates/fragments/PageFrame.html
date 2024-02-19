@@ -33,7 +33,7 @@
                     <a th:href="@{/auth/login}" class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Login</a></li>
                 <li th:unless="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a th:href="@{/auth/register}" class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Register</a></li>
-                <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
+                <li th:if="${isAuthenticated && !session.isBlocked}" class="nav-item mx-0 mx-lg-1">
                     <a href="#" th:href="@{/posts/new}" class="nav-link py-3 px-0 px-lg-3 rounded">Create Post</a></li>
                 <li th:if="${isAuthenticated}" class="nav-item mx-0 mx-lg-1">
                     <a href="#" th:href="@{/user}" class="nav-link py-3 px-0 px-lg-3 rounded">Profile</a></li>

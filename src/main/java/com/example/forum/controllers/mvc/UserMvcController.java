@@ -55,12 +55,14 @@ public class UserMvcController {
     public boolean populateIsAuthenticated(HttpSession session) {
         return session.getAttribute("currentUser") != null;
     }
-
+    @ModelAttribute("isBlocked")
+    public boolean populateIsBlocked(HttpSession session) {
+        return session.getAttribute("isBlocked") != null;
+    }
     @ModelAttribute("userId")
     public boolean populateUserId(HttpSession session) {
         return session.getAttribute("userId") != null;
     }
-
     @ModelAttribute("isAdmin")
     public boolean populateIsAdmin(HttpSession session) {
         return session.getAttribute("isAdmin") != null;

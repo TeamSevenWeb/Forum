@@ -99,7 +99,7 @@
             </div>
         </div>
         <br>
-        <form class="comment-area hide" action="#" th:action="@{__${requestURI}__/newComment}" th:object="${comment}" method="post">
+        <form th:if="${!session.isBlocked}" class="comment-area hide" action="#" th:action="@{__${requestURI}__/newComment}" th:object="${comment}" method="post">
             <textarea type="text" th:field="*{comment}" name="comment" placeholder="Comment here ... "></textarea>
             <input class="btn btn-secondary comment-button" type="submit" value="comment">
         </form>
