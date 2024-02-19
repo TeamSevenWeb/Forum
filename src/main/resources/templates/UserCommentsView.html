@@ -5,7 +5,15 @@
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 <div class="user-block">
     <div class="user-leftside">
-        <img class="user-photo" src="../static/images/home_background.jpg" alt="Picture"/>
+        <br/>
+        <div th:if="${user.hasProfilePicture()}">
+            <img class="user-photo" th:src="${user.getUserProfilePicture().profilePhoto}" alt="Picture"/>
+        </div>
+        <div th:unless="${user.hasProfilePicture()}">
+            <img class="user-photo"
+                 src="https://w0.peakpx.com/wallpaper/979/89
+      /HD-wallpaper-purple-smile-design-eye-smily-profile-pic-face-thumbnail.jpg" alt="Picture"/>
+        </div>
         <br/>
         <div class="user-info">
             <a href="#" th:href="@{/user/__${user.getId()}__}">

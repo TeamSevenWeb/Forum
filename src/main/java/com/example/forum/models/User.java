@@ -182,6 +182,10 @@ public class User {
         this.isBlocked = isBlocked;
     }
 
+    public boolean hasProfilePicture(){
+        return profilePictures != null;
+    }
+
     public Comment getUserLastComment(){
         int lastIndex = userComments.size();
         return userComments.stream().toList().get(lastIndex - 1);

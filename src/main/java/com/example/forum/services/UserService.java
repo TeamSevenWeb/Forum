@@ -21,6 +21,8 @@ public interface UserService {
 
     List<User> getAll(UserFilterOptions filterOptions, User user);
 
+    int getAllUsersCount();
+
     List<Comment> getUserComments(UserPostsFilterDto filterDto, User user);
 
     List<Post> getUserPosts(UserPostsFilterDto filterDto, User user);

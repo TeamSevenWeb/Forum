@@ -15,6 +15,9 @@ public class PostsFilterOptions {
         this(null, null, null, null, null,null);
     }
 
+    public PostsFilterOptions() {
+        this(null, null, null, null, null);
+    }
 
     public PostsFilterOptions(
             String title,

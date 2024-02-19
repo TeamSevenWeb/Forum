@@ -5,6 +5,7 @@ import com.example.forum.helpers.AuthenticationHelper;
 import com.example.forum.models.Post;
 import com.example.forum.models.User;
 import com.example.forum.services.PostService;
+import com.example.forum.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,13 @@ public class HomeMvcController {
     private final AuthenticationHelper authenticationHelper;
 
     private final PostService postService;
+
+    private final UserService userService;
     @Autowired
-    public HomeMvcController(AuthenticationHelper authenticationHelper, PostService postService) {
+    public HomeMvcController(AuthenticationHelper authenticationHelper, PostService postService, UserService userService) {
         this.authenticationHelper = authenticationHelper;
         this.postService = postService;
+        this.userService = userService;
     }
 
     @ModelAttribute("isAuthenticated")
@@ -42,6 +46,10 @@ public class HomeMvcController {
     public String showHomePage(Model model) {
         List<Post> mostCommentedPosts = postService.getMostCommentedPosts();
         List<Post> mostRecentPosts = postService.getTenMostRecentPosts();
+        int usersCount = userService.getAllUsersCount();
+        int postsCount = postService.getAllPostsCount();
+        model.addAttribute("usersCount",usersCount);
+        model.addAttribute("postsCount",postsCount);
         model.addAttribute("mostCommentedPosts", mostCommentedPosts);
         model.addAttribute("mostRecentPosts", mostRecentPosts);
         return "HomeView";

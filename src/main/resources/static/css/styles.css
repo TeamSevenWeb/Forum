@@ -958,6 +958,7 @@ header{
     margin-right: 4px;
     overflow: hidden;
     border: 2px solid #ddd;
+    display: contents;
     order: -1; /* Move profile picture to the left */
 }
 /*//TODO*/
@@ -1897,6 +1898,9 @@ header{
     width: available ;
 }
 
+.count-box{
+    font-size: 30pt;
+}
 
 #update-button{
     display: flex;
@@ -1993,6 +1997,16 @@ header{
     height: 200px;
     border-radius: 100px;
     border: 2px solid purple;
+
+}
+
+.user-post-photo{
+    object-fit: cover;
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+    border: 2px solid purple;
+
 }
 
 .methods-body{
@@ -2018,10 +2032,19 @@ header{
     border-bottom: 2px solid white;
     padding: 2px;
 }
+.page-section-top{
+    padding-top: 8rem;
+}
 
 .login-container{
     text-align: center;
     display: grid;
+}
+.update-photo-container{
+    text-align: center;
+    display: grid;
+    justify-content: space-around;
+    justify-items: center;
 }
 
 .login-button{

@@ -5,7 +5,16 @@
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 <section class="page-section text-center">
     <h2 th:text="#{user.update}">Title</h2>
+
+    <br/>
     <form action="#" th:action="@{__${requestURI}__}" th:object="${user}" method="post">
+        <label th:text="#{user.label.photo}">Profile photo</label>
+        <div class="update-photo-container">
+            <div class="textarea-style" style="width: 40%" action="#" th:action="@{__${requestURI}__/updateImage}" method="post" enctype="multipart/form-data">
+                <input type="file" name="avatar"/>
+                <button class="py-3-create rounded" type="submit">Upload</button>
+            </div>
+        </div>
         <label th:text="#{user.label.first-name}">First name</label>
         <br/>
         <textarea class="textarea-title textarea-style" type="text" th:field="*{firstName}"></textarea>
@@ -56,10 +65,6 @@
         <br/>
         <input class="py-3-create rounded" type="submit" value="Save"/>
 
-    </form>
-    <form action="#" th:action="@{__${requestURI}__/updateImage}" method="post" enctype="multipart/form-data">
-        <input type="file" name="avatar"/>
-        <button type="submit">Upload</button>
     </form>
 </section>
 

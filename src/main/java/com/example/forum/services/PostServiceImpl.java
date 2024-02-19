@@ -4,6 +4,7 @@ import com.example.forum.exceptions.AuthenticationException;
 import com.example.forum.exceptions.EntityDuplicateException;
 import com.example.forum.exceptions.EntityNotFoundException;
 import com.example.forum.filters.PostsFilterOptions;
+import com.example.forum.filters.UserFilterOptions;
 import com.example.forum.models.*;
 import com.example.forum.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,12 @@ public class PostServiceImpl implements PostService{
     @Override
     public List<Post> getAll(PostsFilterOptions postsFilterOptions) {
         return repository.getAll(postsFilterOptions);
+    }
+
+    @Override
+    public int getAllPostsCount() {
+        PostsFilterOptions filterOptions1 = new PostsFilterOptions();
+        return repository.getAll(filterOptions1).size();
     }
 
     @Override
