@@ -2025,11 +2025,12 @@ header{
 
 .count-body{
     display: grid;
-    column-gap: 40px;
+    column-gap: 10px;
     justify-content: center;
     grid-template-columns: 45% 10% 45%;
     padding-left: 100px;
     font-family: 'aquire',FangSong,Georgia;
+    text-align: center;
 }
 .big{
     font-size: 16pt;
@@ -2049,6 +2050,9 @@ header{
 .login-container{
     text-align: center;
     display: grid;
+}
+.font-aquire{
+    font-family: aquire !important;
 }
 .update-photo-container{
     text-align: center;
