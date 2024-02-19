@@ -6,7 +6,7 @@
 <section class="page-section text-center">
 <h2 th:text="#{edit.comment.label}">Edit Comment</h2>
 <form  class="form-tags" action="#" th:action="@{__${requestURI}__}" th:object="${commentDto}" method="post">
-    <textarea class="textarea-title textarea-style" type="text" th:field="*{comment}"></textarea>
+    <textarea class="textarea-content textarea-style" type="text" th:field="*{comment}"></textarea>
     <br/>
     <label class="error" th:errors="*{comment}">Content error placeholder</label>
     <br/><br/>
