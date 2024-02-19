@@ -2151,6 +2151,15 @@ padding-left:1rem
     font-size: 19px; /* Font size */
 }
 
+.post-delete-button {
+    margin-right:1rem;
+    margin-left:1rem;
+    font-weight: 600; /* You can adjust this value based on your preference */
+    color: palevioletred; /* White text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 19px; /* Font size */
+}
+
 .tag-container{
     position: relative;
     display: flex;

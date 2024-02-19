@@ -47,7 +47,7 @@
             <div class="upvote-counter" th:text="${upVoteCounter}"></div>
             <h2 th:if="${post.getCreatedBy().getUsername() == session.currentUser}">
                 <a href="#" th:href="@{__${requestURI}__/delete}"
-                   class="edit-button">Delete
+                   class="post-delete-button">Delete
 
                     <i class="fab fa-free-code-camp"></i>
                 </a>
