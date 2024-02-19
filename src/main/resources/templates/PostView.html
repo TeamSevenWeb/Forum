@@ -73,23 +73,23 @@
 <section class="multi-container pd-5">
     <div class="comments-container">
         <h3 class="text-uppercase comments-header mb-0 " th:text="#{post.label.comments}">Comments</h3>
-        <div class="body" th:each="comment : ${comments}">
+        <div class="body" th:each="userComment : ${comments}">
             <div class="authors">
                 <div class="username">
-                    <a th:href="@{/user/{userId}(userId=${comment.getCreatedBy().getId()})}" th:text="${comment.getCreatedBy().getUsername()}">AnotherUser</a>
+                    <a th:href="@{/user/{userId}(userId=${userComment.getCreatedBy().getId()})}" th:text="${userComment.getCreatedBy().getUsername()}">AnotherUser</a>
 
                 </div>
-                <div th:if="${comment.getCreatedBy().isAdmin()}"
+                <div th:if="${userComment.getCreatedBy().isAdmin()}"
                      th:text="Admin">Role</div>
-                <div th:unless="${comment.getCreatedBy().isAdmin()}"
+                <div th:unless="${userComment.getCreatedBy().isAdmin()}"
                      th:text="User">Role</div>
-                <img class="user-profile-container" src="https://i1.sndcdn.com/artworks-000006019579-vhwl3q-t240x240.jpg" alt="">
+                <img class="user-post-photo" th:src="${userComment.getCreatedBy().getUserProfilePicture().getProfilePhoto()}" alt="Picture"/>
             </div>
-            <dirv class="content break-word" th:text="${comment.getComment()}">
+            <dirv class="content break-word" th:text="${userComment.getComment()}">
             </dirv>
             <div class="comment-buttons center">
-                <a class="btn btn-secondary comment-button"  th:if="${comment.getCreatedBy().getUsername() == session.currentUser}" href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${comment.commentId})}" >Edit </a>
-                <a class="btn btn-secondary comment-button" th:if="${comment.getCreatedBy().getUsername() == session.currentUser|| session.isAdmin}" href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${comment.commentId})}" >Delete</a>
+                <a class="btn btn-secondary comment-button"  th:if="${userComment.getCreatedBy().getUsername() == session.currentUser}" href="#" th:href="@{__${requestURI}__/{commentId}/update(commentId=${userComment.commentId})}" >Edit </a>
+                <a class="btn btn-secondary comment-button" th:if="${userComment.getCreatedBy().getUsername() == session.currentUser|| session.isAdmin}" href="#" th:href="@{__${requestURI}__/{commentId}/deleteComment(commentId=${userComment.commentId})}" >Delete</a>
             </div>
         </div>
         <br>
