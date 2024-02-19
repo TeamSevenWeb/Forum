@@ -14,6 +14,8 @@ public interface ReactionRepository {
 
     void delete(int reactionId);
 
+    void clearAll(Post post);
+
     Reaction get(Post post, User user);
     Reaction get(int id);
 

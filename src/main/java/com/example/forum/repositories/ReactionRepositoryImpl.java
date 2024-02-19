@@ -50,6 +50,18 @@ public class ReactionRepositoryImpl implements ReactionRepository{
     }
 
     @Override
+    public void clearAll(Post post) {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("DELETE FROM Reaction WHERE post = :post");
+            session.beginTransaction();
+            query.setParameter("post", post);
+            query.executeUpdate();
+
+            session.getTransaction().commit();
+            }
+    }
+
+    @Override
     public Reaction get(Post post, User user) {
         try (Session session = sessionFactory.openSession()) {
             Query<Reaction> query = session.createQuery(

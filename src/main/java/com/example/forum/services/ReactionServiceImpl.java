@@ -41,6 +41,11 @@ public class ReactionServiceImpl implements ReactionService{
     }
 
     @Override
+    public void clearReactions(Post post) {
+        reactionRepository.clearAll(post);
+    }
+
+    @Override
     public void createUpVote(Post post, User user) {
         Reaction reaction = new Reaction();
         reaction.setPost(post);
