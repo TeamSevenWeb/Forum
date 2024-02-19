@@ -146,7 +146,7 @@ public class PostMvcController {
             Post post = mapper.fromDto(postDto);
             User user = authenticationHelper.tryGetCurrentUser(session);
             service.create(post, user);
-            return "redirect:/posts";
+            return "redirect:/posts/"+post.getPostId();
         }catch (EntityDuplicateException e){
             errors.rejectValue("name","post.exists",e.getMessage());
             return "NewPostView";
