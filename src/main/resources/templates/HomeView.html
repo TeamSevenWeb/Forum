@@ -4,13 +4,13 @@
 <body>
 <!--NavBar Section-->
 <div th:insert="~{fragments/PageFrame :: navbar}"></div>
-<section class="page-section-top">
+<section >
     <div class="count-body">
         <div class="count-box" th:text="${'ALL POSTS: '+postsCount}" >All posts count</div>
-        <div></div>
-        <div class="count-box" th:text="${'ALL USERS: '+usersCount}" >All users count</div>
+        <div class="count-box" id="users" th:text="${'ALL USERS: '+usersCount}" >All users count</div>
     </div>
     <br/>
+    <br/><br/>
     <br/>
 <div class="container">
 <!--    Navigation-->
