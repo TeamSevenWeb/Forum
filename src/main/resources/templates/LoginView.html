@@ -4,18 +4,18 @@
 <body>
 <div th:replace="~{fragments/PageFrame :: navbar}"></div>
 
-<section class="page-section font-aquire">
+<section class="page-section ">
     <div class="h1 center font-aquire"  th:text="#{login.page.label}">Login</div>
     <br/>
     <div class="center ">
 
         <form class="outline login-container" action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
-            <label th:text="#{user.label.username}">Username</label>
+            <label  class="font-aquire" th:text="#{user.label.username}">Username</label>
             <br/>
             <input type="text" th:field="*{username}"/><br/>
                 <div class="error error-login" th:errors="*{username}">Username error placeholder</div>
 
-            <label th:text="#{user.label.password}">Password</label>
+            <label class="font-aquire" th:text="#{user.label.password}">Password</label>
             <br/>
             <input type="password" th:field="*{password}"/>
                 <div class="error error-login" th:errors="*{password}">Password error placeholder</div>

@@ -59,7 +59,6 @@ public class User {
     @JsonIgnore
     @OneToOne(mappedBy = "user",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private UserProfilePhoto profilePictures;
