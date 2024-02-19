@@ -26,7 +26,7 @@
 
         <div class="reaction-container">
             <h2>
-                <a th:if="${post.getCreatedBy().getUsername() == session.currentUser || session.isAdmin}" href="#" th:href="@{__${requestURI}__/update}"
+                <a th:if="${post.getCreatedBy().getUsername() == session.currentUser}" href="#" th:href="@{__${requestURI}__/update}"
                 class="edit-button">Edit
 
                     <i class="fas fa-pencil-alt"></i>
@@ -45,7 +45,13 @@
             </a>
         </h2>
             <div class="upvote-counter" th:text="${upVoteCounter}"></div>
+            <h2 th:if="${post.getCreatedBy().getUsername() == session.currentUser}">
+                <a href="#" th:href="@{__${requestURI}__/delete}"
+                   class="edit-button">Delete
 
+                    <i class="fab fa-free-code-camp"></i>
+                </a>
+            </h2>
         </div>
     </div>
 

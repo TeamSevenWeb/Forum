@@ -31,7 +31,7 @@ INSERT INTO forum.admins_phone_numbers (admin_id, phone_number) VALUES (1, '0899
 INSERT INTO forum.admins_phone_numbers (admin_id, phone_number)VALUES (2, '0877777777');
 INSERT INTO forum.admins_phone_numbers (admin_id, phone_number) VALUES (3, '0888888888');
 
-INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (13, 3, 'What do you guys think of Eminem\'s new boomer aesthetic? ', 'It has been 2 decades and I feel like things will never be the same..', '2024-02-18 07:30:24');
+# INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (13, 3, 'What do you guys think of Eminem\'s new boomer aesthetic? ', 'It has been 2 decades and I feel like things will never be the same..', '2024-02-18 07:30:24');
 INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (14, 9, 'Where should I visit in Bulgaria?', 'I have heard from my colleagues at work that Bulgaria is a beautiful and a cheap country. I know this forum has its fair share of Bulgarians, so I would love to get some feedback :)', '2024-02-18 07:44:47');
 INSERT INTO forum.posts (post_id, created_by, title, content, date_and_time_of_creation) VALUES (15, 10, 'Linux is better than Windows and here is why', 'I\'ve done tech support for years, and that means Windows when I\'m out in the wild.
 
@@ -60,12 +60,12 @@ INSERT INTO forum.tags (tag_id, name) VALUES (16, 'mental health');
 INSERT INTO forum.tags (tag_id, name) VALUES (17, 'Games');
 
 
-INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (19, 13, 9, 'This is true. Eminem is not the only one, too', '2024-02-18 07:57:00');
+# INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (19, 13, 9, 'This is true. Eminem is not the only one, too', '2024-02-18 07:57:00');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (20, 14, 7, 'Sofia is the capital and has a lot of stuff. You can also sleep at my place in Lyulin if you come <3', '2024-02-18 08:02:08');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (21, 14, 3, 'Consider Varna! We have beaches and a massive park', '2024-02-18 08:14:26');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (22, 14, 10, 'I have to agree with svetlio here. If you want a unique tourist\'s experience, you should never visit a capital.', '2024-02-18 08:27:46');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (23, 14, 4, 'I remember going on a business trip to Sofia and it was a unique experience. Every country\'s capital is special. ', '2024-02-18 08:34:59');
-INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (24, 13, 4, 'I like him more now that he looks older. Some things are better left as memories.', '2024-02-18 08:37:43');
+# INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (24, 13, 4, 'I like him more now that he looks older. Some things are better left as memories.', '2024-02-18 08:37:43');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (25, 15, 7, 'I didn\'t read anything, but Windows is better!
 ', '2024-02-18 08:55:23');
 INSERT INTO forum.comments (comment_id, post_id, created_by, comment, date_and_time_of_creation) VALUES (26, 17, 9, 'I start my day with meditation and a short workout. It really helps clear my mind.', '2024-02-18 09:10:47');
