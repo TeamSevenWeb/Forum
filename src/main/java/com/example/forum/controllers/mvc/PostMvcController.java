@@ -134,12 +134,11 @@ public class PostMvcController {
     @GetMapping("/new")
     public String showNewPostPage(Model model){
         model.addAttribute("post",new PostDto());
-        model.addAttribute("tag",new TagDto());
         return "NewPostView";
     }
 
     @PostMapping("/new")
-    public String createPost(@Valid @ModelAttribute("post") PostDto postDto,HttpSession session, BindingResult errors, Model model){
+    public String createPost(@Valid @ModelAttribute("post") PostDto postDto,BindingResult errors, HttpSession session, Model model){
         if(errors.hasErrors()){
             return "NewPostView";
         }
