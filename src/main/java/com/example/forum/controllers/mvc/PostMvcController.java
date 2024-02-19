@@ -268,7 +268,7 @@ public class PostMvcController {
             Post post = mapper.fromDto(id,postDto);
             User user = authenticationHelper.tryGetCurrentUser(session);
             service.update(post, user);
-            return "redirect:/posts";
+            return "redirect:/posts/{id}";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
