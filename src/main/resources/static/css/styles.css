@@ -2015,11 +2015,21 @@ header{
     padding: 10px;
     border-left: 2px solid purple;
 }
+
 .methods-body-content{
     display: grid;
     grid-template-columns: 45% 10% 45%;
     padding: 10px;
     border-bottom: 2px solid purple;
+}
+
+.count-body{
+    display: grid;
+    column-gap: 40px;
+    justify-content: center;
+    grid-template-columns: 45% 10% 45%;
+    padding-left: 100px;
+    font-family: 'aquire',FangSong,Georgia;
 }
 .big{
     font-size: 16pt;
